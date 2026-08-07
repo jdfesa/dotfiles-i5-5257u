@@ -37,3 +37,14 @@
 - Se estableció que el contenido se escribe en español, pero todos los nombres de
   documentos y directorios se mantienen en inglés, ASCII y `kebab-case`.
 - Se renombraron los documentos existentes para cumplir la convención en inglés.
+- Se instaló RTK 0.45.0 bajo `~/.local/bin` desde el binario estático oficial,
+  verificando su checksum antes de instalarlo.
+- Se integró RTK globalmente con Codex mediante `~/.codex/AGENTS.md` y
+  `~/.codex/RTK.md`, sin instalar hooks de shell.
+- Se desactivó explícitamente la telemetría de RTK y se mantuvieron únicamente
+  métricas locales y copias de salida para comandos fallidos.
+- Se configuró RTK sin colores ni emoji para evitar salida decorativa.
+- Se cambió el esfuerzo predeterminado de Codex de `high` a `medium`, con resumen
+  conciso y baja verbosidad, conservando la posibilidad de elevarlo por tarea.
+- Se documentaron la instalación reproducible, las pruebas, las limitaciones, la
+  actualización y la reversión en `docs/others/rtk.md`.
