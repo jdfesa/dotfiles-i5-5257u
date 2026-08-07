@@ -11,5 +11,4 @@ Documentación local de hardware, configuración y optimizaciones de este
 - [Registro de cambios](docs/changelog.md)
 - [Otras herramientas y prácticas](docs/others/README.md)
 
-Repositorio publicado en la rama `main`:
-`https://github.com/jdfesa/mbp2015`.
+
