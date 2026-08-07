@@ -1,0 +1,15 @@
+# Editors and operating systems
+.DS_Store
+*~
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Local environment and generated files
+.env
+.env.*
+!.env.example
+*.log
+tmp/
+
