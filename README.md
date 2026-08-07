@@ -3,12 +3,13 @@
 Documentación local de hardware, configuración y optimizaciones de este
 `MacBookPro12,1`.
 
-- [Estado inicial y cambios](docs/estado-inicial.md)
-- [Uso diario](docs/uso-diario.md)
-- [Optimizaciones y prioridades](docs/optimizaciones.md)
-- [Scripts y archivos auxiliares](docs/scripts-y-archivos.md)
-- [Registro de cambios](docs/registro-cambios.md)
-- [Configuración de Git y GitHub](docs/git-github.md)
+- [Organización y política de documentación](docs/README.md)
+- [Estado inicial y cambios](docs/initial-state.md)
+- [Uso diario](docs/daily-use.md)
+- [Optimizaciones y prioridades](docs/optimizations.md)
+- [Scripts y archivos auxiliares](docs/scripts-and-files.md)
+- [Registro de cambios](docs/changelog.md)
+- [Otras herramientas y prácticas](docs/others/README.md)
 
-Repositorio preparado en la rama `main` para publicarse en
+Repositorio publicado en la rama `main`:
 `https://github.com/jdfesa/mbp2015`.

@@ -1,6 +1,6 @@
 # Registro de cambios
 
-## 2026-08-07
+## 2026-08-07 — Configuración del equipo
 
 - Se relevó el hardware del `MacBookPro12,1` y el estado de Debian 13/XFCE.
 - Se creó `~/github/mbp2015` con las carpetas `docs` y `scripts`.
@@ -12,7 +12,9 @@
   únicamente en la sesión gráfica local.
 - No se instalaron ni eliminaron paquetes.
 - No se modificaron archivos bajo `/etc`, `/usr` ni `/sys`.
-- Git no fue inicializado.
+
+## 2026-08-07 — Herramientas auxiliares
+
 - Se configuró Git globalmente con `José Sandoval` y el correo privado de GitHub
   `92765822+jdfesa@users.noreply.github.com`.
 - Se establecieron valores globales básicos para `main`, finales de línea, limpieza
@@ -26,3 +28,12 @@
 - Se instaló GitHub CLI 2.97.0 bajo `~/.local/bin`, verificando el checksum oficial.
 - Se autorizó la cuenta `jdfesa` mediante el flujo web de dispositivo y se configuró
   HTTPS como protocolo de GitHub.
+- Se separó la documentación auxiliar bajo `docs/others` para mantener el contexto
+  principal dedicado al MacBook Pro con Debian.
+- Se documentó de forma reproducible la descarga, verificación, instalación,
+  autenticación, actualización y desinstalación de GitHub CLI.
+- Se añadió una política obligatoria para documentar futuras descargas, prácticas
+  y automatizaciones.
+- Se estableció que el contenido se escribe en español, pero todos los nombres de
+  documentos y directorios se mantienen en inglés, ASCII y `kebab-case`.
+- Se renombraron los documentos existentes para cumplir la convención en inglés.
