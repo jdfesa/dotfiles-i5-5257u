@@ -1,0 +1,53 @@
+# Interactive Zsh only. No framework, plugin manager, downloads or daemons.
+[[ -o interactive ]] || return
+
+typeset -U path PATH
+path=("$HOME/.local/bin" "$HOME/bin" $path)
+export PATH
+
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE="${XDG_STATE_HOME:-$HOME/.local/state}/zsh/history"
+typeset _zsh_cache="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+# Private history/completion state is never stored in the checkout.
+typeset _saved_umask=$(umask)
+umask 077
+mkdir -p -- "${HISTFILE:h}" "$_zsh_cache"
+[[ -e "$HISTFILE" ]] || : > "$HISTFILE"
+chmod 700 "${HISTFILE:h}" "$_zsh_cache"
+chmod 600 "$HISTFILE"
+umask "$_saved_umask"
+unset _saved_umask
+
+setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_ALL_DUPS
+setopt HIST_IGNORE_SPACE HIST_REDUCE_BLANKS INTERACTIVE_COMMENTS
+bindkey -e
+autoload -Uz compinit
+compinit -d "$_zsh_cache/zcompdump-$ZSH_VERSION"
+unset _zsh_cache
+
+PROMPT='%F{blue}%~%f %# '
+RPROMPT=''
+
+# Keep a usable native prompt if Starship/config is absent or intentionally off.
+typeset _starship_config="${XDG_CONFIG_HOME:-$HOME/.config}/starship.toml"
+if [[ ${MBP_SIMPLE_PROMPT:-0} != 1 && ${TERM:-dumb} != dumb \
+      && -z ${NETBEANS_USERDIR:-} && -r $_starship_config ]] \
+      && command -v starship >/dev/null 2>&1; then
+    export STARSHIP_CONFIG="$_starship_config"
+    export STARSHIP_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/starship"
+    typeset _starship_umask=$(umask)
+    umask 077
+    if mkdir -p -- "$STARSHIP_CACHE" && chmod 700 "$STARSHIP_CACHE"; then
+        umask "$_starship_umask"
+        typeset _starship_init
+        if _starship_init=$(starship init zsh); then
+            eval "$_starship_init"
+        fi
+        unset _starship_init
+    else
+        umask "$_starship_umask"
+    fi
+    unset _starship_umask
+fi
+unset _starship_config

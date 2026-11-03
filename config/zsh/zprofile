@@ -1,0 +1,4 @@
+# Login-only PATH setup; do not source Bash-specific initialization.
+typeset -U path PATH
+path=("$HOME/.local/bin" "$HOME/bin" $path)
+export PATH
