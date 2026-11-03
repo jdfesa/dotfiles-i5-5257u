@@ -1,0 +1,11 @@
+font=DejaVu Sans Mono 10
+background-color=#1e1e2eff
+text-color=#cdd6f4ff
+border-color=#b4befeff
+border-size=2
+border-radius=0
+default-timeout=7000
+
+[urgency=critical]
+border-color=#f38ba8ff
+default-timeout=0

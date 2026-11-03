@@ -1,0 +1,11 @@
+# Device override template for private/sway/local.conf (0600).
+# Integer HiDPI scaling for the MacBook's 2560x1600 panel.
+output eDP-1 mode 2560x1600 scale 2
+input type:keyboard xkb_layout us
+input type:touchpad {
+    tap enabled
+    natural_scroll enabled
+    dwt enabled
+}
+# Initial brightness is set only when the Sway session starts, not on reload.
+exec brightnessctl -d intel_backlight set 40%

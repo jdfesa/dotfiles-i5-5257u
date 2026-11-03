@@ -1,0 +1,31 @@
+Super = Command on the Mac keyboard (Mod4)
+Super+Enter                 Kitty terminal (Zsh)
+Super+Space / D             Fuzzel application launcher (includes Wi-Fi networks)
+Super+Shift+B               Default web browser (XDG)
+Super+N                     Wi-Fi networks
+Super+A                     Audio mixer
+Super+U                     Available APT updates (read-only)
+Super+K                     This shortcut list
+Super+Shift+P               Power menu (confirmation required)
+Super+W / Q / Shift+Q       Close window
+Super+arrows                Focus window
+Super+Shift+arrows          Move window
+Super+1..9 / 0              Workspace 1..10
+Super+Shift+number          Send window to workspace
+Super+B / V                 Horizontal / vertical split
+Super+F                     Fullscreen
+Super+T / Shift+Space       Floating / tiled
+Super+Tab                   Focus floating / tiled layer
+Super+J / E                 Toggle split layout
+Super+L                     Cycle split / tabbed / stacking
+Super+Ctrl+W / S            Tabbed / stacking
+Super+S                     Show scratchpad
+Super+Alt+S                 Send to scratchpad
+Super+R                     Resize mode (arrows or H/J/K/L; Enter/Esc ends)
+Super+Ctrl+L                Lock screen
+Super+Shift+C / R           Reload Sway (R does not restart it)
+Super+Shift+E               Exit session (Y confirms; N/Esc cancels)
+F1/F2 (or Fn+F1/F2)         Screen brightness
+Volume keys                PulseAudio volume / mute
+Super+Shift+S / Print       Select screenshot area, copy to clipboard
+Ctrl+Shift+C / V            Copy / paste in Kitty

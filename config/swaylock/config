@@ -1,0 +1,10 @@
+color=1e1e2e
+indicator-radius=70
+indicator-thickness=6
+inside-color=1e1e2eff
+ring-color=b4befeff
+key-hl-color=a6e3a1ff
+text-color=cdd6f4ff
+show-failed-attempts
+indicator-idle-visible
+show-keyboard-layout

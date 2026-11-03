@@ -1,48 +1,43 @@
-# Estado inicial y cambios
+# Hardware and compatibility
 
-Fecha del relevamiento: 2026-08-07.
+## Target platform
 
-## Equipo
+| Componente | Especificación |
+|---|---|
+| Equipo | Apple MacBook Pro 13-inch Early 2015, MacBookPro12,1 |
+| CPU | Intel Core i5-5257U, 2 núcleos / 4 hilos, 2,7 GHz |
+| GPU | Intel Iris Graphics 6100, Broadwell GT3, i915 |
+| RAM | 8 GB, aproximadamente 7,7 GiB utilizables |
+| Pantalla | eDP-1, 2560×1600, escala entera 2 |
+| Wi-Fi | Broadcom BCM43602, brcmfmac |
+| Plataforma | Debian 13 amd64, kernel serie 6.12, Sway/Wayland |
 
-- Modelo: Apple MacBook Pro 13-inch Early 2015 (`MacBookPro12,1`).
-- Procesador: Intel Core i5-5257U, 2 núcleos y 4 hilos, 2.7 GHz.
-- Gráficos: Intel Iris Graphics 6100, controlador `i915`.
-- Memoria: 7.7 GiB utilizables.
-- Sistema: Debian 13 (trixie), kernel 6.12, escritorio XFCE.
-- Disco del sistema: Kingston SV300S37A240G de 240 GB conectado por USB 3.
-- Disco interno: Apple SSD de 256 GB con APFS, no montado.
-- Pantalla interna: eDP, controlada por `intel_backlight`.
+`firmware-brcm80211` proporciona el firmware de brcmfmac y requiere el componente
+Debian `non-free-firmware`. Mesa 25.0.7 expone OpenGL 4.6 y Vulkan 1.3.305 en
+la Iris 6100. Verificar el dispositivo físico, no el loader ni llvmpipe;
+[Zed setup](zed-setup.md) detalla la comprobación Vulkan.
 
-## Batería
+## Storage reference
 
-- Fabricante/controlador: SMP `bq20z451`.
-- Ciclos registrados: 1.407.
-- Capacidad máxima actual: 4.123.000 µAh.
-- Capacidad de diseño: 6.559.000 µAh.
-- Salud estimada: 62,9% de la capacidad original.
-- Temperatura observada: 36,3 °C.
+La instalación de referencia utiliza un Kingston SV300S37A240G de 240 GB por
+USB 3/UAS, con raíz ext4. El SSD Apple interno de 256 GB mantiene otra instalación.
+Estas rutas/discos no se particionan ni montan automáticamente desde los dotfiles.
+Tras formatear, identificar los discos por el instalador, no asumir nombres sdX.
 
-La batería está bastante degradada. No conviene confiar únicamente en el tiempo
-restante estimado: guardar el trabajo con frecuencia y conectar el cargador antes
-de llegar al nivel crítico.
+## Battery and backlight
 
-## Cambios aplicados
+Referencia medida el 2026-08-07: 1.407 ciclos, capacidad máxima 4.123.000 µAh
+frente a 6.559.000 µAh de diseño, salud aproximada 62,9 %.
+UPower distingue percentage (carga) de capacity (salud); en esta máquina
+BAT0/capacity no representa correctamente la carga disponible.
 
-- Se creó `~/github/mbp2015/docs`.
-- Se añadió el complemento nativo **Gestor de energía** al panel superior de XFCE.
-  El complemento ya estaba instalado; muestra el estado de la batería y ofrece
-  un control deslizante para el brillo.
-- Se configuró un brillo inicial del 40% para las sesiones XFCE locales mediante
-  `scripts/set-local-brightness.sh`. El ajuste se aplica cinco segundos después
-  de entrar al escritorio y puede cambiarse luego desde el panel o el teclado.
+Backlight: `/sys/class/backlight/intel_backlight`, rango observado 0–1388.
+El perfil aplica 40 % al iniciar Sway y permite cambiarlo con F1/F2.
+Las mediciones de batería y rangos deben revalidarse al cambiar batería/kernel.
 
-## Estado del brillo al iniciar el trabajo
+## Operating policy
 
-- Interfaz: `/sys/class/backlight/intel_backlight`.
-- Rango: 0–1388.
-- Valor configurado inicialmente: 1041 (aproximadamente 75%).
-- Valor elegido para las próximas sesiones locales: 555 (aproximadamente 40%).
-
-La pantalla local estaba en el inicio de sesión de LightDM durante el trabajo y
-la sesión XFCE activa era remota (`DISPLAY=:10`). Por eso el valor físico no se
-forzó desde SSH; se aplicará en el siguiente inicio de sesión local.
+La configuración favorece interfaces nativas Wayland, colores opacos y servicios
+a demanda. No modifica límites CPU ni controladores para simular compatibilidad.
+[Restore guide](restore-guide.md), [Power and performance](optimizations.md) y
+[XFCE recovery](xfce-recovery.md).

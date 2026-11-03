@@ -1,0 +1,138 @@
+# MacBookPro12,1: native Wayland, opaque colors, no effects or busy widgets.
+# Bindings adapted from the i3-2310m reference; this is not an i3 config.
+set $mod Mod4
+set $tools ~/.local/bin/mbp-sway-tools
+font pango:JetBrainsMono Nerd Font Mono 10
+floating_modifier $mod normal
+focus_follows_mouse no
+default_border pixel 2
+hide_edge_borders smart
+xwayland enable
+
+client.focused          #b4befe #45475a #cdd6f4 #b4befe #b4befe
+client.focused_inactive #313244 #1e1e2e #a6adc8 #313244 #313244
+client.unfocused        #181825 #181825 #7f849c #181825 #181825
+client.urgent           #f38ba8 #f38ba8 #11111b #f38ba8 #f38ba8
+client.background       #1e1e2e
+output * bg #1e1e2e solid_color
+
+# Keep Debian's session environment integration, not a home-grown replacement.
+include /etc/sway/config.d/*
+include ~/.config/sway/local.conf
+exec ~/.local/bin/mbp-sway-session
+
+for_window [app_id="^mbp-(networks|mixer|updates)$"] floating enable, resize set 760 520, move position center
+for_window [app_id="^mbp-power$"] floating enable, resize set 760 360, move position center
+for_window [app_id="^local[.]mbp[.]Calendar$"] floating enable, move position center
+
+# Application keys match the reference; the tools are Wayland-native.
+bindsym $mod+Return exec kitty
+bindsym $mod+space exec fuzzel
+bindsym $mod+d exec fuzzel
+bindsym $mod+n exec $tools networks
+bindsym $mod+a exec $tools audio
+bindsym $mod+u exec $tools updates
+bindsym $mod+Shift+p exec ~/.local/bin/mbp-power-menu
+bindsym $mod+Shift+b exec $tools browser
+bindsym $mod+k exec $tools help
+bindsym $mod+w kill
+bindsym $mod+q kill
+bindsym $mod+Shift+q kill
+bindsym $mod+Control+l exec swaylock -f
+bindsym $mod+Shift+c reload
+# Sway has no in-place i3-style restart; both keys reload its config.
+bindsym $mod+Shift+r reload
+bindsym $mod+Shift+e mode "Exit session? Y=yes, N/Escape=cancel"
+mode "Exit session? Y=yes, N/Escape=cancel" {
+    bindsym y exit
+    bindsym n mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+bindsym $mod+b split h
+bindsym $mod+v split v
+bindsym $mod+f fullscreen toggle
+bindsym $mod+j layout toggle split
+bindsym $mod+l layout toggle split tabbed stacking
+bindsym $mod+Control+s layout stacking
+bindsym $mod+Control+w layout tabbed
+bindsym $mod+e layout toggle split
+bindsym $mod+Tab focus mode_toggle
+bindsym $mod+t floating toggle
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+s scratchpad show
+bindsym $mod+Mod1+s move scratchpad
+
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+bindsym $mod+r mode "resize"
+mode "resize" {
+    bindsym Left resize shrink width 10 px or 10 ppt
+    bindsym Down resize grow height 10 px or 10 ppt
+    bindsym Up resize shrink height 10 px or 10 ppt
+    bindsym Right resize grow width 10 px or 10 ppt
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym XF86MonBrightnessDown exec brightnessctl -d intel_backlight set 5%-
+bindsym XF86MonBrightnessUp exec brightnessctl -d intel_backlight set +5%
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
+bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle
+bindsym XF86AudioMicMute exec pactl set-source-mute @DEFAULT_SOURCE@ toggle
+bindsym Print exec $tools screenshot
+bindsym $mod+Shift+s exec $tools screenshot
+
+# logind keeps its normal lid/suspend policy. swayidle locks before sleep.
+# No automatic suspend timeout: avoid interrupting unattended work.
+bar {
+    position top
+    status_command ~/.local/bin/mbp-status-adapter
+    font pango:JetBrainsMono Nerd Font Mono 10
+    workspace_buttons yes
+    workspace_min_width 24
+    binding_mode_indicator yes
+    separator_symbol "│"
+    colors {
+        background #1e1e2e
+        statusline #cdd6f4
+        separator #45475a
+        focused_workspace #45475a #45475a #b4befe
+        active_workspace #313244 #313244 #cdd6f4
+        inactive_workspace #1e1e2e #1e1e2e #7f849c
+        urgent_workspace #f38ba8 #f38ba8 #11111b
+        binding_mode #b4befe #45475a #b4befe
+    }
+}

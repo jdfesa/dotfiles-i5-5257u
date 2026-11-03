@@ -1,0 +1,7 @@
+# Lock after five minutes; display off after ten. Respect idle inhibitors.
+timeout 240 'notify-send -a Session "Screen locks in one minute" "Use your normal login password to unlock."'
+timeout 300 'swaylock -f'
+timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
+before-sleep 'swaylock -f'
+after-resume 'swaymsg "output * power on"'
+lock 'swaylock -f'
