@@ -30,8 +30,6 @@
 - [ ] Revisar la actualización de Helium del proveedor y coordinar el reinicio
       del navegador.
 - [ ] Revisar las actualizaciones generales de mantenimiento de Debian.
-- [ ] Reconciliar el perfil de Zed modificado en el portátil con la copia local,
-      preservando sus opciones y revisando los permisos de la fuente gestionada.
 
 ## Optional workflow improvements
 

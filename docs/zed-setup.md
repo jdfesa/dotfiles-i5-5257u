@@ -89,8 +89,13 @@ La aplicación se instala separadamente de las fuentes de configuración.
 Aplicar enlaces con dry-run y backup según [Deployment](deployment.md).
 Cada journal conserva todos los enlaces modificados por su invocación; revisar
 sus entries antes de revertir.
-La configuración usa Nerd Font existente, tema One Dark incluido y terminal
-Zsh de login. La base deja desactivadas telemetría, AI, autoactualización y
+La configuración usa la Nerd Font existente, terminal Zsh de login, modo Vim
+activado y mapa base Zed. El tema seleccionado es Ayu Dark con modo oscuro;
+One Light queda como variante clara y los iconos usan Zed (Default).
+La fuente pública mantiene el modo 0644 declarado en el manifiesto. Solo se
+versionan preferencias: credenciales, material de cuenta y estado de sesión
+permanecen fuera de las fuentes públicas.
+La base deja desactivadas telemetría, AI, autoactualización y
 auto-instalación de la extensión HTML predeterminada; no se añadieron plugins.
 AI/extensiones/lenguajes pueden habilitarse después de revisar la necesidad.
 Los LSP y runtimes del instituto aún requieren selección y pruebas propias.

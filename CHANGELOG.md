@@ -20,6 +20,8 @@
 
 ### Changed
 
+- Perfil de Zed con modo Vim, mapa base Zed, tema Ayu Dark e iconos predeterminados;
+  permisos de la fuente alineados con el modo 0644 del manifiesto.
 - CPU y RAM muestran iconos diferenciados y porcentajes sin leyendas; clima usa
   los pictogramas de referencia sin alterar caché, unidades ni actualización.
 - Documentación temática y procedimientos de restauración centralizados en docs/;
