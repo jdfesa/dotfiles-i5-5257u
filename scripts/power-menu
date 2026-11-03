@@ -1,0 +1,45 @@
+#!/bin/sh
+# Centered Fuzzel dmenu, fixed actions only. Based on i3-2310m's workflow.
+# See licenses/i3-reference-MIT.txt.
+set -eu
+menu() {
+    lines=$1
+    prompt=$2
+    shift 2
+    # Reuse the existing theme; no dmenu history or custom text execution.
+    printf '%s\n' "$@" | fuzzel --dmenu --anchor=center --no-sort \
+        --cache=/dev/null --lines="$lines" --prompt="$prompt"
+}
+dry=0
+if [ "$#" -eq 2 ] && [ "$1" = --dry-run ]; then
+    dry=1
+    choice=$2
+elif [ "$#" -eq 0 ]; then
+    choice=$(menu 6 'Power> ' 'Power off' Reboot Suspend 'Log out' Lock Cancel) || exit 0
+else
+    printf '%s\n' 'Usage: mbp-power-menu [--dry-run "Power off|Reboot|Suspend|Log out|Lock|Cancel"]' >&2
+    exit 2
+fi
+case $choice in
+    ''|Cancel) exit 0 ;;
+    'Power off') action=poweroff ;;
+    Reboot) action=reboot ;;
+    Suspend) action=suspend ;;
+    'Log out') action=logout ;;
+    Lock) action=lock ;;
+    *) printf '%s\n' 'Unknown action; cancelled.' >&2; exit 2 ;;
+esac
+if [ "$dry" -eq 1 ]; then
+    printf 'Dry-run only: %s (confirmation required except Lock)\n' "$action"
+    exit 0
+fi
+[ -n "${SWAYSOCK:-}" ] && [ "${XDG_SESSION_TYPE:-}" = wayland ] || exit 1
+if [ "$action" != lock ]; then
+    answer=$(menu 2 "$choice? Save your work first.> " Yes No) || exit 0
+    [ "$answer" = Yes ] || exit 0
+fi
+case $action in
+    lock) exec swaylock -f ;;
+    logout) exec swaymsg exit ;;
+    *) exec kitty --class=mbp-power --title='Power action' "$HOME/.local/bin/mbp-power-action" "$action" ;;
+esac

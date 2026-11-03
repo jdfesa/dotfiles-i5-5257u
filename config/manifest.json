@@ -2,6 +2,8 @@
   {"source": "config/foot/foot.ini", "destination": ".config/foot/foot.ini", "mode": 420, "deployment": "symlink"},
   {"source": "config/kitty/kitty.conf", "destination": ".config/kitty/kitty.conf", "mode": 420, "deployment": "symlink"},
   {"source": "config/kitty/theme.conf", "destination": ".config/kitty/theme.conf", "mode": 420, "deployment": "symlink"},
+  {"source": "scripts/power-menu", "destination": ".local/bin/mbp-power-menu", "mode": 493, "deployment": "symlink"},
+  {"source": "scripts/power-action.sh", "destination": ".local/bin/mbp-power-action", "mode": 493, "deployment": "symlink"},
   {"source": "config/zsh/zprofile", "destination": ".zprofile", "mode": 420, "deployment": "symlink"},
   {"source": "config/zsh/zshrc", "destination": ".zshrc", "mode": 420, "deployment": "symlink"},
   {"source": "config/starship/starship.toml", "destination": ".config/starship.toml", "mode": 420, "deployment": "symlink"},
@@ -9,5 +11,6 @@
   {"source": "config/fonts/JetBrainsMonoNerdFontMono-Bold.ttf", "destination": ".local/share/fonts/JetBrainsMonoNerdFontMono-Bold.ttf", "mode": 420, "deployment": "symlink"},
   {"source": "scripts/open-networks.sh", "destination": ".local/bin/mbp-open-networks", "mode": 493, "deployment": "symlink"},
   {"source": "config/fuzzel/fuzzel.ini", "destination": ".config/fuzzel/fuzzel.ini", "mode": 420, "deployment": "symlink"},
-  {"source": "config/network/mbp-networks.desktop", "destination": ".local/share/applications/mbp-networks.desktop", "mode": 420, "deployment": "symlink"}
+  {"source": "config/network/mbp-networks.desktop", "destination": ".local/share/applications/mbp-networks.desktop", "mode": 420, "deployment": "symlink"},
+  {"source": "config/power/mbp-power-menu.desktop", "destination": ".local/share/applications/mbp-power-menu.desktop", "mode": 420, "deployment": "symlink"}
 ]

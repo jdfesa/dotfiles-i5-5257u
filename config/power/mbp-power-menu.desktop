@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=Power menu
+GenericName=Shutdown, reboot, suspend, lock or log out
+Comment=Choose a power action with confirmation
+Exec=/home/jd/.local/bin/mbp-power-menu
+TryExec=/home/jd/.local/bin/mbp-power-menu
+Icon=system-shutdown
+Terminal=false
+Categories=System;
+Keywords=power;shutdown;poweroff;reboot;suspend;lock;logout;apagar;reiniciar;suspender;salir;
