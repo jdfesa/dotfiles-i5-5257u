@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Initial display brightness
+Comment=Set internal display brightness to 40% on a local recovery session
+Exec=/home/jd/.local/bin/mbp-xfce-brightness
+OnlyShowIn=XFCE;
+Terminal=false
+StartupNotify=false
+X-GNOME-Autostart-enabled=true

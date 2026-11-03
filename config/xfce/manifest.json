@@ -1,0 +1,14 @@
+[
+  {
+    "source": "scripts/xfce/set-local-brightness.sh",
+    "destination": ".local/bin/mbp-xfce-brightness",
+    "mode": 493,
+    "deployment": "symlink"
+  },
+  {
+    "source": "config/xfce/mbp2015-brightness.desktop",
+    "destination": ".config/autostart/mbp2015-brightness.desktop",
+    "mode": 420,
+    "deployment": "symlink"
+  }
+]
