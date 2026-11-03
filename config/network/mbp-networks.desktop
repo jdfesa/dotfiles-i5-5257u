@@ -1,0 +1,14 @@
+[Desktop Entry]
+Type=Application
+Name=Wi-Fi networks
+Comment=Scan available networks and connect with NetworkManager
+Exec=/home/jd/.local/bin/mbp-open-networks
+Icon=network-wireless
+Terminal=false
+Categories=Network;
+Keywords=Wi-Fi;wifi;wireless;networks;
+Actions=EditConnections;
+
+[Desktop Action EditConnections]
+Name=Edit network connections
+Exec=/home/jd/.local/bin/mbp-open-networks --edit
