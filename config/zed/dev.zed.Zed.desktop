@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Zed
+GenericName=Text Editor
+Comment=Edit source code with Zed stable
+Exec=/home/jd/.local/bin/zed %U
+TryExec=/home/jd/.local/bin/zed
+Icon=/home/jd/.local/zed.app/share/icons/hicolor/512x512/apps/zed.png
+Terminal=false
+Categories=Development;IDE;
+MimeType=text/plain;application/x-zerosize;x-scheme-handler/zed;
+Keywords=code;editor;development;zed;
+StartupWMClass=dev.zed.Zed
