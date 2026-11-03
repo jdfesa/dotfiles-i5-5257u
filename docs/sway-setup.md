@@ -22,6 +22,8 @@ El manifiesto también enlaza el override local preparado desde la plantilla.
 - XWayland bajo demanda para aplicaciones X11.
 - Brillo al 40 % solo al iniciar sesión; cambios posteriores no se sobrescriben
   con reload. brightness-udev y el grupo video proporcionan acceso al backlight.
+- [Keyboard backlight](keyboard-backlight.md): F5/F6 mediante UPower existente,
+  sin nuevos servicios ni permisos sobre el grupo input.
 - Atajos Omarchy adaptados en [Keyboard shortcuts](keybindings.md).
 - El include Debian `/etc/sway/config.d/*` integra el entorno D-Bus/systemd.
 - `mbp-sway-session` arranca una sola instancia de mako, swayidle y agente Polkit.

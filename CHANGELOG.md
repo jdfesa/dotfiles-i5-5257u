@@ -30,6 +30,9 @@
 
 ### Fixed
 
+- Control de retroiluminación del teclado en Sway mediante F5/F6 y UPower,
+  con pasos del 10 %, apagado completo y llamadas acotadas, sin drivers externos,
+  permisos nuevos ni procesos residentes adicionales.
 - Icono de volumen unificado con la tipografía proporcional y separación reducida
   junto a Wi-Fi, sin modificar el indicador de red.
 - Las lecturas malformadas del porcentaje UPower se tratan como no disponibles,

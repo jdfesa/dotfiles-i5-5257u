@@ -26,6 +26,7 @@ Super+Ctrl+L                Lock screen
 Super+Shift+C / R           Reload Sway (R does not restart it)
 Super+Shift+E               Exit session (Y confirms; N/Esc cancels)
 F1/F2 (or Fn+F1/F2)         Screen brightness
+F5/F6 (or Fn+F5/F6)         Keyboard brightness (down/up; 0 turns it off)
 Volume keys                PulseAudio volume / mute
 Super+Shift+S / Print       Select screenshot area, copy to clipboard
 Ctrl+Shift+C / V            Copy / paste in Kitty

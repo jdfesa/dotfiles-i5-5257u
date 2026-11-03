@@ -8,7 +8,7 @@ Los helpers se ejecutan como jd. Rutas y modos se declaran en `config/manifest.j
 | Fuente | Contrato | Dependencias / verificación |
 |---|---|---|
 | scripts/sway-session.sh | Instancia única por sesión; ciclo de vida mako/swayidle/Polkit | Sway, flock, mate-polkit; parser y sesión local |
-| scripts/sway-tools.sh | networks/audio/calendar/updates/browser/help/screenshot despacho fijo | Kitty, XDG/GTK, alsamixer, APT, wmenu, grim/slurp/wl-copy; tests con comandos simulados |
+| scripts/sway-tools.sh | Despacho fijo de herramientas y teclado keyboard-brightness-up/down a demanda | Kitty, XDG/GTK, alsamixer, APT, wmenu, grim/slurp/wl-copy, UPower/busctl y flock; tests con comandos simulados |
 | scripts/open-networks.sh | --check solo lectura; --edit editor; panel a demanda | NetworkManager/nmcli/nmtui, Kitty, flock; tests de estado/cancelación del cliente |
 | scripts/power-menu | Fuzzel dmenu con acciones fijas; --dry-run no ejecuta acciones | Fuzzel, swaymsg/swaylock, Kitty; confirmaciones simuladas |
 | scripts/power-action.sh | suspend/reboot/poweroff, --dry-run opcional; autorización/inhibidores | systemd >=257, busctl, terminal, swaylock; política simulada y tests PTY |
@@ -55,3 +55,4 @@ de hardware/sesión son pasos de aceptación separados de la validación sintác
 | tests/test_battery.py | Estados/niveles, porcentaje, cobertura de glifos y fallos de lectura UPower |
 | tests/test_status_icons.py | Fuente proporcional, hash/enlace, glifos, valores sin leyendas y caché de clima |
 | tests/test_calendar.py | Cambio de mes/año, límites, ventana única y rechazo fuera de Wayland |
+| tests/test_keyboard_backlight.py | UPower simulado, pasos/límites, apagado completo, errores, entradas inválidas y concurrencia acotada |

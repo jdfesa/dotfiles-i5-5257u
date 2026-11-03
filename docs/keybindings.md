@@ -32,10 +32,13 @@ Fuentes: `config/sway/config` y ayuda visible `config/sway/keybindings-help.txt`
 | Super+Ctrl+L | Bloquear con swaylock |
 | Super+Shift+C o R | Recargar Sway; R **no reinicia** el compositor |
 | Super+Shift+E | Cerrar sesión; Y confirma, N/Esc cancela |
-| F1 / F2, posiblemente con Fn | Brillo -/+5 % |
+| F1 / F2, posiblemente con Fn | Brillo de pantalla -/+5 % |
+| F5 / F6, posiblemente con Fn | Brillo de teclado -/+10 % mediante UPower; permite apagarlo |
 | Teclas de volumen/silencio | PulseAudio existente |
 | Super+Shift+S o Print | Selección de captura al portapapeles; sin copia persistente |
 | Ctrl+Shift+C / V | Copiar/pegar en Kitty |
+
+[Keyboard backlight](keyboard-backlight.md) describe el controlador nativo y la verificación de F5/F6.
 
 Helium también permanece en Fuzzel. Zed se abre desde Fuzzel o con `zed`, sin
 atajo asignado hasta acordarlo. Super+Shift+Enter queda libre: no es alias del

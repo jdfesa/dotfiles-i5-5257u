@@ -106,6 +106,8 @@ mode "resize" {
     bindsym Escape mode "default"
 }
 
+bindsym XF86KbdBrightnessDown exec $tools keyboard-brightness-down
+bindsym XF86KbdBrightnessUp exec $tools keyboard-brightness-up
 bindsym XF86MonBrightnessDown exec brightnessctl -d intel_backlight set 5%-
 bindsym XF86MonBrightnessUp exec brightnessctl -d intel_backlight set +5%
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%

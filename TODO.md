@@ -8,15 +8,13 @@
 
 ## Hardware validation
 
-- [ ] Investigar la retroiluminación del teclado en MacBookPro12,1: identificar
-      el soporte y los controladores necesarios para recuperar su control desde Sway.
 - [ ] Verificar la compatibilidad de los gestos multitáctiles del trackpad con
       libinput/Sway, incluida la configuración disponible y las limitaciones del modelo.
 - [ ] Medir el consumo con el mismo brillo y cargas de trabajo representativas.
 - [ ] Verificar la tapa, la suspensión y reanudación, el comportamiento con batería
       baja y el ahorro de energía de la pantalla.
-- [ ] Validar el aviso previo al bloqueo tras iniciar una nueva sesión autenticada
-      de Sway.
+- [ ] Validar el aviso previo al bloqueo y repetir F5/F6 de retroiluminación tras
+      iniciar una nueva sesión autenticada de Sway.
 - [ ] Validar las acciones pendientes de audio y paquetes de la barra, y las teclas
       de brillo y volumen.
 - [ ] Probar la autenticación Wi-Fi del instituto y los portales cautivos cuando

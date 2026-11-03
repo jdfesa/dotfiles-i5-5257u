@@ -41,6 +41,7 @@ starship
 sway
 swayidle
 swaylock
+systemd
 upower
 util-linux
 vulkan-tools

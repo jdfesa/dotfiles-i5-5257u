@@ -12,7 +12,7 @@
 - [Sway](sway-setup.md), [Keyboard shortcuts](keybindings.md) y [Daily use](daily-use.md).
 - [Status bar](status-bar.md), [Fonts](fonts.md), [Wi-Fi panel](wifi-setup.md)
   y [Power menu](power-menu.md).
-- [Power and performance](optimizations.md).
+- [Keyboard backlight](keyboard-backlight.md) y [Power and performance](optimizations.md).
 
 ## Applications
 
