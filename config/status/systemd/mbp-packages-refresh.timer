@@ -1,0 +1,11 @@
+[Unit]
+Description=Read local package upgrade count every six hours
+
+[Timer]
+OnActiveSec=1min
+OnUnitActiveSec=6h
+AccuracySec=5min
+Unit=mbp-packages-refresh.service
+
+[Install]
+WantedBy=timers.target

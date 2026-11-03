@@ -1,0 +1,12 @@
+[Unit]
+Description=Refresh weather every 30 minutes without a resident client
+
+[Timer]
+OnActiveSec=15s
+OnUnitActiveSec=30min
+RandomizedDelaySec=30s
+AccuracySec=1min
+Unit=mbp-weather-refresh.service
+
+[Install]
+WantedBy=timers.target

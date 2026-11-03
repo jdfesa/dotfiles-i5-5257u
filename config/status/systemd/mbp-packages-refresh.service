@@ -1,0 +1,11 @@
+[Unit]
+Description=Count upgrades from existing local APT metadata
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/mbp-update-packages
+TimeoutStartSec=30
+Environment=PYTHONDONTWRITEBYTECODE=1
+NoNewPrivileges=yes
+UMask=0077
+Nice=10

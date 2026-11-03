@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh cached weather for Swaybar
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/mbp-update-weather
+TimeoutStartSec=30
+Environment=PYTHONDONTWRITEBYTECODE=1
+NoNewPrivileges=yes
+UMask=0077
+Nice=10
