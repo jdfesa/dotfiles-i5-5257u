@@ -1,0 +1,50 @@
+#mbp-calendar {
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+    font-family: "JetBrainsMono Nerd Font Mono";
+    font-size: 10pt;
+}
+
+#mbp-calendar calendar {
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+    padding: 8px;
+}
+
+#mbp-calendar calendar.header {
+    color: #b4befe;
+}
+
+#mbp-calendar calendar:selected {
+    background-color: #b4befe;
+    color: #1e1e2e;
+}
+
+#mbp-calendar calendar:indeterminate {
+    color: #6c7086;
+}
+
+#mbp-calendar button {
+    background-image: none;
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    box-shadow: none;
+    text-shadow: none;
+    transition: none;
+}
+
+#mbp-calendar button:hover,
+#mbp-calendar button:focus {
+    border-color: #b4befe;
+}
+
+#calendar-title {
+    color: #b4befe;
+    font-weight: bold;
+}
+
+#calendar-hint {
+    color: #a6adc8;
+    font-size: 8pt;
+}

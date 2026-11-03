@@ -11,6 +11,8 @@
   {"source": "config/status/i3status.conf", "destination": ".config/status/i3status.conf", "mode": 420, "deployment": "symlink"},
   {"source": "config/status/weather.json", "destination": ".config/status/weather.json", "mode": 420, "deployment": "symlink"},
   {"source": "scripts/status-adapter.py", "destination": ".local/bin/mbp-status-adapter", "mode": 493, "deployment": "symlink"},
+  {"source": "scripts/calendar-popup.py", "destination": ".local/bin/mbp-calendar", "mode": 493, "deployment": "symlink"},
+  {"source": "config/calendar/calendar.css", "destination": ".config/calendar/calendar.css", "mode": 420, "deployment": "symlink"},
   {"source": "scripts/update-weather.py", "destination": ".local/bin/mbp-update-weather", "mode": 493, "deployment": "symlink"},
   {"source": "scripts/update-packages.py", "destination": ".local/bin/mbp-update-packages", "mode": 493, "deployment": "symlink"},
   {"source": "config/status/systemd/mbp-weather-refresh.service", "destination": ".config/systemd/user/mbp-weather-refresh.service", "mode": 420, "deployment": "symlink"},
