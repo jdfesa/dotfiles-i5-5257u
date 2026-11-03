@@ -1,113 +1,68 @@
-# Configuración global y flujo de Git
+# Git workflow
 
-Fecha de configuración: 2026-08-07.
+## Identity and defaults
 
-## Estado previo
+La identidad es una configuración de la cuenta que utiliza Git. Ajustarla antes
+de crear commits, con los valores apropiados para esa cuenta:
 
-Git 2.47.3 ya estaba instalado en Debian. No existía configuración global, helper
-de credenciales ni clave SSH de cliente. Los únicos archivos encontrados en
-`~/.ssh` correspondían al acceso entrante por SSH y no se reutilizaron para GitHub.
-
-## Identidad
-
-Se utilizó la identidad pública de GitHub y su correo privado moderno:
-
-```text
-Nombre: José Sandoval
-Usuario: jdfesa
-Correo: 92765822+jdfesa@users.noreply.github.com
-```
-
-No se configuró ningún correo personal.
-
-## Configuración desde cero
-
-Si Git no está instalado en Debian:
-
-```bash
-sudo apt update
-sudo apt install git
-```
-
-Aplicar la configuración global:
-
-```bash
-git config --global user.name "José Sandoval"
-git config --global user.email \
-  "92765822+jdfesa@users.noreply.github.com"
+```sh
+git config --global user.name "Your Name"
+git config --global user.email "you@example.org"
 git config --global user.useConfigOnly true
 git config --global init.defaultBranch main
 git config --global core.autocrlf input
 git config --global fetch.prune true
 git config --global pull.ff only
 git config --global push.default simple
-git config --global push.autoSetupRemote true
 ```
 
-### Motivo de los valores
+El proyecto utiliza LF, mensajes Conventional Commits en inglés y revisión de
+cambios por archivo. `pull.ff=only` evita merges implícitos al actualizar la copia.
 
-- `user.useConfigOnly=true`: impide que Git invente una identidad basada en el
-  usuario y hostname.
-- `init.defaultBranch=main`: usa `main` en repositorios nuevos.
-- `core.autocrlf=input`: conserva LF en el repositorio bajo Linux.
-- `fetch.prune=true`: elimina referencias remotas obsoletas.
-- `pull.ff=only`: evita merges automáticos inesperados al hacer `pull`.
-- `push.default=simple`: publica la rama actual hacia su upstream.
-- `push.autoSetupRemote=true`: crea el upstream durante el primer `push`.
+## Change validation
 
-## Verificación
-
-```bash
-git --version
-git config --global --list --show-origin
-git var GIT_AUTHOR_IDENT
-git var GIT_COMMITTER_IDENT
+```sh
+git status --short
+python3 -m unittest discover -s tests -v
+python3 tools/check-repository.py --history
+git diff --check
+git diff --cached --stat
+git diff --cached
 ```
 
-Autor y committer deben mostrar:
+La última revisión debe realizarse sobre el conjunto exacto preparado para el
+commit. La validación de archivos de trabajo no implica que ya estén publicados.
+Actualizar CHANGELOG y las guías afectadas junto a los cambios funcionales.
+
+## Commit organization
+
+Separar funcionalidades o módulos coherentes y añadir sus pruebas y documentación.
+Los cambios compartidos del manifiesto deben declarar solo fuentes incluidas
+en ese commit o en sus antecesores. Ejemplos de Conventional Commits en inglés:
 
 ```text
-José Sandoval <92765822+jdfesa@users.noreply.github.com>
+feat(sway): configure the hardware-specific Wayland session
+fix(status): align volume icon spacing
+docs(restore): document the installation sequence
 ```
 
-## Inicialización y publicación de `mbp2015`
+Antes de publicar, actualizar las referencias y revisar el intervalo saliente:
 
-El remoto se comprobó vacío antes de crear el historial. Después se ejecutó:
-
-```bash
-cd ~/github/mbp2015
-git init --initial-branch=main
-git remote add origin https://github.com/jdfesa/mbp2015.git
+```sh
+git fetch origin
+git log --oneline origin/main..HEAD
+git diff --stat origin/main..HEAD
+git ls-files -ci --exclude-standard
+python3 tools/check-repository.py --history
+git push origin HEAD:main
 ```
 
-Los commits usan Conventional Commits y mensajes en inglés:
+La lista de archivos versionados que coinciden con exclusiones debe estar vacía.
+Los patrones estáticos son comprobaciones acotadas, no una garantía universal;
+complementan la revisión del índice y de los objetos del intervalo saliente.
+CHANGELOG conserva cambios técnicos; TODO contiene trabajo pendiente.
 
-```text
-chore: initialize repository
-feat(power): add local brightness automation
-docs: document hardware setup and optimizations
-```
+## Local configuration recovery
 
-Publicación y comprobación básica:
-
-```bash
-git push --set-upstream origin main
-git status --short --branch
-git ls-remote origin refs/heads/main
-```
-
-El repositorio general de dotfiles no fue clonado, movido ni modificado durante
-este trabajo.
-
-## Reversión de la configuración global
-
-Cada valor puede retirarse explícitamente, por ejemplo:
-
-```bash
-git config --global --unset user.name
-git config --global --unset user.email
-git config --global --unset user.useConfigOnly
-```
-
-No se debe borrar `~/.gitconfig` completo sin revisar antes si contiene otros
-ajustes incorporados posteriormente.
+Revertir solo la clave necesaria, por ejemplo `git config --global --unset
+pull.ff`. No reemplazar una configuración global completa para retirar un ajuste.

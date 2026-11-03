@@ -1,8 +1,7 @@
-# Otras herramientas y prácticas
+# Development utilities
 
-Esta carpeta aísla configuraciones auxiliares que no pertenecen directamente al
-diagnóstico u optimización del MacBook Pro con Debian.
+Herramientas opcionales, independientes de la restauración del escritorio:
 
-- [Configuración global y flujo de Git](git.md)
-- [Instalación y uso de GitHub CLI](github-cli.md)
-- [RTK y optimización de tokens en Codex](rtk.md)
+- [Git workflow](git.md).
+- [GitHub CLI](github-cli.md).
+- [RTK](rtk.md).

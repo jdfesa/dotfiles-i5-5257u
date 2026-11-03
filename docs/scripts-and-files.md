@@ -1,82 +1,57 @@
-# Scripts y archivos auxiliares
+# Scripts and tools
 
-Este documento inventaría toda automatización creada para el equipo. Cada futuro
-script `.sh` o `.py` debe añadirse aquí con su propósito, requisitos, efectos,
-verificación y reversión.
+## Main session helpers
 
-## `scripts/set-local-brightness.sh`
+Los helpers se ejecutan como jd. Rutas y modos se declaran en `config/manifest.json`.
+[Restore guide](restore-guide.md) y [Configuration deployment](deployment.md) describen la preparación.
 
-### Propósito
+| Fuente | Contrato | Dependencias / verificación |
+|---|---|---|
+| scripts/sway-session.sh | Instancia única por sesión; ciclo de vida mako/swayidle/Polkit | Sway, flock, mate-polkit; parser y sesión local |
+| scripts/sway-tools.sh | networks/audio/calendar/updates/browser/help/screenshot despacho fijo | Kitty, XDG/GTK, alsamixer, APT, wmenu, grim/slurp/wl-copy; tests con comandos simulados |
+| scripts/open-networks.sh | --check solo lectura; --edit editor; panel a demanda | NetworkManager/nmcli/nmtui, Kitty, flock; tests de estado/cancelación del cliente |
+| scripts/power-menu | Fuzzel dmenu con acciones fijas; --dry-run no ejecuta acciones | Fuzzel, swaymsg/swaylock, Kitty; confirmaciones simuladas |
+| scripts/power-action.sh | suspend/reboot/poweroff, --dry-run opcional; autorización/inhibidores | systemd >=257, busctl, terminal, swaylock; política simulada y tests PTY |
+| scripts/status-bar.sh | Inicia i3status, detecta sensor/audio una vez | i3status, pactl, fontconfig; parser de shell |
+| scripts/status-adapter.py | Adaptador JSON/clics y vista contraíble en memoria; diagnóstico --run-once | Python 3, UPower; tests de protocolo, redibujado sin muestreo y allowlist |
+| scripts/calendar-popup.py | Calendario de consulta, instancia única y salida al cerrar | Python 3, PyGObject, GTK3; fechas/activación simuladas y validación Wayland |
+| scripts/sway-status.py | --once solo lectura; parseo de batería y umbrales | Python 3, UPower; ejemplos de batería |
+| scripts/update-weather.py | Oneshot HTTPS acotado y caché validada | Python 3; tests sin red de respuestas/timeout |
+| scripts/update-packages.py | Simulación APT con caché, sin instalación | Python 3, apt-get; comandos/errores simulados |
 
-Ajustar el brillo inicial de la pantalla integrada al 40% al entrar en una sesión
-XFCE local. El rango detectado es 0–1388 y el valor configurado es 555.
+Las cuatro unidades config/status/systemd programan los dos helpers de actualización.
+La [Status bar](status-bar.md) define tick, caché y manejo de fallos.
+Las guías de [Wi-Fi panel](wifi-setup.md) y [Power menu](power-menu.md) describen sus interfaces.
 
-### Comportamiento y seguridad
+## Maintenance tools
 
-- Solo actúa cuando `DISPLAY` es `:0` o `:0.0`.
-- En XRDP, SSH sin escritorio u otra pantalla termina correctamente sin cambiar
-  hardware.
-- Espera cinco segundos para que la sesión local y PolicyKit estén activos.
-- Usa `/usr/sbin/xfpm-power-backlight-helper`, provisto por XFCE.
-- Usa PolicyKit sin agente interno. La política instalada permite la acción sin
-  contraseña únicamente a un usuario local activo.
-- No modifica archivos del sistema ni necesita una regla personalizada de `sudo`.
+| Fuente | Parámetros / efectos | Verificación |
+|---|---|---|
+| tools/link-user-config.py | dry-run; --manifest PATH; --apply --backup-dir DIR; --rollback JOURNAL | Conflictos, hogar completo, idempotencia y rollback |
+| tools/sync-to-host.py | dry-run; --apply; --target; --ssh-control | Lista de fuentes, transporte y SHA256/dueño/modo |
+| tools/check-repository.py | Árbol de trabajo; --history añade blobs Git | Estructura, enlaces, reglas ignore y patrones de prueba |
 
-### Requisitos
+## Recovery profile
 
-- Paquete `xfce4-power-manager`.
-- `pkexec` y PolicyKit activos.
-- Interfaz de brillo reconocida por el kernel.
+`scripts/xfce/set-local-brightness.sh` y su autostart pertenecen solo al
+[XFCE recovery](xfce-recovery.md), con manifiesto independiente.
+No se despliegan ni inician desde el perfil Sway.
 
-### Ejecución
+## Regression suites
 
-XFCE lo ejecuta mediante:
+Ejecutar `python3 -m unittest discover -s tests -v`. Las pruebas usan hogares y
+repositorios temporales, comandos simulados y respuestas de ejemplo. Los ensayos
+de hardware/sesión son pasos de aceptación separados de la validación sintáctica.
 
-```text
-~/.config/autostart/mbp2015-brightness.desktop
-```
-
-No debe probarse desde XRDP esperando que cambie la pantalla física: por diseño no
-hace nada allí.
-
-### Verificación
-
-En una sesión local, después de iniciar XFCE:
-
-```bash
-cat /sys/class/backlight/intel_backlight/brightness
-```
-
-El resultado inicial esperado es `555`. El usuario puede cambiarlo después desde
-el icono del Gestor de energía o con las teclas de brillo.
-
-### Reversión
-
-Desactivar **Brillo inicial MBP 2015** en **Sesión e inicio > Inicio automático de
-aplicaciones**. También puede retirarse la entrada de autoinicio; el script por sí
-solo nunca se ejecuta automáticamente.
-
-## `~/.config/autostart/mbp2015-brightness.desktop`
-
-Entrada estándar de autoinicio de XFCE. No contiene lógica de optimización: llama
-al script anterior. Su copia reproducible está versionada en
-`config/autostart/mbp2015-brightness.desktop`; XFCE utiliza la copia desplegada en
-`~/.config/autostart`.
-
-Para restaurarla en este equipo:
-
-```bash
-cp config/autostart/mbp2015-brightness.desktop \
-  ~/.config/autostart/mbp2015-brightness.desktop
-```
-
-## Política para automatizaciones futuras
-
-Antes de incorporar otro script se documentará:
-
-1. Problema medido que resuelve.
-2. Parámetros y valores predeterminados.
-3. Dependencias y privilegios.
-4. Archivos o estado que modifica.
-5. Procedimiento de prueba.
-6. Procedimiento de reversión.
+| Suite | Cobertura |
+|---|---|
+| tests/test_restoration.py | Manifiestos completos, hogar nuevo, rollback y perfil opcional |
+| tests/test_repository.py | Árbol publicable, enlaces, patrones y revisión de symlinks |
+| tests/test_deployment.py | Conflictos, backups, lista de transporte y batería |
+| tests/test_desktop_apps.py / test_terminal_profile.py | Defaults XDG, settings de aplicaciones y entrypoints |
+| tests/test_network_panel.py / test_power_menu.py | UI simulada, cancelación y guardas de acciones |
+| tests/test_shell.py / test_starship.py | Inicialización, fallback, glifos y timeouts |
+| tests/test_status_adapter.py / test_packages.py / test_weather.py | Protocolo de barra y cachés/errores |
+| tests/test_battery.py | Estados/niveles, porcentaje, cobertura de glifos y fallos de lectura UPower |
+| tests/test_status_icons.py | Fuente proporcional, hash/enlace, glifos, valores sin leyendas y caché de clima |
+| tests/test_calendar.py | Cambio de mes/año, límites, ventana única y rechazo fuera de Wayland |
