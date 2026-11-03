@@ -6,10 +6,80 @@
 .idea/
 .vscode/
 
-# Local environment and generated files
+# Local configuration and runtime state
+/private/
+/.config/
+/.local/
 .env
 .env.*
 !.env.example
+.cache/
+.venv/
+__pycache__/
+*.py[cod]
 *.log
+logs/
+backups/
+artifacts/
+# Temporary directories
 tmp/
+downloads/
+*.sqlite*
+*.db
+*.db-wal
+*.db-shm
+core
+*.core
+**/.zsh_history
+**/.bash_history
+**/.zcompdump*
 
+# Application profiles and account material
+**/.ssh/
+**/.aws/
+**/.gnupg/
+**/.codex/
+**/.engram/
+**/.rtk/
+**/authorized_keys
+**/id_rsa*
+**/id_ed25519*
+**/auth.json
+**/auth.json.*
+**/credentials.json
+**/.git-credentials
+**/.config/gh/
+**/.npmrc
+**/.pypirc
+**/.docker/config.json
+**/.kube/config
+**/keyrings/
+*.nmconnection
+*.key
+*.pem
+*.p12
+*.pfx
+*.keyring
+*.keystore
+*.kdbx
+.netrc
+**/Cookies
+**/Cookies-journal
+**/Login Data
+**/Login Data-journal
+**/Local State
+**/History
+**/History-journal
+**/SingletonCookie
+**/SingletonLock
+**/SingletonSocket
+
+# Downloaded package payloads
+*.AppImage
+*.deb
+*.rpm
+*.tar
+*.tar.gz
+*.tar.xz
+*.tgz
+*.zip

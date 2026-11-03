@@ -1,5 +1,14 @@
 * text=auto
 *.md text eol=lf
+*.py text eol=lf
 *.sh text eol=lf
 *.desktop text eol=lf
-
+*.json text eol=lf
+*.toml text eol=lf
+*.ini text eol=lf
+*.conf text eol=lf
+*.txt text eol=lf
+*.ttf binary
+# Preserve verbatim vendor license formatting.
+config/fonts/OFL.txt -whitespace
+config/fonts/UPSTREAM.md -whitespace
