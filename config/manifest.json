@@ -1,0 +1,5 @@
+[
+  {"source": "config/foot/foot.ini", "destination": ".config/foot/foot.ini", "mode": 420, "deployment": "symlink"},
+  {"source": "config/kitty/kitty.conf", "destination": ".config/kitty/kitty.conf", "mode": 420, "deployment": "symlink"},
+  {"source": "config/kitty/theme.conf", "destination": ".config/kitty/theme.conf", "mode": 420, "deployment": "symlink"}
+]
