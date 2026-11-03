@@ -9,6 +9,8 @@ from pathlib import Path
 import re
 import selectors
 import signal
+import socket
+import struct
 import subprocess
 import sys
 import time
@@ -169,9 +171,194 @@ def adapt_status(blocks, traffic=None, charge=None):
     return blocks
 
 
+
+class KeyboardLayout:
+    """Sway input events on the existing event loop: no polling or subprocess."""
+    HEADER = struct.Struct("=6sII")
+    MAX_PAYLOAD = 1024 * 1024
+    INPUT_EVENT = 0x80000015
+    NAMES = ["English (US)", "Spanish"]
+
+    def __init__(self, path=None, request=None):
+        self.path = path if path is not None else os.environ.get("SWAYSOCK")
+        self.request = request if request is not None else self._request
+        self.inputs = {}
+        self.events = None
+        self.buffer = bytearray()
+
+    @property
+    def label(self):
+        values = set(self.inputs.values())
+        return "US" if values == {0} else "ES" if values == {1} else "--"
+
+    @staticmethod
+    def _timeout(stream, deadline):
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("Sway IPC deadline exceeded")
+        stream.settimeout(remaining)
+
+    def _connect(self, deadline):
+        if not self.path:
+            raise OSError("No Sway IPC socket")
+        stream = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        try:
+            self._timeout(stream, deadline)
+            stream.connect(self.path)
+        except BaseException:
+            stream.close()
+            raise
+        return stream
+
+    @classmethod
+    def _packet(cls, kind, payload):
+        data = payload.encode("utf-8")
+        if len(data) > cls.MAX_PAYLOAD:
+            raise ValueError("Oversized Sway IPC request")
+        return cls.HEADER.pack(b"i3-ipc", len(data), kind) + data
+
+    @classmethod
+    def _read_exact(cls, stream, size, deadline):
+        data = bytearray()
+        while len(data) < size:
+            cls._timeout(stream, deadline)
+            chunk = stream.recv(size - len(data))
+            if not chunk:
+                raise OSError("Sway IPC disconnected")
+            data.extend(chunk)
+        return bytes(data)
+
+    @classmethod
+    def _reply(cls, stream, kind, deadline):
+        magic, size, response = cls.HEADER.unpack(cls._read_exact(stream, cls.HEADER.size, deadline))
+        if magic != b"i3-ipc" or size > cls.MAX_PAYLOAD or response != kind:
+            raise ValueError("Invalid Sway IPC reply")
+        return json.loads(cls._read_exact(stream, size, deadline))
+
+    def _request(self, kind, payload):
+        deadline = time.monotonic() + 1
+        with self._connect(deadline) as stream:
+            self._timeout(stream, deadline)
+            stream.sendall(self._packet(kind, payload))
+            return self._reply(stream, kind, deadline)
+
+    @classmethod
+    def _index(cls, item):
+        index = item.get("xkb_active_layout_index")
+        if item.get("xkb_layout_names") == cls.NAMES and type(index) is int and index in (0, 1):
+            return index
+        return None
+
+    def refresh(self):
+        items = self.request(100, "")
+        if not isinstance(items, list) or len(items) > 1024:
+            raise ValueError("Invalid Sway keyboard list")
+        keyboards = {}
+        for item in items:
+            if not isinstance(item, dict):
+                raise ValueError("Invalid Sway input")
+            if item.get("type") == "keyboard":
+                identifier = item.get("identifier")
+                if not isinstance(identifier, str) or not identifier or len(identifier) > 512:
+                    raise ValueError("Invalid Sway keyboard identifier")
+                keyboards[identifier] = self._index(item)
+        self.inputs = keyboards
+
+    def start(self, listen=True):
+        try:
+            if listen:
+                deadline = time.monotonic() + 1
+                self.events = self._connect(deadline)
+                self._timeout(self.events, deadline)
+                self.events.sendall(self._packet(2, '["input"]'))
+                if self._reply(self.events, 2, deadline) != {"success": True}:
+                    raise ValueError("Sway input subscription refused")
+                self.events.setblocking(False)
+            self.refresh()
+        except (OSError, ValueError):
+            self.inputs.clear()
+            self.close()
+
+    def toggle(self):
+        try:
+            # Read the actual state before choosing a fixed index; do not assume US.
+            self.refresh()
+            if not self.inputs or None in self.inputs.values():
+                raise ValueError("US/ES are not configured for every keyboard")
+            target = 1 if self.label == "US" else 0
+            reply = self.request(0, f"input type:keyboard xkb_switch_layout {target}")
+            if not isinstance(reply, list) or not reply or not all(
+                    isinstance(item, dict) and item.get("success") is True for item in reply):
+                raise ValueError("Sway keyboard layout change failed")
+            self.refresh()
+        except (OSError, ValueError):
+            try:
+                self.refresh()
+            except (OSError, ValueError):
+                self.inputs.clear()
+            print("Could not change keyboard layout", file=sys.stderr)
+        return True
+
+    def feed(self, chunk):
+        self.buffer.extend(chunk)
+        while len(self.buffer) >= self.HEADER.size:
+            magic, size, kind = self.HEADER.unpack(self.buffer[:self.HEADER.size])
+            if magic != b"i3-ipc" or size > self.MAX_PAYLOAD:
+                raise ValueError("Invalid Sway input event")
+            end = self.HEADER.size + size
+            if len(self.buffer) < end:
+                break
+            data = bytes(self.buffer[self.HEADER.size:end])
+            del self.buffer[:end]
+            if kind != self.INPUT_EVENT:
+                continue
+            event = json.loads(data)
+            if not isinstance(event, dict):
+                raise ValueError("Invalid Sway input event payload")
+            item = event.get("input")
+            if not isinstance(item, dict) or item.get("type") != "keyboard":
+                continue
+            identifier = item.get("identifier")
+            if not isinstance(identifier, str) or not identifier or len(identifier) > 512:
+                raise ValueError("Invalid Sway input event identifier")
+            if event.get("change") == "removed":
+                self.inputs.pop(identifier, None)
+            elif event.get("change") in ("added", "xkb_keymap", "xkb_layout"):
+                self.inputs[identifier] = self._index(item)
+
+    def read_events(self):
+        previous = self.label
+        try:
+            chunk = self.events.recv(65536)
+            if not chunk:
+                raise OSError("Sway input events disconnected")
+            self.feed(chunk)
+        except BlockingIOError:
+            return False
+        except (OSError, ValueError):
+            self.inputs.clear()
+            self.close()
+        return self.label != previous
+
+    def block(self):
+        label = self.label
+        return {"name": "keyboard_layout", "instance": "us-es",
+                "full_text": label, "short_text": label,
+                "color": LAVENDER if label != "--" else MUTED,
+                "min_width": 28, "align": "center", "markup": "pango",
+                "separator": False, "separator_block_width": 12}
+
+    def close(self):
+        if self.events is not None:
+            self.events.close()
+            self.events = None
+        self.buffer.clear()
+
+
 class StatusView:
     """Format only on producer ticks; toggle a cached frame without any I/O."""
-    def __init__(self, expanded=False):
+    def __init__(self, expanded=False, keyboard=None):
+        self.keyboard = keyboard
         self.expanded = expanded
         self.snapshot = None
 
@@ -194,12 +381,17 @@ class StatusView:
                               "full_text": icon, "short_text": icon, "color": LAVENDER,
                               "min_width": 28, "align": "center", "markup": "pango",
                               "separator": False, "separator_block_width": 12})
+        if self.keyboard is not None:
+            clock = next((i for i, block in enumerate(blocks) if block.get("name") == "tztime"), len(blocks))
+            blocks.insert(clock, self.keyboard.block())
         return blocks
 
 
 def handle_click(event, view=None):
     if type(event.get("button")) is not int or event["button"] != 1:
         return False
+    if event.get("name") == "keyboard_layout" and event.get("instance") == "us-es":
+        return view.keyboard.toggle() if view is not None and view.keyboard is not None else False
     if event.get("name") == "stats_toggle" and event.get("instance") == "secondary":
         if view is not None:
             view.expanded = not view.expanded
@@ -241,7 +433,11 @@ def main(run_once=False):
     if not run_once:
         poller.register(sys.stdin, selectors.EVENT_READ, "click")
     first = True
-    view = StatusView()
+    keyboard = KeyboardLayout()
+    keyboard.start(listen=not run_once)
+    if keyboard.events is not None:
+        poller.register(keyboard.events, selectors.EVENT_READ, "keyboard")
+    view = StatusView(keyboard=keyboard)
     traffic = Traffic()
     previous_warning = 0
 
@@ -253,6 +449,15 @@ def main(run_once=False):
     try:
         while True:
             for key, _ in poller.select():
+                if key.data == "keyboard":
+                    changed = keyboard.read_events()
+                    if keyboard.events is None:
+                        poller.unregister(key.fd)
+                    if changed:
+                        frame = view.render()
+                        if frame is not None:
+                            emit(frame)
+                    continue
                 fd = key.fd
                 chunk = os.read(fd, 65536)
                 if not chunk:
@@ -287,6 +492,7 @@ def main(run_once=False):
                         emit(view.update(value, traffic, charge))
     finally:
         poller.close()
+        keyboard.close()
         if child.poll() is None:
             child.send_signal(signal.SIGCONT)
             child.terminate()

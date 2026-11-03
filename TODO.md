@@ -8,6 +8,8 @@
 
 ## Hardware validation
 
+- [ ] Revalidar el selector US/ES tras un nuevo login de Sway y al conectar o
+      desconectar el teclado externo.
 - [ ] Verificar la compatibilidad de los gestos multitáctiles del trackpad con
       libinput/Sway, incluida la configuración disponible y las limitaciones del modelo.
 - [ ] Medir el consumo con el mismo brillo y cargas de trabajo representativas.

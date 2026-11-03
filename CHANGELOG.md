@@ -4,6 +4,8 @@
 
 ### Added
 
+- Selector manual US/ES de España junto a la fecha, siempre visible, con estado
+  real por eventos Sway IPC y redibujado inmediato sin sondeo ni procesos nuevos.
 - Fuente Propo Regular de 2,45 MiB enlazada por archivo para iconos de barra,
   con versión, integridad y avisos conservados.
 - Indicador de batería con nivel, estado de carga y porcentaje UPower permanente,

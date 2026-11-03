@@ -13,7 +13,7 @@ Los helpers se ejecutan como jd. Rutas y modos se declaran en `config/manifest.j
 | scripts/power-menu | Fuzzel dmenu con acciones fijas; --dry-run no ejecuta acciones | Fuzzel, swaymsg/swaylock, Kitty; confirmaciones simuladas |
 | scripts/power-action.sh | suspend/reboot/poweroff, --dry-run opcional; autorización/inhibidores | systemd >=257, busctl, terminal, swaylock; política simulada y tests PTY |
 | scripts/status-bar.sh | Inicia i3status, detecta sensor/audio una vez | i3status, pactl, fontconfig; parser de shell |
-| scripts/status-adapter.py | Adaptador JSON/clics y vista contraíble en memoria; diagnóstico --run-once | Python 3, UPower; tests de protocolo, redibujado sin muestreo y allowlist |
+| scripts/status-adapter.py | Adaptador JSON/clics, selector US/ES por Sway IPC y vista contraíble; diagnóstico --run-once | Python 3, UPower; tests de protocolo, redibujado sin muestreo y allowlist |
 | scripts/calendar-popup.py | Calendario de consulta, instancia única y salida al cerrar | Python 3, PyGObject, GTK3; fechas/activación simuladas y validación Wayland |
 | scripts/sway-status.py | --once solo lectura; parseo de batería y umbrales | Python 3, UPower; ejemplos de batería |
 | scripts/update-weather.py | Oneshot HTTPS acotado y caché validada | Python 3; tests sin red de respuestas/timeout |
@@ -56,3 +56,4 @@ de hardware/sesión son pasos de aceptación separados de la validación sintác
 | tests/test_status_icons.py | Fuente proporcional, hash/enlace, glifos, valores sin leyendas y caché de clima |
 | tests/test_calendar.py | Cambio de mes/año, límites, ventana única y rechazo fuera de Wayland |
 | tests/test_keyboard_backlight.py | UPower simulado, pasos/límites, apagado completo, errores, entradas inválidas y concurrencia acotada |
+| tests/test_keyboard_layout.py | Índices US/ES, eventos IPC, framing parcial, errores, clics fijos y redibujado sin sondeo |

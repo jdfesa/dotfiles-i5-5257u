@@ -25,6 +25,7 @@ Super+R                     Resize mode (arrows or H/J/K/L; Enter/Esc ends)
 Super+Ctrl+L                Lock screen
 Super+Shift+C / R           Reload Sway (R does not restart it)
 Super+Shift+E               Exit session (Y confirms; N/Esc cancels)
+US/ES (left of date)        Click to switch US / Spanish (Spain) keyboard layout
 F1/F2 (or Fn+F1/F2)         Screen brightness
 F5/F6 (or Fn+F5/F6)         Keyboard brightness (down/up; 0 turns it off)
 Volume keys                PulseAudio volume / mute

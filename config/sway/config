@@ -19,6 +19,10 @@ output * bg #1e1e2e solid_color
 # Keep Debian's session environment integration, not a home-grown replacement.
 include /etc/sway/config.d/*
 include ~/.config/sway/local.conf
+# Shared manual selector: US first; ES is Spain. Override legacy generic US.
+input type:keyboard {
+    xkb_layout us,es
+}
 exec ~/.local/bin/mbp-sway-session
 
 for_window [app_id="^mbp-(networks|mixer|updates)$"] floating enable, resize set 760 520, move position center

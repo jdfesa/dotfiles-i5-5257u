@@ -125,6 +125,10 @@
   Zed permanece accesible solo desde el lanzador hasta acordar un atajo para
   el editor; Super+Shift+Enter queda sin asignar.
 - Mantener sincronizados config/sway/keybindings-help.txt y docs/keybindings.md.
+- US es la distribución predeterminada y ES corresponde a español de España.
+  El selector junto a la fecha conmuta manualmente todos los teclados; conservar
+  su estado real por eventos IPC y su visibilidad con la barra contraída,
+  sin otro proceso residente, sondeo periódico ni detección automática del teclado.
 - Conservar la barra superior opaca Mocha y JetBrainsMono Nerd Font Mono Regular 10.
   Kitty permanece opaco, sin desenfoque, animación del cursor ni control remoto;
   Foot es la alternativa de respaldo.

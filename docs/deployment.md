@@ -27,8 +27,10 @@ if [ ! -e private/sway/local.conf ] && [ ! -L private/sway/local.conf ]; then
 fi
 ```
 
-La plantilla contiene pantalla eDP-1, escala 2, teclado US y touchpad.
-Revisar esos valores antes de aplicar; no repetir install sobre un ajuste existente.
+La plantilla contiene pantalla eDP-1, escala 2 y touchpad. Las distribuciones
+US predeterminada y ES de España se declaran en la configuración pública de Sway;
+el botón junto a la fecha las alterna. Revisar los valores del dispositivo antes
+de aplicar; no repetir install sobre un ajuste existente.
 
 ## Plan and apply
 

@@ -37,6 +37,7 @@ mínima de 28 y su separación posterior de 12; no cambia su acción de clic.
 | Audio | Icono de volumen/mute; click / Super+A abre alsamixer |
 | Wi-Fi | Solo icono de calidad, calidad de señal; click / Super+N |
 | Batería | Icono según estado y nivel, más porcentaje real de UPower; siempre visible |
+| US / ES | Distribución real del teclado; clic izquierdo alterna US / español de España |
 | Reloj | Fecha en inglés y hora local; clic izquierdo abre el calendario |
 
 La interfaz inalámbrica se detecta desde sysfs (en este equipo `wlp3s0`), se configura según el hardware detectado. Los clicks ejecutan acciones fijas por
@@ -81,7 +82,7 @@ con los datos disponibles o con `--%`.
 La barra inicia en modo compacto. El chevrón situado antes de los paquetes
 permite ocultar o mostrar el grupo secundario: tráfico Wi-Fi, RAM, CPU,
 temperatura y espacio de disco. Clima, paquetes, audio, Wi-Fi, batería con su
-porcentaje y fecha permanecen visibles. Un bloque marcado explícitamente
+porcentaje, selector US/ES y fecha permanecen visibles. Un bloque marcado explícitamente
 como urgente por el productor tampoco se oculta.
 
 - `›`: grupo contraído; clic izquierdo para expandir.
@@ -94,6 +95,41 @@ conserva el muestreo compartido cada 10 s incluso con las métricas ocultas,
 para mantener coherentes las tasas de tráfico al expandir. No hay demonios,
 temporizadores, animaciones ni archivos de estado adicionales. La contracción
 reduce ocupación visual; no se presenta como una mejora medida de autonomía.
+
+## Keyboard layout selector
+
+El botón de texto **US** / **ES**, inmediatamente a la izquierda de la fecha,
+alterna con un clic izquierdo entre inglés de Estados Unidos (`us`) y español
+de España (`es`, no `latam`). Permanece visible con las métricas contraídas.
+La selección es manual y global para los teclados conectados; no detecta
+automáticamente si el teclado físico es externo o integrado.
+
+Verificado en la sesión Sway del equipo: el clic alterna la distribución y
+su etiqueta junto a la fecha; los cambios externos también llegan por eventos.
+La comprobación tras un nuevo login y la conexión/desconexión del teclado
+externo se mantienen por separado en TODO.md.
+
+La configuración pública declara `input type:keyboard` con `xkb_layout us,es`
+después del include local, para superar el antiguo override genérico US.
+US es la primera distribución y la predeterminada al iniciar una sesión nueva.
+El clic cambia un índice fijo 0/1 mediante Sway IPC y confirma el resultado;
+no interpreta texto del evento ni identificadores de dispositivos como comandos.
+
+El adaptador existente recibe eventos `input` por un socket Unix de Sway y
+actualiza solo este control sobre la muestra guardada en memoria. No hay
+otro proceso residente, temporizador, archivo de estado ni consulta periódica
+de distribución. El tick de sensores sigue siendo de 10 s; un clic o evento
+de distribución no vuelve a consultar batería, tráfico o sensores.
+
+El texto refleja el estado informado por Sway, no una suposición. Si faltan
+datos, la configuración no corresponde a US/ES o los teclados divergen, muestra
+`--`. Si todos admiten US/ES pero tienen índices distintos, el siguiente clic
+los unifica en US. Los cambios externos y conexiones/desconexiones actualizan
+el indicador por eventos. Si se pierde el socket de eventos, recargar la barra
+para restablecer la suscripción; no se inventa una distribución.
+
+Referencia: [Sway input manual](https://manpages.debian.org/trixie/sway/sway-input.5.en.html)
+y [Sway IPC manual](https://manpages.debian.org/trixie/sway/sway-ipc.7.en.html).
 
 ## Calendar
 

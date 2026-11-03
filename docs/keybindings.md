@@ -32,6 +32,7 @@ Fuentes: `config/sway/config` y ayuda visible `config/sway/keybindings-help.txt`
 | Super+Ctrl+L | Bloquear con swaylock |
 | Super+Shift+C o R | Recargar Sway; R **no reinicia** el compositor |
 | Super+Shift+E | Cerrar sesión; Y confirma, N/Esc cancela |
+| Botón US / ES junto a la fecha | Clic izquierdo alterna inglés US / español de España |
 | F1 / F2, posiblemente con Fn | Brillo de pantalla -/+5 % |
 | F5 / F6, posiblemente con Fn | Brillo de teclado -/+10 % mediante UPower; permite apagarlo |
 | Teclas de volumen/silencio | PulseAudio existente |

@@ -24,6 +24,8 @@ El manifiesto también enlaza el override local preparado desde la plantilla.
   con reload. brightness-udev y el grupo video proporcionan acceso al backlight.
 - [Keyboard backlight](keyboard-backlight.md): F5/F6 mediante UPower existente,
   sin nuevos servicios ni permisos sobre el grupo input.
+- Distribuciones US predeterminada y ES de España; selector manual global junto
+  a la fecha, integrado en la [Status bar](status-bar.md), sin sondeo adicional.
 - Atajos Omarchy adaptados en [Keyboard shortcuts](keybindings.md).
 - El include Debian `/etc/sway/config.d/*` integra el entorno D-Bus/systemd.
 - `mbp-sway-session` arranca una sola instancia de mako, swayidle y agente Polkit.

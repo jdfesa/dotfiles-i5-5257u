@@ -1,7 +1,7 @@
 # Device override template for private/sway/local.conf (0600).
 # Integer HiDPI scaling for the MacBook's 2560x1600 panel.
 output eDP-1 mode 2560x1600 scale 2
-input type:keyboard xkb_layout us
+# Keyboard layouts are managed in config/sway/config (US default, ES alternate).
 input type:touchpad {
     tap enabled
     natural_scroll enabled

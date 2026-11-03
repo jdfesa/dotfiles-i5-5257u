@@ -74,7 +74,8 @@ if [ ! -e private/sway/local.conf ] && [ ! -L private/sway/local.conf ]; then
 fi
 ```
 
-Revisar eDP-1, 2560×1600/escala 2, layout US y touchpad. La plantilla es
+Revisar eDP-1, 2560×1600/escala 2 y touchpad. Sway declara US predeterminado y
+ES de España, alternables desde el botón junto a la fecha. La plantilla es
 suficiente para esta pantalla; `private/sway/local.conf` es su override editable.
 No repetir install sobre cambios existentes.
 
