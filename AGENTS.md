@@ -64,11 +64,44 @@
   y valores técnicos requeridos por el software. Esta convención no implica
   renombrados masivos de archivos existentes.
 
+## Working machine and synchronization
+
+- La única copia de trabajo principal es `/home/jd/dotfiles-i5-5257u` en el
+  portátil remoto. Conectarse por SSH para editar las fuentes, ejecutar las
+  pruebas y validar los cambios en la máquina donde tendrán efecto.
+- Crear, aplicar y comprobar los enlaces simbólicos como `jd` en ese mismo
+  portátil, utilizando los manifiestos del checkout canónico. Los destinos
+  del home apuntan a sus fuentes, nunca a la máquina de control ni a respaldos.
+- Conservar las configuraciones vigentes del portátil como base del trabajo.
+  No sustituir ajustes existentes por copias locales antiguas para limpiar
+  el estado de Git o hacer pasar una prueba.
+- GitHub es la fuente pública versionada. Antes de empezar, revisar el estado
+  del checkout remoto y ejecutar `git pull --ff-only` cuando sea seguro.
+  Si hay cambios pendientes que impidan el pull, compararlos y reconciliarlos
+  sin descartarlos ni ocultarlos automáticamente.
+- El repositorio de GitHub conserva el respaldo versionado de las fuentes
+  públicas para recuperarlas si se pierde la copia del portátil. Solo quedan
+  respaldados allí los cambios incluidos en commits y publicados mediante
+  push; los archivos privados ignorados requieren un respaldo privado separado.
+- Crear las ramas y realizar los commits, push y pull requests desde el
+  repositorio del portátil, cuando estén autorizados. La copia de esta máquina
+  de control es secundaria: consultarla y actualizarla mediante pull después
+  de publicar solo cuando sea necesario; en caso contrario, omitir ese pull.
+  No usarla como origen de cambios o despliegues.
+- No crear clones, worktrees ni directorios paralelos con configuraciones
+  antiguas como alternativa al checkout principal. Los respaldos necesarios
+  permanecen fuera de las fuentes y no se utilizan como copias de trabajo;
+  retirar los árboles temporales cuando termine su verificación.
+- Transferir directamente por SSH solo los archivos privados necesarios y
+  revisados; nunca publicarlos en Git. Estar ignorado por `.gitignore` no
+  convierte cachés, descargas o estado de aplicaciones en archivos desplegables.
+
 ## Workflow
 
-1. Inspeccionar las fuentes y los destinos reales; preservar las modificaciones.
-   Actualizar primero las fuentes locales y mantener los pendientes en TODO.md
-   en la raíz. Trabajar una prioridad por vez.
+1. Inspeccionar por SSH las fuentes y los destinos reales del portátil;
+   preservar las modificaciones y actualizar primero las fuentes de su checkout
+   canónico. Mantener los pendientes en TODO.md en la raíz. Trabajar una
+   prioridad por vez.
 2. Declarar las dependencias directas de Debian en config/packages/debian.txt;
    las dependencias opcionales de recuperación van por separado. Preferir
    paquetes y artefactos oficiales estables. Revisar las sumas de verificación,
