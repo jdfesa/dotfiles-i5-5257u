@@ -24,8 +24,8 @@
 - config/<component>/ contiene las fuentes; scripts/, los auxiliares de ejecución;
   tools/, las herramientas de mantenimiento; tests/, las pruebas de regresión;
   licenses/, los avisos de terceros.
-- La copia de trabajo canónica del portátil es /home/jd/dotfiles-i5-5257u,
-  incluida la u final. Las configuraciones de usuario se enlazan por archivo
+- La copia de trabajo canónica del portátil es /home/jd/dotfiles-i5-5257u.
+- Las configuraciones de usuario se enlazan por archivo
   según el manifiesto seleccionado. No eliminar esa copia mientras existan
   enlaces que apunten a ella.
 - Mantener los paquetes descargados y el estado generado por las aplicaciones
