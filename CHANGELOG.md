@@ -6,6 +6,8 @@
 
 - Gestos nativos de tres dedos para cambiar de escritorio en Sway, limitados
   al trackpad interno y gestionados por un módulo enlazado desde el manifiesto.
+- Perfil visual opcional para LightDM GTK Greeter con formulario centrado,
+  fondo Mocha estático y un saludo local configurable, sin cambios de autenticación.
 
 ## 2026-11-03
 

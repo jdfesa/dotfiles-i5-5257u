@@ -77,6 +77,8 @@ Mesa 25.0.7/i915 y firmware-brcm80211 20250410-2 soportan Iris 6100 y BCM43602.
 LightDM/AccountsService, D-Bus, polkitd/mate-polkit, UPower y PulseAudio forman la
 sesión principal. GTK, NetworkManager y los portales proporcionan integración
 de aplicaciones. Se declaran explícitamente en la lista de restauración.
+[Minimal login screen](minimal-login-screen.md) reutiliza LightDM GTK Greeter
+con Adwaita y DejaVu Sans, sin paquetes adicionales.
 
 Versiones observadas: network-manager 1.52.1-1, nm-connection-editor 1.36.0-3+b1,
 fonts-dejavu-core 2.37-8 y fonts-symbola 2.60-2. El [perfil opcional](xfce-recovery.md)

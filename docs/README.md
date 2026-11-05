@@ -10,6 +10,7 @@
 ## Desktop
 
 - [Sway](sway-setup.md), [Keyboard shortcuts](keybindings.md) y [Daily use](daily-use.md).
+- [Minimal login screen](minimal-login-screen.md).
 - [Status bar](status-bar.md), [Fonts](fonts.md), [Wi-Fi panel](wifi-setup.md)
   y [Power menu](power-menu.md).
 - [Keyboard backlight](keyboard-backlight.md), [Trackpad gestures](trackpad-gestures.md)

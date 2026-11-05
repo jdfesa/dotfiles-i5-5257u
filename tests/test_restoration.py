@@ -1,4 +1,5 @@
 """Restore the real manifests into a new home, without installing packages."""
+import configparser
 import importlib.util
 import json
 import os
@@ -70,6 +71,28 @@ class RestorationTests(unittest.TestCase):
             prefix + ["swipe:3:left", "workspace", "next_on_output"],
             prefix + ["swipe:3:right", "workspace", "prev_on_output"],
         ])
+
+    def test_lightdm_profile_only_changes_greeter_appearance(self):
+        profile = configparser.ConfigParser(interpolation=None)
+        profile.read(ROOT / "config/lightdm/90-mbp-minimal.conf")
+        self.assertEqual(profile.sections(), ["greeter"])
+        greeter = profile["greeter"]
+        self.assertEqual(set(greeter), {
+            "background", "user-background", "theme-name", "font-name",
+            "xft-dpi", "hide-user-image", "position", "transition-duration",
+            "clock-format", "indicators",
+        })
+        self.assertEqual(greeter["theme-name"], "mbp-minimal")
+        self.assertEqual(greeter["position"], "50%,center 50%,center")
+        self.assertEqual(greeter["indicators"].split(";"), [
+            "~spacer", "~~welcome!", "~spacer", "~clock", "~layout", "~session", "~a11y", "~power",
+        ])
+        self.assertTrue((ROOT / "config/lightdm/mbp-minimal/gtk-3.0/gtk.css").is_file())
+
+    def test_lightdm_files_are_not_deployed_as_user_links(self):
+        for manifest in ("config/manifest.json", "config/xfce/manifest.json"):
+            entries = json.loads((ROOT / manifest).read_text())
+            self.assertFalse(any("lightdm/" in entry["source"] for entry in entries))
 
     def test_optional_recovery_does_not_change_main_profile(self):
         before = links.plan(self.repo, self.home)

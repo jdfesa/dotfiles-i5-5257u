@@ -5,6 +5,8 @@
 Sesión principal Wayland de Debian 13 amd64 para MacBookPro12,1.
 Sway utiliza i915/Mesa en Iris 6100, PulseAudio, NetworkManager, UPower y logind.
 LightDM proporciona el login; el perfil no cambia políticas PAM ni tapa/inhibidores.
+[Minimal login screen](minimal-login-screen.md) describe el aspecto opcional
+sin modificar el bloqueo de Sway ni la selección de sesión.
 
 [Restore guide](restore-guide.md) instala la lista completa
 `config/packages/debian.txt`, prepara overrides y aplica enlaces.
