@@ -67,6 +67,10 @@ Dependencias añadidas por APT, sin demonios propios seleccionados manualmente:
 | `libconfuse2` | `3.3-4` |
 | `kitty-shell-integration` | `0.41.1-2+deb13u2` |
 
+Para [Trackpad gestures](trackpad-gestures.md) se usa `bcm5974`, incluido en el
+kernel de Debian, y `libinput10` (`1.28.1-1+deb13u1` en el equipo de referencia),
+dependencia transitiva del compositor. El perfil no añade paquetes ni servicios.
+
 ## Platform services
 
 Mesa 25.0.7/i915 y firmware-brcm80211 20250410-2 soportan Iris 6100 y BCM43602.

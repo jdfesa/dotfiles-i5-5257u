@@ -10,8 +10,9 @@
 
 - [ ] Revalidar el selector US/ES tras un nuevo login de Sway y al conectar o
       desconectar el teclado externo.
-- [ ] Verificar la compatibilidad de los gestos multitáctiles del trackpad con
-      libinput/Sway, incluida la configuración disponible y las limitaciones del modelo.
+- [ ] Comprobar en el trackpad el toque, el clic secundario, el desplazamiento con
+      dos dedos y el zoom con pinza en una aplicación Wayland compatible.
+      Véase [Trackpad gestures](docs/trackpad-gestures.md).
 - [ ] Medir el consumo con el mismo brillo y cargas de trabajo representativas.
 - [ ] Verificar la tapa, la suspensión y reanudación, el comportamiento con batería
       baja y el ahorro de energía de la pantalla.

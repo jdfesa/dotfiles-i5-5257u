@@ -136,7 +136,8 @@ systemctl --user list-timers 'mbp-*'
 ```
 
 Comprobar Super+Enter, Super+Espacio/D, Super+Shift+B, Super+N, Power menu,
-barra, escala, fuentes, brillo y volumen. Abrir Zed desde Fuzzel; no tiene un
+barra, escala, fuentes, brillo y volumen. Probar el deslizamiento de cuatro dedos
+según [Trackpad gestures](trackpad-gestures.md). Abrir Zed desde Fuzzel; no tiene un
 atajo asignado. Guardar trabajo y coordinar ensayos de energía/red antes de
 suspender, apagar o cambiar de conexión.
 

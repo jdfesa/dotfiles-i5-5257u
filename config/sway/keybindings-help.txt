@@ -11,6 +11,7 @@ Super+W / Q / Shift+Q       Close window
 Super+arrows                Focus window
 Super+Shift+arrows          Move window
 Super+1..9 / 0              Workspace 1..10
+Trackpad swipe (4 fingers)  Left: next workspace / right: previous (same display)
 Super+Shift+number          Send window to workspace
 Super+B / V                 Horizontal / vertical split
 Super+F                     Fullscreen

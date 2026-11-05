@@ -27,6 +27,10 @@ if [ ! -e private/sway/local.conf ] && [ ! -L private/sway/local.conf ]; then
 fi
 ```
 
+El manifiesto enlaza también el módulo público `trackpad-gestures.conf`, incluido
+antes del override local. Los ajustes de toque y desplazamiento siguen en
+`local.conf`; consultar [Trackpad gestures](trackpad-gestures.md).
+
 La plantilla contiene pantalla eDP-1, escala 2 y touchpad. Las distribuciones
 US predeterminada y ES de España se declaran en la configuración pública de Sway;
 el botón junto a la fecha las alterna. Revisar los valores del dispositivo antes
