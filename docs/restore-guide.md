@@ -104,6 +104,8 @@ WLR_BACKENDS=headless WLR_RENDERER=pixman sway --validate --config ~/.config/swa
 ```
 
 La validación headless es solo sintáctica y no configura un renderer permanente.
+Para restaurar la apariencia opcional de LightDM, seguir
+[Minimal login screen](minimal-login-screen.md) por separado del manifiesto.
 
 ## 6. Log into Sway and activate user units
 
