@@ -41,5 +41,10 @@
       por archivo del manifiesto.
 - [ ] Evaluar un selector de ventanas bajo demanda mediante Sway IPC y Fuzzel,
       con identificadores de contenedor validados y sin otro proceso residente.
+- [ ] Integrar la vista de miniaturas del escritorio actual con `woverview --current`
+      y un deslizamiento de tres dedos hacia arriba cuando la sesión principal tenga
+      Sway 1.12 o posterior desde una fuente compatible con Debian estable. Validar el
+      gesto en la sesión principal; la captura por ventana se comprobó en una sesión
+      aislada con Sway 1.12. No habilitar esta integración en Sway 1.10.1.
 - [ ] Evaluar marcadores por categorías mediante Fuzzel y el navegador XDG
       predeterminado, con selecciones inequívocas y URL HTTP/HTTPS validadas.
