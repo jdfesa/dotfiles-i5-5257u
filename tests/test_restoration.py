@@ -47,6 +47,30 @@ class RestorationTests(unittest.TestCase):
         links.rollback(journal)
         self.assertTrue(all(e["action"] == "create" for e in links.plan(self.repo, self.home)))
 
+    def test_trackpad_module_is_linked_and_loaded_before_local_overrides(self):
+        plan = links.plan(self.repo, self.home)
+        links.apply(plan, self.repo, self.home, self.base / "main-backup")
+        sway = self.home / ".config/sway"
+        module = sway / "trackpad-gestures.conf"
+        self.assertTrue(module.is_symlink())
+        self.assertEqual(module.resolve(), self.repo / "config/sway/trackpad-gestures.conf")
+        config = (sway / "config").read_text()
+        self.assertLess(config.index("include ~/.config/sway/trackpad-gestures.conf"),
+                        config.index("include ~/.config/sway/local.conf"))
+
+    def test_trackpad_module_only_binds_horizontal_three_finger_swipes(self):
+        module = ROOT / "config/sway/trackpad-gestures.conf"
+        commands = [
+            line.split()
+            for line in module.read_text().splitlines()
+            if line.strip() and not line.lstrip().startswith("#")
+        ]
+        prefix = ["bindgesture", "--exact", "--input-device=1452:627:bcm5974"]
+        self.assertCountEqual(commands, [
+            prefix + ["swipe:3:left", "workspace", "next_on_output"],
+            prefix + ["swipe:3:right", "workspace", "prev_on_output"],
+        ])
+
     def test_optional_recovery_does_not_change_main_profile(self):
         before = links.plan(self.repo, self.home)
         recovery = links.plan(self.repo, self.home, "config/xfce/manifest.json")

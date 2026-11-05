@@ -1,5 +1,6 @@
 [
   {"source": "config/sway/config", "destination": ".config/sway/config", "mode": 420, "deployment": "symlink"},
+  {"source": "config/sway/trackpad-gestures.conf", "destination": ".config/sway/trackpad-gestures.conf", "mode": 420, "deployment": "symlink"},
   {"source": "private/sway/local.conf", "destination": ".config/sway/local.conf", "mode": 384, "deployment": "symlink"},
   {"source": "config/sway/keybindings-help.txt", "destination": ".config/sway/keybindings-help.txt", "mode": 420, "deployment": "symlink"},
   {"source": "config/foot/foot.ini", "destination": ".config/foot/foot.ini", "mode": 420, "deployment": "symlink"},

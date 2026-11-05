@@ -3,7 +3,8 @@
 `Super` es la tecla **Command** del Mac (`Mod4`). La base preferida es Omarchy,
 usando el mapa mantenido del equipo i3 de referencia y adaptando las acciones a
 Wayland. No se importa X11 de la referencia ni la distribución Omarchy completa.
-Fuentes: `config/sway/config` y ayuda visible `config/sway/keybindings-help.txt`.
+Fuentes: `config/sway/config`, `config/sway/trackpad-gestures.conf` y ayuda visible
+`config/sway/keybindings-help.txt`.
 
 | Atajo | Acción |
 |---|---|
@@ -19,6 +20,7 @@ Fuentes: `config/sway/config` y ayuda visible `config/sway/keybindings-help.txt`
 | Super+flechas | Foco |
 | Super+Shift+flechas | Mover ventana |
 | Super+1…9, 0 | Escritorios 1…10 |
+| Deslizamiento de tres dedos | [Trackpad gestures](trackpad-gestures.md): izquierda, siguiente; derecha, anterior en la misma pantalla |
 | Super+Shift+número | Enviar ventana, sin seguirla |
 | Super+B / V | División horizontal / vertical |
 | Super+J o E | Alternar división |

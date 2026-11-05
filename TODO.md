@@ -10,8 +10,10 @@
 
 - [ ] Revalidar el selector US/ES tras un nuevo login de Sway y al conectar o
       desconectar el teclado externo.
-- [ ] Verificar la compatibilidad de los gestos multitáctiles del trackpad con
-      libinput/Sway, incluida la configuración disponible y las limitaciones del modelo.
+- [ ] Verificar físicamente el cambio de escritorio con tres dedos en ambos sentidos
+      y que cuatro dedos no lo activen. Comprobar el toque, el clic secundario,
+      el desplazamiento con dos dedos y el zoom con pinza en una aplicación compatible.
+      Véase [Trackpad gestures](docs/trackpad-gestures.md).
 - [ ] Medir el consumo con el mismo brillo y cargas de trabajo representativas.
 - [ ] Verificar la tapa, la suspensión y reanudación, el comportamiento con batería
       baja y el ahorro de energía de la pantalla.
@@ -40,5 +42,10 @@
       por archivo del manifiesto.
 - [ ] Evaluar un selector de ventanas bajo demanda mediante Sway IPC y Fuzzel,
       con identificadores de contenedor validados y sin otro proceso residente.
+- [ ] Integrar la vista de miniaturas del escritorio actual con `woverview --current`
+      y un deslizamiento de tres dedos hacia arriba cuando la sesión principal tenga
+      Sway 1.12 o posterior desde una fuente compatible con Debian estable. Validar el
+      gesto en la sesión principal; la captura por ventana se comprobó en una sesión
+      aislada con Sway 1.12. No habilitar esta integración en Sway 1.10.1.
 - [ ] Evaluar marcadores por categorías mediante Fuzzel y el navegador XDG
       predeterminado, con selecciones inequívocas y URL HTTP/HTTPS validadas.
