@@ -20,7 +20,7 @@ Fuentes: `config/sway/config`, `config/sway/trackpad-gestures.conf` y ayuda visi
 | Super+flechas | Foco |
 | Super+Shift+flechas | Mover ventana |
 | Super+1…9, 0 | Escritorios 1…10 |
-| Deslizamiento de cuatro dedos | [Trackpad gestures](trackpad-gestures.md): izquierda, siguiente; derecha, anterior en la misma pantalla |
+| Deslizamiento de tres dedos | [Trackpad gestures](trackpad-gestures.md): izquierda, siguiente; derecha, anterior en la misma pantalla |
 | Super+Shift+número | Enviar ventana, sin seguirla |
 | Super+B / V | División horizontal / vertical |
 | Super+J o E | Alternar división |

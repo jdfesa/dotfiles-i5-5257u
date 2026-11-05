@@ -20,19 +20,44 @@ y [Sway configuration manual](https://manpages.debian.org/trixie/sway/sway.5.en.
 
 | Gesto | Acción |
 |---|---|
-| Cuatro dedos hacia la izquierda | Siguiente escritorio de la pantalla actual |
-| Cuatro dedos hacia la derecha | Escritorio anterior de la pantalla actual |
+| Tres dedos hacia la izquierda | Siguiente escritorio de la pantalla actual |
+| Tres dedos hacia la derecha | Escritorio anterior de la pantalla actual |
 
 El cambio se realiza al terminar el gesto, entre escritorios existentes;
 no crea escritorios ni mueve ventanas. Solo se asignan deslizamientos
-horizontales de cuatro dedos y solo para el identificador comprobado.
-Otro trackpad, incluso una variante con otro identificador, no hereda el gesto.
-No se asignan pinzas ni gestos verticales: el zoom con pinza depende de la
-aplicación. No se replica Mission Control, Force Click ni la animación de macOS.
+horizontales de tres dedos para el trackpad comprobado. No se asigna el
+cambio de escritorio con cuatro dedos, con un deslizamiento vertical ni con
+una pinza. El zoom con pinza depende de la aplicación. Otro trackpad no
+hereda el gesto; tampoco se replica la animación de macOS.
 
-El manifiesto enlaza `config/sway/trackpad-gestures.conf` y Sway lo incluye
-antes de `local.conf`. Aplicar los enlaces y recargar según
-[Configuration deployment](deployment.md); no copiar el módulo al override.
+## Configuration and restore
+
+El módulo [`trackpad-gestures.conf`](../config/sway/trackpad-gestures.conf)
+limita `bindgesture` al identificador del dispositivo. `swipe:3` exige tres
+dedos; `--exact` exige que coincida la dirección sin otras direcciones.
+
+```text
+bindgesture --exact --input-device=1452:627:bcm5974 swipe:3:left workspace next_on_output
+bindgesture --exact --input-device=1452:627:bcm5974 swipe:3:right workspace prev_on_output
+```
+
+Tras reinstalar, recuperar una revisión de los dotfiles que incluya el módulo
+y aplicar el manifiesto principal como `jd` según [Restore guide](restore-guide.md).
+El manifiesto crea el enlace `~/.config/sway/trackpad-gestures.conf`; Sway lo
+incluye antes de `local.conf`. No copiar el módulo al override ni instalar
+un servicio adicional.
+
+Desde la sesión de Sway, comprobar el enlace, validar y recargar:
+
+```sh
+readlink -f ~/.config/sway/trackpad-gestures.conf
+sway --validate --config ~/.config/sway/config
+swaymsg reload
+```
+
+El enlace debe resolver a `config/sway/trackpad-gestures.conf` dentro del
+checkout canónico. Ante conflictos, consultar
+[Configuration deployment](deployment.md).
 
 ## Verification
 
@@ -46,15 +71,11 @@ swaymsg -t get_workspaces
 1. Confirmar que el identificador aparece como `touchpad`.
 2. Mantener una ventana en cada uno de tres escritorios de la misma pantalla
    (por ejemplo, 1, 2 y 3) y situarse en el del medio. Con el puntero fuera
-   de la barra, deslizar cuatro dedos a la izquierda y comprobar que se enfoca
+   de la barra, deslizar tres dedos a la izquierda y comprobar que se enfoca
    el 3. Volver al 2 y deslizar a la derecha para comprobar que se enfoca el 1.
-3. Comprobar que un deslizamiento vertical o de tres dedos no cambia de
-   escritorio, que el desplazamiento de dos dedos y los clics siguen funcionando
-   y que la pinza aún funciona en una aplicación Wayland que la admita.
-
-En el equipo de referencia se verificó físicamente el cambio del escritorio 2
-al 3 hacia la izquierda y del 2 al 1 hacia la derecha con cuatro dedos. Con tres
-no se cambió de escritorio, tal como se espera con este perfil.
+3. Comprobar que un deslizamiento horizontal con cuatro dedos o vertical con
+   tres no cambia de escritorio, que el desplazamiento de dos dedos y los clics
+   siguen funcionando y que la pinza funciona en una aplicación Wayland que la admita.
 
 La detección del dispositivo y el parser de Sway no prueban el gesto físico.
 Si no hay cambio, revisar primero el identificador, que existan otros
@@ -66,8 +87,8 @@ Para mantener los demás ajustes y desactivar solo los dos gestos, añadir
 a `private/sway/local.conf`:
 
 ```text
-unbindgesture --exact --input-device=1452:627:bcm5974 swipe:4:left
-unbindgesture --exact --input-device=1452:627:bcm5974 swipe:4:right
+unbindgesture --exact --input-device=1452:627:bcm5974 swipe:3:left
+unbindgesture --exact --input-device=1452:627:bcm5974 swipe:3:right
 ```
 
 Validar con `sway --validate --config ~/.config/sway/config` y aplicar con

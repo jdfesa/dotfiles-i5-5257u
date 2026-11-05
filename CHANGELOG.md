@@ -4,7 +4,7 @@
 
 ### Added
 
-- Gestos nativos de cuatro dedos para cambiar de escritorio en Sway, limitados
+- Gestos nativos de tres dedos para cambiar de escritorio en Sway, limitados
   al trackpad interno y gestionados por un módulo enlazado desde el manifiesto.
 
 ## 2026-11-03

@@ -10,8 +10,9 @@
 
 - [ ] Revalidar el selector US/ES tras un nuevo login de Sway y al conectar o
       desconectar el teclado externo.
-- [ ] Comprobar en el trackpad el toque, el clic secundario, el desplazamiento con
-      dos dedos y el zoom con pinza en una aplicación Wayland compatible.
+- [ ] Verificar físicamente el cambio de escritorio con tres dedos en ambos sentidos
+      y que cuatro dedos no lo activen. Comprobar el toque, el clic secundario,
+      el desplazamiento con dos dedos y el zoom con pinza en una aplicación compatible.
       Véase [Trackpad gestures](docs/trackpad-gestures.md).
 - [ ] Medir el consumo con el mismo brillo y cargas de trabajo representativas.
 - [ ] Verificar la tapa, la suspensión y reanudación, el comportamiento con batería

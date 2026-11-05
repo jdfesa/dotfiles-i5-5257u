@@ -27,7 +27,7 @@ El manifiesto también enlaza el override local preparado desde la plantilla.
 - Distribuciones US predeterminada y ES de España; selector manual global junto
   a la fecha, integrado en la [Status bar](status-bar.md), sin sondeo adicional.
 - Atajos Omarchy adaptados en [Keyboard shortcuts](keybindings.md).
-- [Trackpad gestures](trackpad-gestures.md): cambio de escritorio con cuatro dedos
+- [Trackpad gestures](trackpad-gestures.md): cambio de escritorio con tres dedos
   mediante Sway y libinput, sin procesos ni paquetes adicionales.
 - El include Debian `/etc/sway/config.d/*` integra el entorno D-Bus/systemd.
 - `mbp-sway-session` arranca una sola instancia de mako, swayidle y agente Polkit.
