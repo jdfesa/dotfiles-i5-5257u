@@ -16,6 +16,8 @@
 
 ### Fixed
 
+- Zathura copia el texto seleccionado al portapapeles normal y muestra
+  los números de enlace con más contraste, sin cambiar el tema de las páginas.
 - Los PDF abiertos desde Yazi aparecen en Zathura aun si Kitty estaba en pantalla
   completa en Sway. La vista previa aprovecha mejor el panel derecho en HiDPI.
 

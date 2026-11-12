@@ -86,6 +86,17 @@ class DesktopAppsTests(unittest.TestCase):
 
 
 class YaziPdfTests(unittest.TestCase):
+    def test_zathura_uses_standard_clipboard_without_changing_dark_pages(self):
+        config = (ROOT / "config/zathura/zathurarc").read_text()
+        options = dict(line.split(None, 2)[1:] for line in config.splitlines()
+                       if line.startswith("set "))
+        self.assertEqual(options["selection-clipboard"], "clipboard")
+        self.assertEqual(options["recolor"], "true")
+        self.assertEqual(options["recolor-darkcolor"], '"#cdd6f4"')
+        self.assertEqual(options["recolor-lightcolor"], '"#1e1e2e"')
+        self.assertEqual(options["highlight-fg"], '"#11111b"')
+        self.assertEqual(options["highlight-color"], '"rgba(249,226,175,0.72)"')
+
     def test_pdf_opener_leaves_only_the_focused_kitty_fullscreen(self):
         config = tomllib.loads((ROOT / "config/yazi/yazi.toml").read_text())
         rule = config["open"]["prepend_rules"][0]
