@@ -41,5 +41,6 @@ fi
 case $action in
     lock) exec swaylock -f ;;
     logout) exec swaymsg exit ;;
-    *) exec kitty --class=mbp-power --title='Power action' "$HOME/.local/bin/mbp-power-action" "$action" ;;
+    *) exec kitty --class=mbp-power --title='Power action' --override=tab_bar_min_tabs=2 \
+        "$HOME/.local/bin/mbp-power-action" "$action" ;;
 esac

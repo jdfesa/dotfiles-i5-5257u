@@ -4,6 +4,9 @@
 
 ### Added
 
+- Barra superior de pestañas de Kitty con el nombre de la carpeta activa y
+  apertura de pestañas en esa carpeta; los paneles de una sola pestaña
+  conservan su presentación compacta.
 - Yazi con vista previa de PDF en Kitty y apertura en Zathura con páginas
   oscuras, sin cambiar el lector PDF predeterminado del escritorio.
 - Gestos nativos de tres dedos para cambiar de escritorio en Sway, limitados

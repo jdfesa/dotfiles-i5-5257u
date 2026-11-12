@@ -22,6 +22,24 @@ Super+Enter abre Kitty; Fuzzel usa `kitty -e` para programas Terminal=true.
 Los paneles usan `--class=mbp-*`, que define su app_id y conserva las reglas
 flotantes de Sway. Un comando explícito sustituye la shell de login.
 
+## Work tabs
+
+La barra nativa de Kitty aparece arriba, incluso con una sola pestaña. El
+diseño Powerline usa el naranja del tema para distinguir la pestaña activa.
+La etiqueta muestra solo el nombre de la carpeta activa, no la ruta completa
+ni el escritorio de Sway. Cambiar de carpeta en Zsh actualiza la etiqueta.
+
+- Ctrl+Shift+T es el atajo predeterminado de Kitty para abrir una pestaña;
+  en este perfil, la pestaña nueva abre en la carpeta actual.
+- Ctrl+Shift+Q cierra la pestaña activa (atajo predeterminado de Kitty).
+  Super+W cierra la ventana enfocada de Sway con todas sus pestañas.
+- Ctrl+Shift+Izquierda/Derecha alterna las pestañas de la misma ventana.
+- Los paneles auxiliares y las aplicaciones TUI lanzadas por Fuzzel no muestran
+  la barra mientras tengan una sola pestaña.
+
+No se importan sesiones, tmux ni extensiones. Para comprobar el cambio sin
+cerrar trabajo abierto, iniciar otra ventana con Super+Enter.
+
 ## Rendering policy
 
 - JetBrainsMono Nerd Font Mono 10 y paleta separada en theme.conf.

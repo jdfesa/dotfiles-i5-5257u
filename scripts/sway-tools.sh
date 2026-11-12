@@ -44,11 +44,11 @@ case ${1:-} in
     networks)
         exec "$HOME/.local/bin/mbp-open-networks" ;;
     audio)
-        exec kitty --class=mbp-mixer --title='Audio mixer' alsamixer ;;
+        exec kitty --class=mbp-mixer --title='Audio mixer' --override=tab_bar_min_tabs=2 alsamixer ;;
     calendar)
         exec "$HOME/.local/bin/mbp-calendar" ;;
     updates)
-        exec kitty --class=mbp-updates --title='APT updates (cached metadata)' \
+        exec kitty --class=mbp-updates --title='APT updates (cached metadata)' --override=tab_bar_min_tabs=2 \
             sh -c 'apt list --upgradable; printf "\nRead-only; no refresh or installation. Press Enter to close.\n"; read -r ignored' ;;
     browser)
         # Resolve the configured XDG default; do not pin a browser executable.
