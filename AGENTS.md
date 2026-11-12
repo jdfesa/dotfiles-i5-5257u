@@ -5,6 +5,11 @@
 - Plataforma objetivo: Debian 13 amd64, i5-5257U (2C/4T), Iris 6100/i915,
   BCM43602/brcmfmac y 8 GB de RAM. La estabilidad y la mantenibilidad tienen
   prioridad sobre los efectos visuales.
+- La autonomía en batería es un criterio prioritario para elegir y configurar
+  aplicaciones. A igualdad de función, preferir las opciones livianas, que se
+  ejecuten bajo demanda y reutilicen las dependencias instaladas. Evitar servicios
+  residentes, arranques automáticos y sondeos nuevos que no sean necesarios.
+  No equiparar menor tamaño en disco con menor consumo de energía.
 - Sway es la sesión principal; Zsh es el intérprete de la cuenta. Conservar
   PulseAudio, NetworkManager, UPower y las políticas de logind. No forzar el
   renderizado por software ni prometer mejoras de autonomía sin mediciones comparables.
@@ -112,7 +117,9 @@
 4. Validar el comportamiento de la sesión real por separado de las pruebas de
    sintaxis y de directorio personal temporal. No afirmar que se probó una
    restauración sobre un sistema limpio si no se realizó.
-5. Actualizar las guías de dependencias y temas, y CHANGELOG. No realizar commit,
+5. Registrar los programas del perfil en [Applications and launchers](docs/applications.md)
+   y su versión, procedencia y dependencias en [Dependencies](docs/dependencies.md).
+   Actualizar las guías temáticas y CHANGELOG. No realizar commit,
    push, reescrituras del historial ni cambios de visibilidad remota sin
    autorización explícita. Antes de publicar, revisar nuevamente .gitignore,
    el índice exacto y el historial que se enviará.

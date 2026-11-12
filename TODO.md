@@ -14,7 +14,9 @@
       y que cuatro dedos no lo activen. Comprobar el toque, el clic secundario,
       el desplazamiento con dos dedos y el zoom con pinza en una aplicación compatible.
       Véase [Trackpad gestures](docs/trackpad-gestures.md).
-- [ ] Medir el consumo con el mismo brillo y cargas de trabajo representativas.
+- [ ] Establecer una línea base de descarga con el mismo brillo y cargas
+      representativas. Registrar la capacidad útil por separado para distinguir
+      la degradación de la batería de los cambios de consumo.
 - [ ] Verificar la tapa, la suspensión y reanudación, el comportamiento con batería
       baja y el ahorro de energía de la pantalla.
 - [ ] Validar el aviso previo al bloqueo y repetir F5/F6 de retroiluminación tras
