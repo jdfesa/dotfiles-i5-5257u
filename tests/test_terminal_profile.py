@@ -39,11 +39,13 @@ class TerminalProfileTests(unittest.TestCase):
         self.assertIn("tab.active_wd", template)
         self.assertIn(".rsplit('/', 1)[-1]", template)
         self.assertIn("map kitty_mod+t new_tab_with_cwd", config)
+        self.assertIn("map super+shift+t new_tab_with_cwd", config)
 
     def test_default_entrypoints_use_kitty(self):
         sway = (ROOT / "config/sway/config").read_text()
         fuzzel = (ROOT / "config/fuzzel/fuzzel.ini").read_text()
         self.assertIn("bindsym $mod+Return exec kitty", sway)
+        self.assertIn("bindsym $mod+t floating toggle", sway)
         self.assertIn("terminal=kitty --override=tab_bar_min_tabs=2 -e", fuzzel)
         for source in ("scripts/sway-tools.sh", "scripts/power-menu"):
             content = (ROOT / source).read_text()

@@ -29,7 +29,8 @@ diseño Powerline usa el naranja del tema para distinguir la pestaña activa.
 La etiqueta muestra solo el nombre de la carpeta activa, no la ruta completa
 ni el escritorio de Sway. Cambiar de carpeta en Zsh actualiza la etiqueta.
 
-- Ctrl+Shift+T abre una pestaña en la carpeta actual.
+- Ctrl+Shift+T o Super+Shift+T abre una pestaña en la carpeta actual
+  cuando Kitty tiene el foco. Super+T sigue alternando flotante y mosaico en Sway.
 - Ctrl+Shift+Izquierda/Derecha alterna las pestañas de la misma ventana.
 - Los paneles auxiliares y las aplicaciones TUI lanzadas por Fuzzel no muestran
   la barra mientras tengan una sola pestaña.
