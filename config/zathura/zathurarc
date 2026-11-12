@@ -9,3 +9,8 @@ set statusbar-bg "#181825"
 set statusbar-fg "#cdd6f4"
 set inputbar-bg "#181825"
 set inputbar-fg "#cdd6f4"
+
+# Use the standard clipboard and keep link numbers legible on dark pages.
+set selection-clipboard clipboard
+set highlight-fg "#11111b"
+set highlight-color "rgba(249,226,175,0.72)"

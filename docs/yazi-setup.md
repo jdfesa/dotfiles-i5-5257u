@@ -18,6 +18,19 @@
   miniatura sigue pequeña tras cambiar el tamaño, salir de Yazi, ejecutar
   `ya cache clear` y volver a abrirlo.
 
+## Copy text and links
+
+- Para copiar texto, arrastrar con el botón izquierdo y soltar. El perfil
+  lo envía al portapapeles normal; pegar con Ctrl+V en el navegador.
+  No hace falta pulsar Ctrl+C: en Zathura ese atajo cancela.
+- Para copiar el destino de un enlace, pulsar c, escribir el número que
+  aparece abajo a la izquierda del enlace resaltado y pulsar Enter.
+  Si la URL es solo texto, seleccionarla con el ratón.
+
+El contraste de los números se ajusta sin cambiar el color de las páginas.
+Las ventanas nuevas de Zathura cargan el ajuste; no se necesita un gestor
+de portapapeles ni un comando manual por documento.
+
 ## Installation
 
 En Debian 13 amd64, Yazi `26.9.1-1` se instala desde el paquete oficial del
