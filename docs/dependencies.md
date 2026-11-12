@@ -44,6 +44,10 @@ Las versiones siguientes son referencia de compatibilidad, no pins de APT.
 | [i3status](https://packages.debian.org/trixie/i3status) | `2.15-2` | Backend de Swaybar |
 | [python3-gi](https://packages.debian.org/trixie/python3-gi) | `3.50.0-4+b1` | Calendario GTK bajo demanda |
 | [gir1.2-gtk-3.0](https://packages.debian.org/trixie/gir1.2-gtk-3.0) | `3.24.49-3` | Widget Gtk.Calendar nativo Wayland |
+| [file](https://packages.debian.org/trixie/file) | `1:5.46-5` | Detección de tipos de archivo en Yazi |
+| [poppler-utils](https://packages.debian.org/trixie/poppler-utils) | `25.03.0-5+deb13u4` | Vista previa PDF en Yazi |
+| [zathura](https://packages.debian.org/trixie/zathura) | `0.5.11-1` | Lector con recoloreado de páginas |
+| [zathura-pdf-poppler](https://packages.debian.org/trixie/zathura-pdf-poppler) | `0.3.3-1` | Plugin PDF para Zathura |
 
 ## Transitive packages
 
@@ -92,7 +96,9 @@ Programas del proveedor, gestionados separadamente de la lista Debian:
 |---|---|---|
 | Helium | `helium-bin 0.15.2.1-1`, Chromium `151.0.7922.75` | APT del proveedor `https://pkg.helium.computer/deb`, stable/main; paquete helium-bin |
 | Zed | `1.26.2`, commit `c4273271092b0287f7d181f616bd5171e0a2f70c` | Tarball oficial x86_64, hash publicado verificado; app de usuario, actualización manual |
+| Yazi | `26.9.1-1` | Paquete oficial amd64, SHA-256 publicado verificado; instalación local por APT y actualización manual |
 
+[Yazi and Zathura setup](yazi-setup.md) registra el paquete, la suma y la integración PDF.
 [Helium](helium-setup.md) detalla asociaciones/configuración y actualización
 pendiente; [Zed](zed-setup.md) registra URL, SHA256, instalación reproducible,
 requisitos Vulkan, configuración, verificación y recuperación.

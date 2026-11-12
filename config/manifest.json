@@ -37,6 +37,8 @@
   {"source": "config/network/mbp-networks.desktop", "destination": ".local/share/applications/mbp-networks.desktop", "mode": 420, "deployment": "symlink"},
   {"source": "config/power/mbp-power-menu.desktop", "destination": ".local/share/applications/mbp-power-menu.desktop", "mode": 420, "deployment": "symlink"},
   {"source": "config/helium/mimeapps.list", "destination": ".config/mimeapps.list", "mode": 420, "deployment": "symlink"},
+  {"source": "config/yazi/yazi.toml", "destination": ".config/yazi/yazi.toml", "mode": 420, "deployment": "symlink"},
+  {"source": "config/zathura/zathurarc", "destination": ".config/zathura/zathurarc", "mode": 420, "deployment": "symlink"},
   {"source": "config/zed/settings.json", "destination": ".config/zed/settings.json", "mode": 420, "deployment": "symlink"},
   {"source": "config/zed/dev.zed.Zed.desktop", "destination": ".local/share/applications/dev.zed.Zed.desktop", "mode": 420, "deployment": "symlink"}
 ]

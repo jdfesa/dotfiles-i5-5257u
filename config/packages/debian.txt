@@ -6,6 +6,7 @@ ca-certificates
 curl
 dbus-user-session
 desktop-file-utils
+file
 firmware-brcm80211
 fontconfig
 fonts-dejavu-core
@@ -31,6 +32,7 @@ mesa-vulkan-drivers
 network-manager
 nm-connection-editor
 polkitd
+poppler-utils
 pulseaudio
 pulseaudio-utils
 python3
@@ -53,4 +55,6 @@ xdg-desktop-portal-gtk
 xdg-utils
 xserver-xorg
 xwayland
+zathura
+zathura-pdf-poppler
 zsh

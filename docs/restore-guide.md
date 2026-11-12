@@ -59,6 +59,8 @@ sudo usermod -aG video jd
   helium-bin antes de aplicar las asociaciones de navegador.
 - [Zed](zed-setup.md): comprobar Vulkan físico, descargar la release oficial
   revisada, verificar su digest e instalar la app y CLI.
+- [Yazi and Zathura setup](yazi-setup.md): verificar e instalar el paquete
+  oficial de Yazi para amd64. Zathura y Poppler proceden de la lista Debian.
 
 Estos pasos no se ejecutan por clonar ni por iniciar una terminal. Las versiones
 observadas y las políticas de actualización están en [Dependencies](dependencies.md).
@@ -140,8 +142,10 @@ systemctl --user list-timers 'mbp-*'
 Comprobar Super+Enter, Super+Espacio/D, Super+Shift+B, Super+N, Power menu,
 barra, escala, fuentes, brillo y volumen. Probar el deslizamiento de tres dedos
 según [Trackpad gestures](trackpad-gestures.md). Abrir Zed desde Fuzzel; no tiene un
-atajo asignado. Guardar trabajo y coordinar ensayos de energía/red antes de
-suspender, apagar o cambiar de conexión.
+atajo asignado. Verificar la vista previa de un PDF en Kitty y su apertura en
+Zathura con el tema oscuro según [Yazi and Zathura setup](yazi-setup.md).
+Guardar trabajo y coordinar ensayos de energía/red antes de suspender, apagar
+o cambiar de conexión.
 
 ## Recovery and coverage
 
