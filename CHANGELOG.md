@@ -4,6 +4,8 @@
 
 ### Added
 
+- Guía breve de diagnóstico y recuperación del controlador Wi-Fi brcmfmac
+  tras suspensión, con comandos de reset y comprobación de conectividad.
 - Barra superior de pestañas de Kitty con el nombre de la carpeta activa y
   apertura de pestañas en esa carpeta; los paneles de una sola pestaña
   conservan su presentación compacta.
@@ -16,6 +18,9 @@
 
 ### Fixed
 
+- El panel Wi-Fi avisa si el escaneo devuelve una lista vacía aunque nmcli
+  termine con éxito, distingue la radio apagada y conserva el selector abierto,
+  sin cambiar conexiones ni reiniciar el controlador automáticamente.
 - Zathura copia el texto seleccionado al portapapeles normal y muestra
   los números de enlace con más contraste, sin cambiar el tema de las páginas.
 - Los PDF abiertos desde Yazi aparecen en Zathura aun si Kitty estaba en pantalla

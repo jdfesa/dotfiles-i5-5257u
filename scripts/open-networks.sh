@@ -68,8 +68,20 @@ if ! flock -n 9; then
 fi
 
 # One fresh scan per opening, no timer/polling and no automatic activation.
-if ! nmcli --wait 10 --fields SSID device wifi list --rescan yes >/dev/null 2>&1; then
+# A successful list request can still be empty when the driver cannot scan.
+# Use BSSID so hidden SSIDs are not mistaken for an absence of access points.
+if ! access_points=$(nmcli --wait 10 --terse --fields BSSID device wifi list --rescan yes 2>/dev/null); then
     notice 'Fresh Wi-Fi scan unavailable; showing NetworkManager cached networks.'
+elif [ -z "$access_points" ]; then
+    radio=$(nmcli --wait 5 --terse --fields WIFI general 2>/dev/null) || radio=unknown
+    case $radio in
+        disabled)
+            notice 'Wi-Fi radio is off. To enable it deliberately, run: nmcli radio wifi on'
+            ;;
+        *)
+            notice 'No Wi-Fi access points were returned. Check range and radio; if networks disappeared after suspend, see docs/wifi/driver-recovery.md for driver recovery.'
+            ;;
+    esac
 fi
 
 # The explicit command replaces Kitty's default login Zsh. Do not invoke nmtui

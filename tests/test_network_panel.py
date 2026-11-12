@@ -31,8 +31,12 @@ with open(os.environ["CALL_LOG"],"a") as stream: stream.write(json.dumps([name,*
 args=sys.argv[1:]
 if name=="nmcli":
  if "RUNNING" in args: print(os.environ.get("NM_RUNNING","running"))
- elif "WIFI" in args: print("enabled")
- elif "--rescan" in args: sys.exit(int(os.environ.get("SCAN_EXIT","0")))
+ elif "WIFI" in args:
+  print(os.environ.get("NM_WIFI","enabled"))
+  sys.exit(int(os.environ.get("NM_WIFI_EXIT","0")))
+ elif "--rescan" in args:
+  print(os.environ.get("SCAN_OUTPUT","02:00:00:00:00:01"))
+  sys.exit(int(os.environ.get("SCAN_EXIT","0")))
 elif name=="flock": sys.exit(int(os.environ.get("LOCK_EXIT","0")))
 elif name=="kitty":
  import subprocess
@@ -87,6 +91,42 @@ elif name=="nmtui":
         self.assertEqual(result.returncode, 0)
         self.assertIn("cached", result.stderr)
         self.assertTrue(any(c[0] == "kitty" for c in calls))
+
+    def test_empty_successful_scan_warns_without_reset_or_reconnect(self):
+        result, calls = self.run_panel(SCAN_OUTPUT="")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("No Wi-Fi access points", result.stderr)
+        self.assertIn("docs/wifi/driver-recovery.md", result.stderr)
+        self.assertTrue(any(c[0] == "kitty" for c in calls))
+        self.assertEqual(sum("--rescan" in c for c in calls), 1)
+        self.assertTrue(all(c[0] in {"nmcli", "flock", "notify-send", "kitty", "nmtui"} for c in calls))
+        for call in calls:
+            self.assertFalse(any(word in call for word in ("disconnect", "down", "up", "off", "on", "sudo")))
+
+    def test_disabled_radio_explains_deliberate_enable_without_changing_it(self):
+        result, calls = self.run_panel(SCAN_OUTPUT="", NM_WIFI="disabled")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Wi-Fi radio is off", result.stderr)
+        self.assertIn("nmcli radio wifi on", result.stderr)
+        self.assertFalse(any("radio" in c for c in calls))
+        self.assertTrue(any(c[0] == "kitty" for c in calls))
+
+    def test_unknown_radio_still_warns_and_opens_panel(self):
+        result, calls = self.run_panel(SCAN_OUTPUT="", NM_WIFI_EXIT="1")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("No Wi-Fi access points", result.stderr)
+        self.assertNotIn("Wi-Fi radio is off", result.stderr)
+        self.assertTrue(any(c[0] == "kitty" for c in calls))
+        self.assertEqual(sum("--rescan" in c for c in calls), 1)
+
+    def test_access_points_are_counted_without_relying_on_visible_ssids(self):
+        result, calls = self.run_panel()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        scan = next(c for c in calls if "--rescan" in c)
+        self.assertIn("BSSID", scan)
+        self.assertIn("--terse", scan)
+        self.assertNotIn("No Wi-Fi access points", result.stderr)
+        self.assertFalse(any(c[0] == "notify-send" for c in calls))
 
     def test_manager_unavailable_fails_without_opening_ui(self):
         result, calls = self.run_panel(NM_RUNNING="not-running")

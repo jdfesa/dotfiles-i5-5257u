@@ -18,6 +18,11 @@ El helper no recorta la lista a redes conocidas ni a la red conectada: muestra
 lo que NetworkManager ofrece a nmtui. Si un escaneo encuentra solo un AP, no
 se inventan redes adicionales; revisar radio, alcance y controlador si se
 esperaban otras. Un fallo de escaneo muestra aviso y deja disponible la caché.
+Una respuesta sin puntos de acceso también muestra un aviso, aunque nmcli
+termine con éxito. Si la radio está apagada, indica cómo activarla deliberadamente;
+en los demás casos recomienda revisar cobertura, radio y controlador. Se comprueba
+la presencia de puntos de acceso por BSSID, incluidas las redes con SSID oculto.
+La TUI sigue disponible; el helper no enciende la radio ni hace resets automáticos.
 
 ## Components and configuration
 
@@ -67,6 +72,10 @@ En una TTY puede usarse directamente `nmtui connect`. Si la radio está apagada,
 activarla deliberadamente con `nmcli radio wifi on` desde la sesión local; un
 bloqueo físico requiere revisar el dispositivo. No hay fallback sudo ni bypass
 de permisos. SSH y la sesión local pueden tener autorizaciones diferentes.
+
+Si la radio está encendida pero desaparecen las redes después de reanudar,
+consultar [Wi-Fi driver recovery](wifi/driver-recovery.md) para diagnosticar
+el bloqueo de brcmfmac y aplicar el reset comprobado del controlador.
 
 Validar apertura/foco/cancelación sin activar otra red, sintaxis con `sh -n` y
 regresiones con comandos simulados. La reversión restaura los archivos públicos
