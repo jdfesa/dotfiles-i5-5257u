@@ -20,7 +20,7 @@
 
 - [Applications and launchers](applications.md).
 - [Zsh](zsh-setup.md), [Kitty](kitty-setup.md) y [Starship](starship-setup.md).
-- [Helium](helium-setup.md) y [Zed](zed-setup.md).
+- [Helium](helium-setup.md), [Zed](zed-setup.md) y [Yazi and Zathura setup](yazi-setup.md).
 
 ## Reference and recovery
 

@@ -1,10 +1,11 @@
-"""Public browser/editor integration; no launches or user profile reads."""
+"""Public desktop application integration; no launches or user profile reads."""
 import configparser
 import json
 import os
 from pathlib import Path
 import subprocess
 import tempfile
+import tomllib
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -71,6 +72,8 @@ class DesktopAppsTests(unittest.TestCase):
     def test_public_app_files_are_individually_managed(self):
         manifest = json.loads((ROOT / "config/manifest.json").read_text())
         expected = {"config/helium/mimeapps.list": ".config/mimeapps.list",
+                    "config/yazi/yazi.toml": ".config/yazi/yazi.toml",
+                    "config/zathura/zathurarc": ".config/zathura/zathurarc",
                     "config/zed/settings.json": ".config/zed/settings.json",
                     "config/zed/dev.zed.Zed.desktop": ".local/share/applications/dev.zed.Zed.desktop"}
         for source, destination in expected.items():
@@ -80,6 +83,47 @@ class DesktopAppsTests(unittest.TestCase):
             self.assertEqual(entry["mode"], 0o644)
         self.assertEqual({e["source"] for e in manifest if e["source"].startswith("config/helium/")},
                          {"config/helium/mimeapps.list"})
+
+
+class YaziPdfTests(unittest.TestCase):
+    def test_pdf_opener_leaves_only_the_focused_kitty_fullscreen(self):
+        config = tomllib.loads((ROOT / "config/yazi/yazi.toml").read_text())
+        rule = config["open"]["prepend_rules"][0]
+        self.assertEqual(rule["mime"], "application/pdf")
+        self.assertEqual(rule["use"], ["pdf-dark", "open", "reveal"])
+        command = config["opener"]["pdf-dark"][0]["run"]
+        self.assertEqual(command.count("%s1"), 1)
+        command = command.replace("%s1", '"$1"')
+        pdf = "- a 'quoted'; filename.pdf"
+        expected_sway = ["timeout:1s", "swaymsg:-q",
+                         "swaymsg:[con_id=__focused__ pid=123] fullscreen disable"]
+        expected_pdf = ["zathura:--", f"zathura:{pdf}"]
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            log = root / "calls"
+            stubs = {
+                "timeout": """printf 'timeout:%s\n' "$1" >> "$LOG"; shift; exec "$@" """,
+                "swaymsg": """printf 'swaymsg:%s\n' "$@" >> "$LOG"; exit "$SWAY_STATUS" """,
+                "zathura": """printf 'zathura:%s\n' "$@" >> "$LOG" """,
+            }
+            for name, script in stubs.items():
+                stub = root / name
+                stub.write_text("#!/bin/sh\n" + script + "\n")
+                stub.chmod(0o755)
+            for socket, pid, status, expect_sway in (
+                ("/tmp/test-sway.sock", "123", "0", True),
+                ("/tmp/test-sway.sock", "123", "2", True),
+                ("/tmp/test-sway.sock", "123] kill", "0", False),
+                ("/tmp/test-sway.sock", "", "0", False),
+                ("", "123", "0", False),
+            ):
+                with self.subTest(socket=socket, pid=pid, status=status):
+                    log.unlink(missing_ok=True)
+                    subprocess.run(["sh", "-c", command, "pdf-test", pdf], timeout=3, check=True,
+                                   env={"PATH": str(root) + ":/usr/bin:/bin", "LOG": str(log),
+                                        "SWAYSOCK": socket, "KITTY_PID": pid, "SWAY_STATUS": status})
+                    self.assertEqual(log.read_text().splitlines(),
+                                     (expected_sway if expect_sway else []) + expected_pdf)
 
 
 if __name__ == "__main__":

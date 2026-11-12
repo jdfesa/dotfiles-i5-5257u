@@ -1,6 +1,11 @@
 # Applications and launchers
 
-## Managed programs
+## Installed programs
+
+Inventario de programas instalados y gestionados por el perfil principal,
+incluidos sus accesos y ajustes. Al incorporar otro programa, añadir aquí
+su uso y enlace a la guía correspondiente; no duplicar versiones ni listar
+bibliotecas transitivas.
 
 | Programa | Uso | Configuración pública / destino |
 |---|---|---|
@@ -10,6 +15,8 @@
 | Starship | Prompt de nuevas Zsh, tanto en Kitty como en Foot | `config/starship/starship.toml` → `~/.config/starship.toml`; init en `config/zsh/zshrc` |
 | Helium | Fuzzel; navegador XDG actual de Super+Shift+B | `config/helium/mimeapps.list` → `~/.config/mimeapps.list`; entrada de escritorio del paquete APT |
 | Zed | Fuzzel o `zed`; sin atajo asignado | `config/zed/` → settings y entrada .desktop por manifiesto; binario oficial fuera del repo |
+| Yazi | `yazi` en Kitty; vista previa PDF en el panel derecho | `config/yazi/yazi.toml` → `~/.config/yazi/yazi.toml` |
+| Zathura | Enter sobre un PDF en Yazi; páginas oscuras, sin cambiar el lector XDG | `config/zathura/zathurarc` → `~/.config/zathura/zathurarc` |
 | Wi-Fi networks | Super+N, icono de barra o búsqueda en Fuzzel | `scripts/open-networks.sh`, `config/network/mbp-networks.desktop` → binario/enlace .desktop del usuario |
 | Power menu | Buscar Power menu/apagar en Fuzzel o Super+Shift+P | `config/power/mbp-power-menu.desktop`, `scripts/power-menu` y `scripts/power-action.sh` → destinos del manifiesto |
 | wmenu | Ayuda a demanda | Helpers públicos; no sustituye el catálogo de aplicaciones de Fuzzel |
@@ -18,8 +25,9 @@ Versiones, origen e integridad se mantienen en [Dependencies](dependencies.md).
 Cada fuente se agrupa por componente y se despliega con enlaces por archivo
 mediante `config/manifest.json`. No copiar configuraciones independientes al home.
 Instalación/rutas/verificación/recuperación: [Helium](helium-setup.md),
-[Zed](zed-setup.md). El navegador se resuelve por XDG, no se fija su ejecutable
-en el atajo. Helium y Zed conservan sus entradas de búsqueda en Fuzzel.
+[Zed](zed-setup.md) y [Yazi and Zathura setup](yazi-setup.md). El navegador se
+resuelve por XDG, no se fija su ejecutable en el atajo. Helium y Zed conservan
+sus entradas de búsqueda en Fuzzel.
 
 ## Fuzzel installation and recovery
 

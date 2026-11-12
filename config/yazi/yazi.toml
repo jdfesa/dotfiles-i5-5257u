@@ -1,0 +1,25 @@
+[mgr]
+ratio = [1, 3, 4]
+
+[preview]
+# Bounded for the built-in 2x display; keep the page aspect ratio.
+max_width = 1040
+max_height = 1480
+
+[opener]
+pdf-dark = [
+    { run = """
+        if [ -n "${SWAYSOCK-}" ]; then
+            case "${KITTY_PID-}" in
+                ''|*[!0-9]*) ;;
+                *) timeout 1s swaymsg -q "[con_id=__focused__ pid=$KITTY_PID] fullscreen disable" >/dev/null 2>&1 || : ;;
+            esac
+        fi
+        exec zathura -- %s1
+    """, desc = "Zathura (dark PDF)", for = "linux", orphan = true },
+]
+
+[open]
+prepend_rules = [
+    { mime = "application/pdf", use = ["pdf-dark", "open", "reveal"] },
+]

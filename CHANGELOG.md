@@ -4,10 +4,17 @@
 
 ### Added
 
+- Yazi con vista previa de PDF en Kitty y apertura en Zathura con páginas
+  oscuras, sin cambiar el lector PDF predeterminado del escritorio.
 - Gestos nativos de tres dedos para cambiar de escritorio en Sway, limitados
   al trackpad interno y gestionados por un módulo enlazado desde el manifiesto.
 - Perfil visual opcional para LightDM GTK Greeter con formulario centrado,
   fondo Mocha estático y un saludo local configurable, sin cambios de autenticación.
+
+### Fixed
+
+- Los PDF abiertos desde Yazi aparecen en Zathura aun si Kitty estaba en pantalla
+  completa en Sway. La vista previa aprovecha mejor el panel derecho en HiDPI.
 
 ## 2026-11-03
 
