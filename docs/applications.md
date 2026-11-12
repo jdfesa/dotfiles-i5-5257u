@@ -43,8 +43,8 @@ sudo apt-get --no-install-recommends --no-remove install fuzzel
 ```
 
 El binario del sistema lo administra APT. El perfil propio usa los colores y
-fuente de la barra; `terminal=kitty -e` ejecuta las aplicaciones TUI directamente,
-sin convertirlas en shells de login.
+fuente de la barra. Fuzzel ejecuta las aplicaciones TUI con Kitty sin
+convertirlas en shells de login ni mostrar la barra con una sola pestaña.
 Se buscan nombre, nombre genérico, filename y keywords, incluidas las palabras
 españolas del menú de energía. Detalles y cancelación: [Power menu](power-menu.md).
 La terminal normal sigue iniciando Zsh de login.

@@ -30,14 +30,27 @@ class TerminalProfileTests(unittest.TestCase):
             self.assertEqual(options[key], value)
         self.assertTrue({"listen_on", "startup_session", "geninclude", "watcher"}.isdisjoint(options))
 
+    def test_kitty_tabs_use_the_active_directory_without_extra_services(self):
+        config = (ROOT / "config/kitty/kitty.conf").read_text().splitlines()
+        self.assertIn("tab_bar_edge top", config)
+        self.assertIn("tab_bar_style powerline", config)
+        self.assertIn("tab_bar_min_tabs 1", config)
+        template = next(line for line in config if line.startswith("tab_title_template "))
+        self.assertIn("tab.active_wd", template)
+        self.assertIn(".rsplit('/', 1)[-1]", template)
+        self.assertIn("map kitty_mod+t new_tab_with_cwd", config)
+
     def test_default_entrypoints_use_kitty(self):
         sway = (ROOT / "config/sway/config").read_text()
         fuzzel = (ROOT / "config/fuzzel/fuzzel.ini").read_text()
         self.assertIn("bindsym $mod+Return exec kitty", sway)
-        self.assertIn("terminal=kitty -e", fuzzel)
+        self.assertIn("terminal=kitty --override=tab_bar_min_tabs=2 -e", fuzzel)
         for source in ("scripts/sway-tools.sh", "scripts/power-menu"):
             content = (ROOT / source).read_text()
             self.assertIn("exec kitty --class=mbp-", content)
+            for line in content.splitlines():
+                if "exec kitty --class=mbp-" in line:
+                    self.assertIn("--override=tab_bar_min_tabs=2", line)
             self.assertNotIn("exec foot", content)
 
     def test_foot_remains_a_managed_fallback(self):

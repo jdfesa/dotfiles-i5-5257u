@@ -36,7 +36,9 @@ if name=="nmcli":
 elif name=="flock": sys.exit(int(os.environ.get("LOCK_EXIT","0")))
 elif name=="kitty":
  import subprocess
- if not os.environ.get("KITTY_SKIP_CLIENT"): subprocess.run(args[2:],check=False)
+ if not os.environ.get("KITTY_SKIP_CLIENT"):
+    client = next(i for i, value in enumerate(args) if not value.startswith("--"))
+    subprocess.run(args[client:], check=False)
  # Match real Kitty: its own success does not propagate a failed child.
  sys.exit(int(os.environ.get("KITTY_EXIT","0")))
 elif name=="nmtui":
@@ -61,8 +63,8 @@ elif name=="nmtui":
         self.assertEqual(result.returncode, 0, result.stderr)
         kitty = next(c for c in calls if c[0] == "kitty")
         self.assertEqual(kitty[1:3], ["--class=mbp-networks", "--title=Wi-Fi networks"])
-        self.assertEqual(kitty[3:5], ["sh", "-c"])
-        self.assertIn("nmtui connect", kitty[5])
+        self.assertEqual(kitty[3:6], ["--override=tab_bar_min_tabs=2", "sh", "-c"])
+        self.assertIn("nmtui connect", kitty[6])
         self.assertFalse(list((self.root / "runtime").glob("mbp-networks.*/*")))
         self.assertEqual(sum("--rescan" in c for c in calls), 1)
         for call in calls:
@@ -134,7 +136,7 @@ elif name=="nmtui":
         _, calls = self.run_panel()
         kitty = next(c for c in calls if c[0] == "kitty")
         self.log.unlink()
-        return [*kitty[3:-1], str(self.root / "client-status")]
+        return [*kitty[4:-1], str(self.root / "client-status")]
 
     def test_tui_normal_exit_is_success(self):
         result = subprocess.run(self.tui_command(), env=self.env, timeout=5)

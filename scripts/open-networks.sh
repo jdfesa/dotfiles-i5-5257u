@@ -84,7 +84,7 @@ trap '\''code=$?; printf "%s\n" "$code" > "$1"'\'' 0
 trap "exit 0" HUP TERM
 nmtui connect
 '
-if kitty --class=mbp-networks --title='Wi-Fi networks' \
+if kitty --class=mbp-networks --title='Wi-Fi networks' --override=tab_bar_min_tabs=2 \
     sh -c "$tui_command" mbp-networks "$panel_state/status"; then
     if [ -r "$panel_state/status" ] && [ "$(cat "$panel_state/status")" = 0 ]; then
         exit 0
