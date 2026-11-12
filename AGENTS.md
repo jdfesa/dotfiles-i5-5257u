@@ -50,21 +50,21 @@
   íntegramente en inglés solo en los archivos indicados explícitamente.
 - El README.md principal de la raíz es una excepción explícita: todo su contenido,
   incluido el cuerpo, se redacta en inglés.
-- Mantener en inglés los títulos y subtítulos, así como los nombres de archivos,
-  scripts y directorios.
+- Redactar en inglés todos los títulos y subtítulos de la documentación,
+  incluidos los encabezados de sección y subsección.
 - Usar etiquetas de navegación y textos de enlaces a documentos en inglés,
   según el título o el nombre real del destino. Si la etiqueta es un nombre
   de archivo, respetar su escritura exacta, incluidas las mayúsculas y la extensión.
   Los destinos deben coincidir con las rutas reales, también en sistemas que
   distinguen mayúsculas de minúsculas.
-- Usar kebab-case (minúsculas y guion medio -) para los nombres propios de
-  archivos, scripts y directorios que contengan varias palabras; por ejemplo,
-  restore-guide.md, open-networks.sh y window-tools/. No usar espacios,
-  guiones bajos ni camelCase en esos nombres.
-- Respetar los nombres convencionales README.md, AGENTS.md, TODO.md,
-  CHANGELOG.md y LICENSE, y los nombres exigidos por aplicaciones o herramientas.
-  Los documentos convencionales de la raíz conservan las mayúsculas indicadas;
-  no convertir esos nombres a kebab-case.
+- Nombrar archivos, scripts y directorios en inglés y en kebab-case: usar
+  minúsculas y separar las palabras con guiones medios. No usar espacios,
+  guiones bajos ni camelCase. Ejemplos: restore-guide.md, open-networks.sh
+  y window-tools/.
+- Exceptuar de kebab-case los nombres convencionales, como AGENTS.md, TODO.md,
+  BACKLOG.md, README.md, CHANGELOG.md y LICENSE, y los nombres exactos exigidos
+  por aplicaciones o herramientas. Conservar sus mayúsculas, separadores y
+  extensiones; fuera de esas excepciones, no usar mayúsculas en nombres de archivo.
 - Conservar sin traducir comandos, rutas, identificadores, nombres propios
   y valores técnicos requeridos por el software. Esta convención no implica
   renombrados masivos de archivos existentes.
@@ -100,6 +100,19 @@
 - Transferir directamente por SSH solo los archivos privados necesarios y
   revisados; nunca publicarlos en Git. Estar ignorado por `.gitignore` no
   convierte cachés, descargas o estado de aplicaciones en archivos desplegables.
+
+## Git conventions
+
+- Redactar íntegramente en inglés los mensajes de commit, incluidos el asunto
+  y el cuerpo. Seguir Conventional Commits: `type(scope): description`; el
+  ámbito es opcional. Ejemplo: `feat(sway): add trackpad gestures`.
+- Redactar íntegramente en inglés el texto de los pull requests: el título,
+  los encabezados y todo el cuerpo, incluidos el resumen y la validación.
+  Los archivos incluidos en el diff conservan sus propias reglas de idioma.
+- Nombrar las ramas de trabajo como `tipo/descripcion-en-kebab-case`.
+  Elegir un tipo representativo del cambio principal: `feat/`, `fix/`, `docs/`,
+  `chore/`, etc. Usar una descripción breve en inglés, por ejemplo,
+  `feat/trackpad-gestures`. No usar `codex/` ni otros prefijos de herramientas.
 
 ## Workflow
 
