@@ -39,7 +39,7 @@ class TerminalProfileTests(unittest.TestCase):
         self.assertIn("tab.active_wd", template)
         self.assertIn(".rsplit('/', 1)[-1]", template)
         self.assertIn("map kitty_mod+t new_tab_with_cwd", config)
-        self.assertIn("map super+shift+t new_tab_with_cwd", config)
+        self.assertFalse(any(line.startswith("map super+shift+t ") for line in config))
 
     def test_default_entrypoints_use_kitty(self):
         sway = (ROOT / "config/sway/config").read_text()

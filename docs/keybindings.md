@@ -40,7 +40,8 @@ Fuentes: `config/sway/config`, `config/sway/trackpad-gestures.conf` y ayuda visi
 | Teclas de volumen/silencio | PulseAudio existente |
 | Super+Shift+S o Print | Selección de captura al portapapeles; sin copia persistente |
 | Ctrl+Shift+C / V | Copiar/pegar en Kitty |
-| Ctrl+Shift+T o Super+Shift+T | Abrir otra pestaña de Kitty en la carpeta actual |
+| Ctrl+Shift+T | Abrir otra pestaña de Kitty en la carpeta actual |
+| Ctrl+Shift+Q | Cerrar la pestaña activa de Kitty (predeterminado) |
 | Ctrl+Shift+Izquierda/Derecha | Ir a la pestaña anterior/siguiente de Kitty |
 
 [Keyboard backlight](keyboard-backlight.md) describe el controlador nativo y la verificación de F5/F6.

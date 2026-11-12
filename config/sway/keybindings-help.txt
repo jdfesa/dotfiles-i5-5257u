@@ -32,5 +32,6 @@ F5/F6 (or Fn+F5/F6)         Keyboard brightness (down/up; 0 turns it off)
 Volume keys                PulseAudio volume / mute
 Super+Shift+S / Print       Select screenshot area, copy to clipboard
 Ctrl+Shift+C / V            Copy / paste in Kitty
-Ctrl+Shift+T / Super+Shift+T  Open a Kitty tab in the current directory
+Ctrl+Shift+T                Open a Kitty tab in the current directory
+Ctrl+Shift+Q                Close the active Kitty tab (default)
 Ctrl+Shift+Left / Right     Previous / next Kitty tab
