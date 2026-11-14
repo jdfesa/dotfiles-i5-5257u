@@ -34,6 +34,7 @@ mínima de 28 y su separación posterior de 12; no cambia su acción de clic.
 | Temperatura | Sensor coretemp/x86_pkg_temp detectado al iniciar |
 | Disco | Espacio libre de `/`; G=GiB |
 | Paquetes | Candidatos de metadata local APT; click / Super+U |
+| Brillo de pantalla | Clic izquierdo: alterna el deslizador; rueda: +/−5 puntos porcentuales |
 | Audio | Icono de volumen/mute; click / Super+A abre alsamixer |
 | Wi-Fi | Solo icono de calidad, calidad de señal; click / Super+N |
 | Batería | Icono según estado y nivel, más porcentaje real de UPower; siempre visible |
@@ -42,6 +43,19 @@ mínima de 28 y su separación posterior de 12; no cambia su acción de clic.
 
 La interfaz inalámbrica se detecta desde sysfs (en este equipo `wlp3s0`), se configura según el hardware detectado. Los clicks ejecutan acciones fijas por
 `swaymsg`; no se interpolan nombres de redes ni eventos como comandos de shell.
+
+## Screen brightness
+
+Al pulsar el sol junto al audio se abre, justo debajo, el panel flotante con
+el deslizador y el porcentaje de brillo de pantalla. Se puede arrastrar, hacer clic en la barra o usar las
+flechas; otro clic en el sol, Esc o Close cierran solo ese panel. El mínimo es 1 % para no apagar la
+pantalla accidentalmente. La rueda sobre el icono y F1/F2 conservan los pasos de
+cinco puntos porcentuales; el teclado tiene su control independiente.
+
+El panel usa GTK3 y `brightnessctl` con `intel_backlight`. Lee el nivel al abrir,
+agrupa los cambios rápidos del deslizador y termina al cerrar. El icono es
+visible en modo compacto, sin consultar el brillo en el tick. El ajuste inicial
+de 40 % sigue en el override de Sway; no hay sondeos, servicios ni cambios a XFCE.
 
 ## Battery indicator
 
@@ -81,7 +95,7 @@ con los datos disponibles o con `--%`.
 
 La barra inicia en modo compacto. El chevrón situado antes de los paquetes
 permite ocultar o mostrar el grupo secundario: tráfico Wi-Fi, RAM, CPU,
-temperatura y espacio de disco. Clima, paquetes, audio, Wi-Fi, batería con su
+temperatura y espacio de disco. Clima, paquetes, brillo, audio, Wi-Fi, batería con su
 porcentaje, selector US/ES y fecha permanecen visibles. Un bloque marcado explícitamente
 como urgente por el productor tampoco se oculta.
 
@@ -133,15 +147,15 @@ y [Sway IPC manual](https://manpages.debian.org/trixie/sway/sway-ipc.7.en.html).
 
 ## Calendar
 
-El clic izquierdo sobre la fecha abre `mbp-calendar`: una ventana flotante
-centrada, nativa de Wayland y con el tema Mocha. Permite consultar meses y años;
+El clic izquierdo sobre la fecha abre `mbp-calendar` justo debajo del bloque:
+una ventana flotante, nativa de Wayland y con el tema Mocha. Permite consultar meses y años;
 no es una agenda, no sincroniza cuentas ni modifica la fecha del sistema.
 
 - Flechas del calendario: cambiar el mes o el año.
 - `Page Up` / `Page Down`: mes anterior / siguiente.
 - `Today` o `Home`: volver a la fecha actual; el día actual aparece marcado.
 - `Close`, `Escape` o el atajo habitual `Super+W`: cerrar la ventana.
-- Otro clic en la fecha presenta la ventana existente, sin duplicarla.
+- Otro clic en la fecha cierra solo el calendario; el siguiente vuelve a abrirlo.
 
 Se utiliza [Gtk.Calendar](https://docs.gtk.org/gtk3/class.Calendar.html)
 mediante `python3-gi` y `gir1.2-gtk-3.0`, declarados en la lista de paquetes.
@@ -154,14 +168,42 @@ El manifiesto enlaza `scripts/calendar-popup.py` a `~/.local/bin/mbp-calendar`
 y `config/calendar/calendar.css` a `~/.config/calendar/calendar.css`.
 La regla de Sway se limita al identificador `local.mbp.Calendar`; el clic
 solo acepta el bloque `tztime` / instancia `local` y ejecuta una acción fija.
+El calendario y el brillo se ajustan al borde de la pantalla si no caben
+centrados bajo su bloque. El posicionamiento solo se calcula al abrirlos.
+El helper `sway-panel-anchor.py` acepta únicamente esos dos paneles y coordenadas
+enteras validadas: centro y borde inferior del bloque, en píxeles lógicos locales
+a la salida, sin multiplicar por la escala. Swaybar no identifica la salida en
+el evento: se usa la compatible enfocada, o la única compatible. Sin una salida
+inequívoca, sin geometría o ante un fallo IPC, se conserva la apertura centrada.
+
+La suscripción a eventos de ventanas precede al lanzamiento y termina tras el
+anclaje, con un límite de 1,5 s. No hay consultas periódicas ni trabajo en el
+tick de la barra. En Sway 1.10.1, `window::new` precede a las reglas de ventana;
+se obtiene entonces el tamaño flotante y se mueve únicamente su `con_id`.
+Cada panel tiene un bloqueo privado en `XDG_RUNTIME_DIR`: los clics rápidos se
+serializan hasta el mapeo o el cierre y la salida del proceso anterior, sin
+abrir duplicados ni cerrar el otro panel. El bloqueo no mantiene procesos vivos.
+Esto reduce la carrera de presentación, pero no garantiza atómicamente el primer
+fotograma: GTK3/Wayland no permite fijar la posición absoluta del toplevel desde
+la aplicación. Véanse [Sway view mapping](https://github.com/swaywm/sway/blob/1.10.1/sway/tree/view.c)
+y [Gtk.Window.get_position](https://docs.gtk.org/gtk3/method.Window.get_position.html).
+
+En Sway 1.10.1 aislado y GTK 3.24.49, 16 aperturas a escalas 1 y 2 produjeron
+192 capturas: todas las muestras visibles, incluidas las primeras de cada
+apertura, quedaron bajo el ancla, sin salto al centro observado. Los clics reales
+del Swaybar aislado abrieron y cerraron solo su panel; cinco rondas de siete
+lanzamientos concurrentes por panel conservaron la alternancia. No se modificó
+el brillo ni se capturó la sesión de trabajo. Esto no garantiza el comportamiento
+de cada fotograma bajo cualquier carga ni sustituye la comprobación física del
+deslizador y la rueda.
 
 ### Resource profile
 
 En el i5-5257U, una muestra de 5 s con la ventana abierta en reposo registró
 52,4 MiB de RSS y 27,4 MiB de PSS (memoria proporcional, descontando la parte
 compartida con otros procesos), sin incremento de tiempo de CPU en ese intervalo.
-El cierre de la ventana terminó el proceso; una segunda apertura presentó la
-misma ventana sin crear otra instancia residente. Son observaciones puntuales,
+El cierre de la ventana terminó el proceso. La activación usa una instancia
+única, sin crear otra instancia residente. Son observaciones puntuales,
 no una garantía de consumo constante ni una medición de autonomía de la batería.
 
 ## Dependencies and installation

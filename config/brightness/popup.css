@@ -1,0 +1,46 @@
+#mbp-screen-brightness {
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+    font-family: "JetBrainsMono Nerd Font Mono";
+    font-size: 10pt;
+}
+
+#brightness-title { font-weight: bold; }
+#brightness-hint { color: #a6adc8; font-size: 8pt; }
+
+#mbp-screen-brightness scale trough,
+#mbp-screen-brightness scale highlight,
+#mbp-screen-brightness scale slider {
+    background-image: none;
+    box-shadow: none;
+}
+#mbp-screen-brightness scale trough {
+    min-height: 8px;
+    border-radius: 8px;
+    border-color: #45475a;
+    background-color: #313244;
+}
+#mbp-screen-brightness scale highlight {
+    border-radius: 8px;
+    border-color: #f9e2af;
+    background-color: #f9e2af;
+}
+#mbp-screen-brightness scale slider {
+    min-width: 14px;
+    min-height: 14px;
+    border-radius: 50%;
+    border-color: #f9e2af;
+    background-color: #f9e2af;
+}
+
+#mbp-screen-brightness button {
+    background-image: none;
+    background-color: #313244;
+    color: #cdd6f4;
+    border: 1px solid #45475a;
+    box-shadow: none;
+    text-shadow: none;
+    transition: none;
+}
+#mbp-screen-brightness button:hover,
+#mbp-screen-brightness button:focus { border-color: #b4befe; }

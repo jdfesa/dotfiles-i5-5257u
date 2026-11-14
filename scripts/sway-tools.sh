@@ -18,6 +18,21 @@ read_keyboard_level() {
 }
 
 case ${1:-} in
+    screen-brightness-panel|calendar)
+        case "$#" in
+            1|3)
+                # This launcher is itself a symlink to the checkout.
+                source=$(readlink -f -- "$0")
+                exec /usr/bin/python3 "${source%/*}/sway-panel-anchor.py" "$@" ;;
+            *) exit 2 ;;
+        esac ;;
+    screen-brightness-up|screen-brightness-down)
+        [ "$#" -eq 1 ] || { printf '%s\n' 'Screen brightness takes no extra arguments.' >&2; exit 2; }
+        case $1 in
+            screen-brightness-up) value=+5% ;;
+            screen-brightness-down) value=5%- ;;
+        esac
+        exec brightnessctl -q -d intel_backlight set "$value" ;;
     keyboard-brightness-up|keyboard-brightness-down)
         [ "$#" -eq 1 ] || { printf '%s\n' 'Keyboard brightness takes no extra arguments.' >&2; exit 2; }
         umask 077
@@ -45,8 +60,6 @@ case ${1:-} in
         exec "$HOME/.local/bin/mbp-open-networks" ;;
     audio)
         exec kitty --class=mbp-mixer --title='Audio mixer' --override=tab_bar_min_tabs=2 alsamixer ;;
-    calendar)
-        exec "$HOME/.local/bin/mbp-calendar" ;;
     updates)
         exec kitty --class=mbp-updates --title='APT updates (cached metadata)' --override=tab_bar_min_tabs=2 \
             sh -c 'apt list --upgradable; printf "\nRead-only; no refresh or installation. Press Enter to close.\n"; read -r ignored' ;;
@@ -66,5 +79,5 @@ case ${1:-} in
         trap 'rm -f "$shot"' EXIT
         grim -g "$geometry" "$shot"
         wl-copy --type image/png < "$shot" ;;
-    *) printf '%s\n' 'Usage: mbp-sway-tools networks|audio|calendar|updates|browser|help|screenshot|keyboard-brightness-up|keyboard-brightness-down' >&2; exit 2 ;;
+    *) printf '%s\n' 'Usage: mbp-sway-tools networks|audio|calendar|updates|browser|help|screenshot|screen-brightness-up|screen-brightness-down|screen-brightness-panel|keyboard-brightness-up|keyboard-brightness-down' >&2; exit 2 ;;
 esac

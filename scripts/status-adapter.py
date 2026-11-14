@@ -28,6 +28,7 @@ PEACH = "#fab387"
 MUTED = "#7f849c"
 ICON_FONT = "JetBrainsMono Nerd Font Propo 12"
 BATTERY_FONT = "JetBrainsMono Nerd Font Mono 12"
+SCREEN_BRIGHTNESS_ICON = '<span font_desc="JetBrainsMono Nerd Font Mono 14">\uf185</span>'
 # Material Design code points verified against Nerd Fonts v3.5.1.
 BATTERY_LEVEL_ICONS = ("\U000f008e", "\U000f007a", "\U000f007b", "\U000f007c",
                        "\U000f007d", "\U000f007e", "\U000f007f", "\U000f0080",
@@ -381,14 +382,39 @@ class StatusView:
                               "full_text": icon, "short_text": icon, "color": LAVENDER,
                               "min_width": 28, "align": "center", "markup": "pango",
                               "separator": False, "separator_block_width": 12})
+        audio = next((i for i, block in enumerate(blocks)
+                      if block.get("name") == "volume"), len(blocks))
+        blocks.insert(audio, {"name": "screen_brightness", "instance": "intel_backlight",
+                              "full_text": SCREEN_BRIGHTNESS_ICON, "short_text": SCREEN_BRIGHTNESS_ICON,
+                              "color": YELLOW, "min_width": 28, "align": "center", "markup": "pango",
+                              "separator": False, "separator_block_width": 12})
         if self.keyboard is not None:
             clock = next((i for i, block in enumerate(blocks) if block.get("name") == "tztime"), len(blocks))
             blocks.insert(clock, self.keyboard.block())
         return blocks
 
 
+def popup_anchor(event):
+    """Get a block center and bottom in Swaybar's logical surface pixels."""
+    x, y, dx, dy, width, height = (event.get(key) for key in
+                                  ("x", "y", "relative_x", "relative_y", "width", "height"))
+    if not all(type(n) is int and 0 <= n <= 32767 for n in (x, y, dx, dy, width, height)):
+        return None
+    if not (dx <= x and dy <= y and dx < width and dy < height):
+        return None
+    center, bottom = x - dx + width // 2, y - dy + height
+    return (center, bottom) if center <= 32767 and 1 <= bottom <= 256 else None
+
+
 def handle_click(event, view=None):
-    if type(event.get("button")) is not int or event["button"] != 1:
+    button = event.get("button")
+    if type(button) is not int:
+        return False
+    helper = None
+    if event.get("name") == "screen_brightness" and event.get("instance") == "intel_backlight":
+        helper = {1: "screen-brightness-panel", 4: "screen-brightness-up",
+                  5: "screen-brightness-down"}.get(button)
+    elif button != 1:
         return False
     if event.get("name") == "keyboard_layout" and event.get("instance") == "us-es":
         return view.keyboard.toggle() if view is not None and view.keyboard is not None else False
@@ -397,7 +423,6 @@ def handle_click(event, view=None):
             view.expanded = not view.expanded
             return True
         return False
-    helper = None
     if event.get("name") == "wireless" and event.get("instance") in (WIRELESS, "_first_"):
         helper = "networks"
     elif event.get("name") == "volume" and event.get("instance") == "default.Master.0":
@@ -407,8 +432,10 @@ def handle_click(event, view=None):
     elif event.get("name") == "tztime" and event.get("instance") == "local":
         helper = "calendar"
     if helper:
-        # Only allowlisted helper names; never interpret event strings/SSID.
-        subprocess.run(["swaymsg", f"exec ~/.local/bin/mbp-sway-tools {helper}"],
+        # Only fixed helper names and validated integer coordinates, never event strings.
+        anchor = popup_anchor(event) if helper in ("screen-brightness-panel", "calendar") else None
+        suffix = f" {anchor[0]} {anchor[1]}" if anchor is not None else ""
+        subprocess.run(["swaymsg", f"exec ~/.local/bin/mbp-sway-tools {helper}{suffix}"],
                        stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
                        stderr=subprocess.DEVNULL, timeout=3, check=True)
     return False

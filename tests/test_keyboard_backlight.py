@@ -135,8 +135,8 @@ elif method != "SetBrightness":
         config = (ROOT / "config/sway/config").read_text()
         self.assertIn("bindsym XF86KbdBrightnessDown exec $tools keyboard-brightness-down", config)
         self.assertIn("bindsym XF86KbdBrightnessUp exec $tools keyboard-brightness-up", config)
-        self.assertIn("bindsym XF86MonBrightnessDown exec brightnessctl -d intel_backlight set 5%-", config)
-        self.assertIn("bindsym XF86MonBrightnessUp exec brightnessctl -d intel_backlight set +5%", config)
+        self.assertIn("bindsym XF86MonBrightnessDown exec $tools screen-brightness-down", config)
+        self.assertIn("bindsym XF86MonBrightnessUp exec $tools screen-brightness-up", config)
         self.assertIn("F5/F6 (or Fn+F5/F6)", (ROOT / "config/sway/keybindings-help.txt").read_text())
         self.assertIn("F5 / F6", (ROOT / "docs/keybindings.md").read_text())
 

@@ -38,6 +38,45 @@ class AdapterTests(unittest.TestCase):
             adapter.handle_click(dict(name="wireless; arbitrary-command", instance=adapter.WIRELESS, button=1))
             run.assert_not_called()
 
+    def test_screen_brightness_only_dispatches_fixed_actions(self):
+        event = dict(name="screen_brightness", instance="intel_backlight")
+        with patch.object(adapter.subprocess, "run") as run:
+            for button, action in ((1, "panel"), (4, "up"), (5, "down")):
+                self.assertFalse(adapter.handle_click(dict(event, button=button)))
+                self.assertEqual(run.call_args.args[0], [
+                    "swaymsg", f"exec ~/.local/bin/mbp-sway-tools screen-brightness-{action}"])
+            run.reset_mock()
+            for event in (dict(event, button=3), dict(event, button=True),
+                          dict(event, button=4, instance="other"),
+                          dict(name="wireless", instance=adapter.WIRELESS, button=4)):
+                self.assertFalse(adapter.handle_click(event))
+            run.assert_not_called()
+
+    def test_popups_anchor_to_block_not_cursor_using_logical_pixels(self):
+        coordinates = dict(x=1028, y=10, relative_x=8, relative_y=10,
+                           width=28, height=28, scale=2)
+        with patch.object(adapter.subprocess, "run") as run:
+            for name, instance, helper in (
+                    ("screen_brightness", "intel_backlight", "screen-brightness-panel"),
+                    ("tztime", "local", "calendar")):
+                adapter.handle_click(dict(coordinates, name=name, instance=instance, button=1))
+                self.assertEqual(run.call_args.args[0], [
+                    "swaymsg", f"exec ~/.local/bin/mbp-sway-tools {helper} 1034 28"])
+            adapter.handle_click(dict(coordinates, name="screen_brightness",
+                                      instance="intel_backlight", button=4))
+            self.assertEqual(run.call_args.args[0],
+                             ["swaymsg", "exec ~/.local/bin/mbp-sway-tools screen-brightness-up"])
+
+    def test_invalid_popup_coordinates_preserve_fixed_launch(self):
+        event = dict(name="tztime", instance="local", button=1, x=1028, y=10,
+                     relative_x=8, relative_y=10, width=28, height=28)
+        with patch.object(adapter.subprocess, "run") as run:
+            for invalid in (dict(x="1; exec unwanted"), dict(x=True), dict(width=0),
+                            dict(relative_x=29), dict(height=400), dict(relative_y=11)):
+                adapter.handle_click(dict(event, **invalid))
+                self.assertEqual(run.call_args.args[0],
+                                 ["swaymsg", "exec ~/.local/bin/mbp-sway-tools calendar"])
+
     def test_calendar_click_is_allowlisted_and_left_button_only(self):
         with patch.object(adapter.subprocess, "run") as run:
             adapter.handle_click(dict(name="tztime", instance="local", button=1))
@@ -72,7 +111,8 @@ class CollapseTests(unittest.TestCase):
         frame = view.update(self.blocks, self.traffic, (75, "discharging"))
         self.assertFalse(adapter.SECONDARY_BLOCKS & {b["name"] for b in frame})
         self.assertEqual([b["name"] for b in frame],
-                         ["read_file", "stats_toggle", "read_file", "volume", "wireless", "battery", "tztime"])
+                         ["read_file", "stats_toggle", "read_file", "screen_brightness",
+                          "volume", "wireless", "battery", "tztime"])
         self.assertEqual(next(b for b in frame if b["name"] == "battery")["full_text"],
                          adapter.format_battery((75, "discharging"))[0])
         self.assertEqual(frame[1]["full_text"], "\uf054")

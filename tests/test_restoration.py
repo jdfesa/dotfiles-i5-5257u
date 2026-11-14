@@ -50,6 +50,15 @@ class RestorationTests(unittest.TestCase):
         links.rollback(journal)
         self.assertTrue(all(e["action"] == "create" for e in links.plan(self.repo, self.home)))
 
+    def test_sway_installs_brightness_panel_and_theme(self):
+        plan = links.plan(self.repo, self.home)
+        links.apply(plan, self.repo, self.home, self.base / "main-backup")
+        for destination, source in ((".local/bin/mbp-screen-brightness", "scripts/screen-brightness-popup.py"),
+                                    (".config/brightness/popup.css", "config/brightness/popup.css")):
+            target = self.home / destination
+            self.assertTrue(target.is_symlink())
+            self.assertEqual(target.resolve(), self.repo / source)
+
     def test_trackpad_module_is_linked_and_loaded_before_local_overrides(self):
         plan = links.plan(self.repo, self.home)
         links.apply(plan, self.repo, self.home, self.base / "main-backup")

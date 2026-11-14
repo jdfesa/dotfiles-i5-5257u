@@ -28,6 +28,7 @@ Super+Shift+C / R           Reload Sway (R does not restart it)
 Super+Shift+E               Exit session (Y confirms; N/Esc cancels)
 US/ES (left of date)        Click to switch US / Spanish (Spain) keyboard layout
 F1/F2 (or Fn+F1/F2)         Screen brightness
+Brightness icon             Left click: toggle slider; scroll: +/-5 percentage points
 F5/F6 (or Fn+F5/F6)         Keyboard brightness (down/up; 0 turns it off)
 Volume keys                PulseAudio volume / mute
 Super+Shift+S / Print       Select screenshot area, copy to clipboard
