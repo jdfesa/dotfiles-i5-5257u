@@ -42,8 +42,8 @@ Las versiones siguientes son referencia de compatibilidad, no pins de APT.
 | [zsh](https://packages.debian.org/trixie/zsh) | `5.9-8+b24` | Shell predeterminada |
 | [starship](https://packages.debian.org/trixie/starship) | `1.22.1-5` | Prompt de Zsh adaptado de mydotfiles |
 | [i3status](https://packages.debian.org/trixie/i3status) | `2.15-2` | Backend de Swaybar |
-| [python3-gi](https://packages.debian.org/trixie/python3-gi) | `3.50.0-4+b1` | Calendario GTK bajo demanda |
-| [gir1.2-gtk-3.0](https://packages.debian.org/trixie/gir1.2-gtk-3.0) | `3.24.49-3` | Widget Gtk.Calendar nativo Wayland |
+| [python3-gi](https://packages.debian.org/trixie/python3-gi) | `3.50.0-4+b1` | Calendario y control de brillo GTK bajo demanda |
+| [gir1.2-gtk-3.0](https://packages.debian.org/trixie/gir1.2-gtk-3.0) | `3.24.49-3` | Calendario y deslizador nativos Wayland |
 | [file](https://packages.debian.org/trixie/file) | `1:5.46-5` | Detección de tipos de archivo en Yazi |
 | [poppler-utils](https://packages.debian.org/trixie/poppler-utils) | `25.03.0-5+deb13u4` | Vista previa PDF en Yazi |
 | [zathura](https://packages.debian.org/trixie/zathura) | `0.5.11-1` | Lector con recoloreado de páginas |

@@ -35,7 +35,8 @@ Fuentes: `config/sway/config`, `config/sway/trackpad-gestures.conf` y ayuda visi
 | Super+Shift+C o R | Recargar Sway; R **no reinicia** el compositor |
 | Super+Shift+E | Cerrar sesión; Y confirma, N/Esc cancela |
 | Botón US / ES junto a la fecha | Clic izquierdo alterna inglés US / español de España |
-| F1 / F2, posiblemente con Fn | Brillo de pantalla -/+5 % |
+| F1 / F2, posiblemente con Fn | Brillo de pantalla: -/+5 puntos porcentuales |
+| Icono de brillo en la barra | Clic izquierdo: abre/cierra solo el deslizador; rueda arriba/abajo: +/−5 puntos |
 | F5 / F6, posiblemente con Fn | Brillo de teclado -/+10 % mediante UPower; permite apagarlo |
 | Teclas de volumen/silencio | PulseAudio existente |
 | Super+Shift+S o Print | Selección de captura al portapapeles; sin copia persistente |

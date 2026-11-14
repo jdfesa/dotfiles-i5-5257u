@@ -19,6 +19,8 @@ bibliotecas transitivas.
 | Zathura | Enter sobre un PDF en Yazi; páginas oscuras, sin cambiar el lector XDG | `config/zathura/zathurarc` → `~/.config/zathura/zathurarc` |
 | Wi-Fi networks | Super+N, icono de barra o búsqueda en Fuzzel | `scripts/open-networks.sh`, `config/network/mbp-networks.desktop` → binario/enlace .desktop del usuario |
 | Power menu | Buscar Power menu/apagar en Fuzzel o Super+Shift+P | `config/power/mbp-power-menu.desktop`, `scripts/power-menu` y `scripts/power-action.sh` → destinos del manifiesto |
+| Screen brightness | Sol de Swaybar: abre/cierra el deslizador; rueda: pasos de 5 puntos | `scripts/screen-brightness-popup.py`, `config/brightness/popup.css`; [Status bar](status-bar.md#screen-brightness) |
+| Calendar | Fecha de Swaybar: abre/cierra el calendario de consulta | `scripts/calendar-popup.py`, `config/calendar/calendar.css`; [Status bar](status-bar.md#calendar) |
 | wmenu | Ayuda a demanda | Helpers públicos; no sustituye el catálogo de aplicaciones de Fuzzel |
 
 Versiones, origen e integridad se mantienen en [Dependencies](dependencies.md).

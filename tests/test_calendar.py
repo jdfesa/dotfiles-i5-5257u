@@ -24,12 +24,25 @@ class CalendarTests(unittest.TestCase):
             with self.subTest(values=values), self.assertRaises(ValueError):
                 popup.offset_month(*values)
 
-    def test_activation_reuses_existing_window(self):
+    def test_second_activation_closes_only_its_existing_window(self):
         app = Mock()
         with patch.object(popup, "build_window") as build:
             popup.activate(app)
             build.assert_not_called()
-        app.get_active_window.return_value.present.assert_called_once_with()
+        app.get_active_window.return_value.destroy.assert_called_once_with()
+        app.get_active_window.return_value.present.assert_not_called()
+
+    def test_repeated_activations_open_close_and_reopen(self):
+        app = Mock()
+        with patch.object(popup, "build_window") as build:
+            app.get_active_window.return_value = None
+            popup.activate(app)
+            app.get_active_window.return_value = build.return_value
+            popup.activate(app)
+            app.get_active_window.return_value = None
+            popup.activate(app)
+        self.assertEqual(build.call_count, 2)
+        build.return_value.destroy.assert_called_once_with()
 
     def test_first_activation_builds_only_one_window(self):
         app = Mock()

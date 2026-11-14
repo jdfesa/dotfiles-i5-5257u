@@ -14,6 +14,8 @@ Los helpers se ejecutan como jd. Rutas y modos se declaran en `config/manifest.j
 | scripts/power-action.sh | suspend/reboot/poweroff, --dry-run opcional; autorización/inhibidores | systemd >=257, busctl, terminal, swaylock; política simulada y tests PTY |
 | scripts/status-bar.sh | Inicia i3status, detecta sensor/audio una vez | i3status, pactl, fontconfig; parser de shell |
 | scripts/status-adapter.py | Adaptador JSON/clics, selector US/ES por Sway IPC y vista contraíble; diagnóstico --run-once | Python 3, UPower; tests de protocolo, redibujado sin muestreo y allowlist |
+| scripts/screen-brightness-popup.py | Deslizador de pantalla bajo demanda | GTK3 y brightnessctl; sin servicio residente |
+| scripts/sway-panel-anchor.py | Anclaje de los dos paneles por eventos IPC al abrir | Python 3 y Sway; plazo acotado, coordenadas lógicas y allowlist de ventanas |
 | scripts/calendar-popup.py | Calendario de consulta, instancia única y salida al cerrar | Python 3, PyGObject, GTK3; fechas/activación simuladas y validación Wayland |
 | scripts/sway-status.py | --once solo lectura; parseo de batería y umbrales | Python 3, UPower; ejemplos de batería |
 | scripts/update-weather.py | Oneshot HTTPS acotado y caché validada | Python 3; tests sin red de respuestas/timeout |

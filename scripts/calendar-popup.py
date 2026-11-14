@@ -103,9 +103,11 @@ def build_window(application):
 
 def activate(application):
     window = application.get_active_window()
-    if window is None:
-        window = build_window(application)
-        window.show_all()
+    if window is not None:
+        window.destroy()
+        return
+    window = build_window(application)
+    window.show_all()
     window.present()
 
 

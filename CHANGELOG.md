@@ -4,6 +4,8 @@
 
 ### Added
 
+- Control de brillo de pantalla en Swaybar: deslizador bajo demanda y pasos
+  de 5 puntos con la rueda, sin sondeos ni servicios nuevos.
 - Perfil opcional para XAMPP, PHP y Composer con lanzadores, instalador del
   PHAR verificado, guía y pruebas, fuera de la restauración principal.
 - Guía breve de diagnóstico y recuperación del controlador Wi-Fi brcmfmac
@@ -20,6 +22,9 @@
 
 ### Fixed
 
+- El deslizador de brillo y el calendario se abren debajo de sus controles
+  de la barra de Sway por eventos IPC, sin cambiar su tamaño ni su interfaz;
+  otro clic cierra únicamente su panel, sin duplicar ventanas.
 - El panel Wi-Fi avisa si el escaneo devuelve una lista vacía aunque nmcli
   termine con éxito, distingue la radio apagada y conserva el selector abierto,
   sin cambiar conexiones ni reiniciar el controlador automáticamente.

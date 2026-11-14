@@ -29,6 +29,7 @@ exec ~/.local/bin/mbp-sway-session
 for_window [app_id="^mbp-(networks|mixer|updates)$"] floating enable, resize set 760 520, move position center
 for_window [app_id="^mbp-power$"] floating enable, resize set 760 360, move position center
 for_window [app_id="^local[.]mbp[.]Calendar$"] floating enable, move position center
+for_window [app_id="^local[.]mbp[.]ScreenBrightness$"] floating enable, move position center
 
 # Application keys match the reference; the tools are Wayland-native.
 bindsym $mod+Return exec kitty
@@ -113,8 +114,8 @@ mode "resize" {
 
 bindsym XF86KbdBrightnessDown exec $tools keyboard-brightness-down
 bindsym XF86KbdBrightnessUp exec $tools keyboard-brightness-up
-bindsym XF86MonBrightnessDown exec brightnessctl -d intel_backlight set 5%-
-bindsym XF86MonBrightnessUp exec brightnessctl -d intel_backlight set +5%
+bindsym XF86MonBrightnessDown exec $tools screen-brightness-down
+bindsym XF86MonBrightnessUp exec $tools screen-brightness-up
 bindsym XF86AudioRaiseVolume exec pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindsym XF86AudioMute exec pactl set-sink-mute @DEFAULT_SINK@ toggle

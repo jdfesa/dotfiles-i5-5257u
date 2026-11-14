@@ -8,6 +8,8 @@
 
 ## Hardware validation
 
+- [ ] Confirmar físicamente el arrastre y la rueda del control de brillo en Sway;
+      la alternancia por clic y el anclaje se verifican en Sway aislado.
 - [ ] Revalidar el selector US/ES tras un nuevo login de Sway y al conectar o
       desconectar el teclado externo.
 - [ ] Verificar físicamente el cambio de escritorio con tres dedos en ambos sentidos
