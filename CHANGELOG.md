@@ -6,6 +6,8 @@
 
 - Control de brillo de pantalla en Swaybar: deslizador bajo demanda y pasos
   de 5 puntos con la rueda, sin sondeos ni servicios nuevos.
+- Restauración opcional por perfil: simulación APT, enlaces con reversión,
+  acceso SSH, instalación de Node.js verificada y hotspot bajo demanda.
 - Perfil opcional para XAMPP, PHP y Composer con lanzadores, instalador del
   PHAR verificado, guía y pruebas, fuera de la restauración principal.
 - Guía breve de diagnóstico y recuperación del controlador Wi-Fi brcmfmac

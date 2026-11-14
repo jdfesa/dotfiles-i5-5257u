@@ -6,6 +6,10 @@
       las pruebas con un directorio personal temporal no cubren el instalador del
       sistema, el gestor de acceso ni PAM.
 
+- [ ] Validar SSH por clave desde otra máquina, el hotspot desde la consola
+      local y el autostart de brillo en un login XFCE. Véase
+      [Optional restore profiles](docs/optional-profiles.md).
+
 ## Hardware validation
 
 - [ ] Confirmar físicamente el arrastre y la rueda del control de brillo en Sway;

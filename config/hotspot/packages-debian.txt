@@ -1,0 +1,4 @@
+dnsmasq-base
+network-manager
+nftables
+wpasupplicant

@@ -12,7 +12,8 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 XAMPP_MANIFEST = "config/xampp/manifest.json"
-MANIFESTS = ("config/manifest.json", "config/xfce/manifest.json", XAMPP_MANIFEST)
+HOTSPOT_MANIFEST = "config/hotspot/manifest.json"
+MANIFESTS = ("config/manifest.json", "config/xfce/manifest.json", XAMPP_MANIFEST, HOTSPOT_MANIFEST)
 spec = importlib.util.spec_from_file_location("restore_links", ROOT / "tools/link-user-config.py")
 links = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(links)
@@ -130,6 +131,19 @@ class RestorationTests(unittest.TestCase):
                             for e in links.plan(self.repo, self.home, XAMPP_MANIFEST)))
         links.rollback(journal)
         self.assertTrue(all(not path.is_symlink() and not path.exists() for path in expected))
+
+    def test_optional_hotspot_links_only_the_launcher(self):
+        before = links.plan(self.repo, self.home)
+        hotspot = links.plan(self.repo, self.home, HOTSPOT_MANIFEST)
+        self.assertEqual([Path(e["destination"]) for e in hotspot],
+                         [self.home / ".local/bin/mbp-wifi-hotspot"])
+        journal = links.apply(hotspot, self.repo, self.home, self.base / "hotspot-backup")
+        self.assertEqual(links.plan(self.repo, self.home), before)
+        self.assertEqual(links.plan(self.repo, self.home, HOTSPOT_MANIFEST)[0]["action"],
+                         "unchanged")
+        links.rollback(journal)
+        self.assertEqual(links.plan(self.repo, self.home, HOTSPOT_MANIFEST)[0]["action"],
+                         "create")
 
     def test_manifest_cannot_escape_checkout(self):
         for path in ("../manifest.json", "/tmp/manifest.json"):

@@ -147,6 +147,14 @@ Zathura con el tema oscuro según [Yazi and Zathura setup](yazi-setup.md).
 Guardar trabajo y coordinar ensayos de energía/red antes de suspender, apagar
 o cambiar de conexión.
 
+## Optional modules
+
+Consultar [Optional restore profiles](optional-profiles.md) para recuperar
+SSH, Node.js, XAMPP, XFCE o un hotspot. No son requisitos de Sway y se
+aplican uno por uno. Si se necesita acceso desde otro equipo durante la
+restauración, preparar [SSH access](others/ssh-access.md) desde la consola
+local antes del resto del procedimiento.
+
 ## Recovery and coverage
 
 [Deployment](deployment.md) describe rollback por journal y conflictos.

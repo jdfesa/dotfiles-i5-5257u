@@ -1,0 +1,8 @@
+[
+  {
+    "source": "scripts/wifi-hotspot.sh",
+    "destination": ".local/bin/mbp-wifi-hotspot",
+    "mode": 493,
+    "deployment": "symlink"
+  }
+]
