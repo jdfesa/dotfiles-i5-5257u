@@ -103,6 +103,13 @@ Programas del proveedor, gestionados separadamente de la lista Debian:
 pendiente; [Zed](zed-setup.md) registra URL, SHA256, instalación reproducible,
 requisitos Vulkan, configuración, verificación y recuperación.
 
+## Optional development dependencies
+
+[XAMPP and Composer setup](others/xampp-setup.md) registra las versiones
+observadas, la procedencia y los requisitos de un perfil separado en
+[packages-debian.txt](../config/xampp/packages-debian.txt).
+La restauración de Sway no instala XAMPP ni Composer.
+
 ## Fonts and script assets
 
 JetBrains Mono Nerd Font Mono Regular/Bold, base 2.304 / Nerd Fonts v3.5.1,

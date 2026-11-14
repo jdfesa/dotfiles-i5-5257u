@@ -1,0 +1,4 @@
+#!/bin/sh
+# Make the XAMPP PHP CLI available for php artisan and Composer scripts.
+set -eu
+exec /opt/lampp/bin/php "$@"

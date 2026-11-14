@@ -11,6 +11,8 @@ import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
+XAMPP_MANIFEST = "config/xampp/manifest.json"
+MANIFESTS = ("config/manifest.json", "config/xfce/manifest.json", XAMPP_MANIFEST)
 spec = importlib.util.spec_from_file_location("restore_links", ROOT / "tools/link-user-config.py")
 links = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(links)
@@ -24,7 +26,7 @@ class RestorationTests(unittest.TestCase):
         self.repo = self.base / "repo"
         self.home = self.base / "home"
         self.home.mkdir()
-        for manifest in ("config/manifest.json", "config/xfce/manifest.json"):
+        for manifest in MANIFESTS:
             path = self.repo / manifest
             path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(ROOT / manifest, path)
@@ -90,7 +92,7 @@ class RestorationTests(unittest.TestCase):
         self.assertTrue((ROOT / "config/lightdm/mbp-minimal/gtk-3.0/gtk.css").is_file())
 
     def test_lightdm_files_are_not_deployed_as_user_links(self):
-        for manifest in ("config/manifest.json", "config/xfce/manifest.json"):
+        for manifest in MANIFESTS:
             entries = json.loads((ROOT / manifest).read_text())
             self.assertFalse(any("lightdm/" in entry["source"] for entry in entries))
 
@@ -103,6 +105,22 @@ class RestorationTests(unittest.TestCase):
         desktop = self.home / ".config/autostart/mbp2015-brightness.desktop"
         self.assertIn("Exec=/home/jd/.local/bin/mbp-xfce-brightness", desktop.read_text())
         self.assertNotIn("github/mbp2015", desktop.read_text())
+
+    def test_optional_xampp_deploys_only_its_launchers_and_rolls_back(self):
+        before = links.plan(self.repo, self.home)
+        expected = {self.home / f".local/bin/{name}" for name in ("php", "composer", "xampp")}
+        self.assertTrue(expected.isdisjoint(Path(e["destination"]) for e in before))
+        self.assertTrue(all(not path.exists() for path in expected))
+        xampp = links.plan(self.repo, self.home, XAMPP_MANIFEST)
+        self.assertEqual({Path(e["destination"]) for e in xampp}, expected)
+        journal = links.apply(xampp, self.repo, self.home, self.base / "xampp-backup")
+        self.assertEqual(links.plan(self.repo, self.home), before)
+        self.assertTrue(all(path.is_symlink() for path in expected))
+        self.assertFalse((self.home / ".local/share/composer/composer.phar").exists())
+        self.assertTrue(all(e["action"] == "unchanged"
+                            for e in links.plan(self.repo, self.home, XAMPP_MANIFEST)))
+        links.rollback(journal)
+        self.assertTrue(all(not path.is_symlink() and not path.exists() for path in expected))
 
     def test_manifest_cannot_escape_checkout(self):
         for path in ("../manifest.json", "/tmp/manifest.json"):
@@ -121,9 +139,13 @@ class RestorationTests(unittest.TestCase):
                      "python3-gi", "gir1.2-gtk-3.0"):
             self.assertIn(name, main)
         self.assertNotIn("helium-bin", main)
+        xampp = (ROOT / "config/xampp/packages-debian.txt").read_text().splitlines()
+        self.assertEqual(xampp, sorted(set(xampp)))
+        self.assertEqual(set(xampp) - set(main),
+                         {"net-tools", "sudo", "x11-xserver-utils", "xauth"})
 
     def test_declared_public_sources_have_deployable_modes(self):
-        for manifest in ("config/manifest.json", "config/xfce/manifest.json"):
+        for manifest in MANIFESTS:
             for entry in json.loads((ROOT / manifest).read_text()):
                 if entry["source"].startswith("private/"):
                     continue

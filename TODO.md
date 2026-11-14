@@ -30,6 +30,8 @@
 
 ## Development environment
 
+- [ ] Verificar el panel gráfico de XAMPP en la sesión Sway después del despliegue
+      del [perfil opcional](docs/others/xampp-setup.md).
 - [ ] Acordar un atajo para el editor; Zed permanece accesible solo desde el lanzador.
 - [ ] Seleccionar los entornos de ejecución, servidores LSP y extensiones para los
       lenguajes del instituto, y probar proyectos reales.

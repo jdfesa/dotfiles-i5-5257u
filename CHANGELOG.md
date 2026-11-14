@@ -4,6 +4,8 @@
 
 ### Added
 
+- Perfil opcional para XAMPP, PHP y Composer con lanzadores, instalador del
+  PHAR verificado, guía y pruebas, fuera de la restauración principal.
 - Guía breve de diagnóstico y recuperación del controlador Wi-Fi brcmfmac
   tras suspensión, con comandos de reset y comprobación de conectividad.
 - Barra superior de pestañas de Kitty con el nombre de la carpeta activa y

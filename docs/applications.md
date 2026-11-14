@@ -29,6 +29,11 @@ Instalación/rutas/verificación/recuperación: [Helium](helium-setup.md),
 resuelve por XDG, no se fija su ejecutable en el atajo. Helium y Zed conservan
 sus entradas de búsqueda en Fuzzel.
 
+## Optional development profile
+
+[XAMPP and Composer setup](others/xampp-setup.md) documenta los lanzadores
+opcionales de desarrollo local. No se instalan con el perfil principal.
+
 ## Fuzzel installation and recovery
 
 Fuzzel es nativo Wayland, similar al modo drun de Rofi, sin daemon residente.
