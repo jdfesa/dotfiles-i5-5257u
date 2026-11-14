@@ -106,6 +106,9 @@
 - Redactar íntegramente en inglés los mensajes de commit, incluidos el asunto
   y el cuerpo. Seguir Conventional Commits: `type(scope): description`; el
   ámbito es opcional. Ejemplo: `feat(sway): add trackpad gestures`.
+- Cuando se autoricen commits, hacer uno por cada bloque coherente y validado,
+  a medida que se completa. Preparar el índice de forma selectiva; no mezclar
+  cambios ajenos ni dejar todos los commits para el final.
 - Redactar íntegramente en inglés el texto de los pull requests: el título,
   los encabezados y todo el cuerpo, incluidos el resumen y la validación.
   Los archivos incluidos en el diff conservan sus propias reglas de idioma.
