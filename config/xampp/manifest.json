@@ -1,0 +1,20 @@
+[
+  {
+    "source": "scripts/xampp/xampp",
+    "destination": ".local/bin/xampp",
+    "mode": 493,
+    "deployment": "symlink"
+  },
+  {
+    "source": "scripts/xampp/composer",
+    "destination": ".local/bin/composer",
+    "mode": 493,
+    "deployment": "symlink"
+  },
+  {
+    "source": "scripts/xampp/php",
+    "destination": ".local/bin/php",
+    "mode": 493,
+    "deployment": "symlink"
+  }
+]

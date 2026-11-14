@@ -1,0 +1,6 @@
+ca-certificates
+curl
+net-tools
+sudo
+x11-xserver-utils
+xauth

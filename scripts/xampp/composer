@@ -1,0 +1,19 @@
+#!/bin/sh
+# Composer and its PHP subprocesses use the same PHP as XAMPP.
+set -eu
+
+php_bin=/opt/lampp/bin/php
+phar="$HOME/.local/share/composer/composer.phar"
+if [ ! -x "$php_bin" ] || [ ! -r "$phar" ]; then
+    printf '%s\n' 'XAMPP PHP or composer.phar is missing. See docs/others/xampp-setup.md in your dotfiles.' >&2
+    exit 1
+fi
+PATH="$HOME/.local/bin:$PATH"
+export PATH
+
+# Use Debian's maintained CA store; never disable HTTPS verification.
+ca=/etc/ssl/certs/ca-certificates.crt
+if [ -r "$ca" ]; then
+    exec "$php_bin" -d "openssl.cafile=$ca" -d "curl.cainfo=$ca" "$phar" "$@"
+fi
+exec "$php_bin" "$phar" "$@"

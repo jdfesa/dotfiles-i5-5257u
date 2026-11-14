@@ -1,0 +1,81 @@
+#!/bin/sh
+# Optional launcher for the XAMPP installation in /opt/lampp.
+set -eu
+
+run_gui() {
+    if [ -z "${DISPLAY:-}" ]; then
+        printf '%s\n' 'No X11 display available. Run xampp gui from a terminal on your desktop.' >&2
+        return 1
+    fi
+
+    # sudo changes HOME and may drop XAUTHORITY. Forward only the two X11
+    # variables, not the entire user environment, when a matching cookie exists.
+    authority=${XAUTHORITY:-$HOME/.Xauthority}
+    if [ -r "$authority" ] && command -v xauth >/dev/null 2>&1 &&
+        xauth -i -f "$authority" nlist "$DISPLAY" 2>/dev/null | grep -q .; then
+        exec sudo /usr/bin/env "DISPLAY=$DISPLAY" "XAUTHORITY=$authority" \
+            /opt/lampp/manager-linux-x64.run "$@"
+    fi
+
+    # Some Wayland/Xwayland desktops authorize local users rather than using
+    # ~/.Xauthority. Grant only local root access, and only while the GUI runs.
+    if ! command -v xhost >/dev/null 2>&1; then
+        printf '%s\n' 'xhost is missing. Install x11-xserver-utils and try xampp gui again.' >&2
+        return 1
+    fi
+    if ! access_list=$(LC_ALL=C xhost 2>&1); then
+        printf '%s\n' 'Cannot access the X11 display. Run xampp gui from your desktop terminal, without sudo.' >&2
+        printf '%s\n' "$access_list" >&2
+        return 1
+    fi
+
+    added_root_access=0
+    cleanup_gui_access() {
+        if [ "$added_root_access" -eq 1 ]; then
+            if ! xhost -SI:localuser:root >/dev/null 2>&1; then
+                printf '%s\n' 'Could not revoke temporary access. Run: xhost -SI:localuser:root' >&2
+            fi
+        fi
+    }
+    trap cleanup_gui_access 0
+    trap 'exit 130' 2
+    trap 'exit 143' 15
+
+    # Leave permissions that were already present untouched on exit.
+    if ! printf '%s\n' "$access_list" | grep -Eq '^[[:space:]]*SI:localuser:root[[:space:]]*$'; then
+        xhost +SI:localuser:root >/dev/null
+        added_root_access=1
+    fi
+    # With local-user authorization no cookie is needed. Avoid using a stale
+    # cookie from another display, which can itself cause authorization errors.
+    sudo /usr/bin/env "DISPLAY=$DISPLAY" XAUTHORITY=/dev/null \
+        /opt/lampp/manager-linux-x64.run "$@"
+}
+
+if [ "$#" -eq 0 ]; then
+    set -- start
+fi
+
+case "$1" in
+    gui|panel)
+        shift
+        run_gui "$@"
+        ;;
+    help|-h|--help)
+        printf '%s\n' \
+            'xampp              Start all services' \
+            'xampp stop         Stop all services' \
+            'xampp status       Show service status' \
+            'xampp restart      Restart the services' \
+            'xampp gui          Open the graphical manager' \
+            'xampp startmysql   Start only MariaDB/MySQL' \
+            'xampp stopmysql    Stop only MariaDB/MySQL' \
+            'xampp startapache  Start only Apache' \
+            'xampp stopapache   Stop only Apache' \
+            'xampp startftp     Start only ProFTPD' \
+            'xampp stopftp      Stop only ProFTPD'
+        ;;
+    *)
+        exec sudo /opt/lampp/lampp "$@"
+        ;;
+esac
