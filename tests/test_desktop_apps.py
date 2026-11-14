@@ -39,11 +39,12 @@ class DesktopAppsTests(unittest.TestCase):
                 self.assertNotEqual(result.returncode, 0)
                 self.assertFalse(log.exists())
 
-    def test_browser_defaults_are_limited_to_web_types(self):
+    def test_mime_defaults_keep_helium_on_web_types_and_codex_in_chatgpt(self):
         config = configparser.ConfigParser(interpolation=None)
         config.read(ROOT / "config/helium/mimeapps.list")
         self.assertEqual(config.sections(), ["Default Applications"])
         defaults = dict(config["Default Applications"])
+        self.assertEqual(defaults.pop("x-scheme-handler/codex", None), "chatgpt.desktop;")
         self.assertEqual(set(defaults), {"text/html", "application/xhtml+xml",
                                        "x-scheme-handler/http", "x-scheme-handler/https"})
         self.assertEqual(set(defaults.values()), {"helium.desktop;"})
