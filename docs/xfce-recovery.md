@@ -25,7 +25,10 @@ python3 tools/link-user-config.py --manifest config/xfce/manifest.json --apply \
 ```
 
 Un archivo existente diferente es un conflicto: respaldarlo y reconciliarlo
-antes de aplicar. No reemplazar configuraciones completas del escritorio.
+antes de aplicar. Si el autostart de brillo llama a un checkout antiguo,
+comprobar su campo `Exec`, respaldar el archivo y apartarlo antes de
+aplicar el manifiesto nuevo. Mantener la copia antigua hasta comprobar
+el brillo en un login XFCE. No reemplazar configuraciones completas.
 Elegir XFCE desde LightDM solo cuando se necesite la sesión alternativa.
 
 ## Brightness helper

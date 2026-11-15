@@ -50,9 +50,12 @@ Helium en el catálogo de aplicaciones; aplicar después el manifiesto de enlace
 
 La entrada de Helium sigue disponible en **Fuzzel**. No hace falta duplicar el
 archivo de escritorio del paquete: así conserva sus actualizaciones normales.
-Las asociaciones enlazadas fijan solo HTTP, HTTPS, HTML y XHTML; no PDF, imágenes
-ni el editor de texto. Un destino existente diferente debe reconciliarse antes
-de aplicar el manifiesto; no sustituir asociaciones ajenas al perfil.
+Helium se asigna solo a HTTP, HTTPS, HTML y XHTML; no a PDF, imágenes ni
+archivos de texto. La única asociación adicional es `codex:` con
+`chatgpt.desktop`, cuando hay una entrada de escritorio instalada que
+admite ese protocolo. El perfil no instala ni versiona ese lanzador.
+Reconciliar cualquier destino existente antes de aplicar el manifiesto;
+no sustituir asociaciones ajenas al perfil.
 
 **Super+Shift+B abre el navegador predeterminado XDG**. El helper consulta
 `xdg-settings get default-web-browser` y usa `gtk-launch` con el ID de escritorio
@@ -74,6 +77,7 @@ xdg-mime query default x-scheme-handler/http    # helium.desktop
 xdg-mime query default x-scheme-handler/https   # helium.desktop
 xdg-mime query default text/html                # helium.desktop
 xdg-mime query default application/xhtml+xml   # helium.desktop
+xdg-mime query default x-scheme-handler/codex  # chatgpt.desktop, si está instalado
 ```
 
 Compatibilidad de referencia: ventana `about:blank` con perfil temporal,

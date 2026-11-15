@@ -22,7 +22,8 @@ User configuration files are symlinked to their sources in this directory.
 ## Documentation
 
 - **Getting started:** [Restore guide](docs/restore-guide.md),
-  [Hardware](docs/initial-state.md) and [Dependencies](docs/dependencies.md).
+  [Hardware](docs/initial-state.md), [Dependencies](docs/dependencies.md),
+  and [Optional restore profiles](docs/optional-profiles.md).
 - **Environment:** [Sway setup](docs/sway-setup.md), [Keybindings](docs/keybindings.md),
   [Status bar](docs/status-bar.md) and [Daily use](docs/daily-use.md).
 - **Applications:** [Applications index](docs/applications.md),

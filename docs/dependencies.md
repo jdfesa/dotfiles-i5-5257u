@@ -108,7 +108,9 @@ requisitos Vulkan, configuración, verificación y recuperación.
 [XAMPP and Composer setup](others/xampp-setup.md) registra las versiones
 observadas, la procedencia y los requisitos de un perfil separado en
 [packages-debian.txt](../config/xampp/packages-debian.txt).
-La restauración de Sway no instala XAMPP ni Composer.
+El índice de [Optional restore profiles](optional-profiles.md) reúne las
+listas adicionales para OpenSSH, Node.js y el hotspot. No se instalan
+como parte de la restauración de Sway.
 
 ## Fonts and script assets
 

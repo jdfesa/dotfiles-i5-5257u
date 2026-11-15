@@ -7,6 +7,8 @@ apuntan a archivos de esa copia; conservarla mientras existan enlaces activos.
 
 - `config/manifest.json`: perfil principal Sway y aplicaciones.
 - `config/xfce/manifest.json`: perfil de recuperación opcional, independiente.
+- [Optional restore profiles](optional-profiles.md): otros manifiestos
+  y listas de paquetes que se aplican explícitamente.
 - Cada entrada declara source, destino relativo al home, modo y método symlink.
   Modos: 420=0644, 493=0755 y 384=0600.
 - Paquetes/binarios se administran por separado; no se enlazan archivos del

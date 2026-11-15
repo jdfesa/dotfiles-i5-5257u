@@ -6,6 +6,7 @@
 2. [Restore guide](restore-guide.md).
 3. [Dependencies](dependencies.md).
 4. [Configuration deployment](deployment.md).
+5. [Optional restore profiles](optional-profiles.md).
 
 ## Desktop
 

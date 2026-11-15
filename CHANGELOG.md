@@ -6,6 +6,10 @@
 
 - Control de brillo de pantalla en Swaybar: deslizador bajo demanda y pasos
   de 5 puntos con la rueda, sin sondeos ni servicios nuevos.
+- Restauración opcional por perfil: simulación APT, enlaces con reversión,
+  acceso SSH, instalación de Node.js verificada y hotspot bajo demanda.
+- Asociación de enlaces `codex:` a ChatGPT cuando está instalado su
+  lanzador, sin cambiar el navegador predeterminado.
 - Perfil opcional para XAMPP, PHP y Composer con lanzadores, instalador del
   PHAR verificado, guía y pruebas, fuera de la restauración principal.
 - Guía breve de diagnóstico y recuperación del controlador Wi-Fi brcmfmac
