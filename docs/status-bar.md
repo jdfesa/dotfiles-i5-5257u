@@ -38,7 +38,7 @@ mínima de 28 y su separación posterior de 12; no cambia su acción de clic.
 | Brillo de pantalla | Clic izquierdo: alterna el deslizador; rueda: +/−5 puntos porcentuales |
 | Audio | Icono de volumen/mute; click / Super+A abre alsamixer |
 | Wi-Fi | Solo icono de calidad, calidad de señal; click / Super+N |
-| Batería | Icono según estado y nivel, más porcentaje real de UPower; siempre visible |
+| Batería | Estado y carga UPower; siempre visible. Clic izquierdo abre o cierra los detalles |
 | US / ES | Distribución real del teclado; clic izquierdo alterna US / español de España |
 | Reloj | Fecha en inglés y hora local; clic izquierdo abre el calendario |
 
@@ -105,6 +105,22 @@ con timeout de 5 s. No consulta sensores, red o archivos, ni crea procesos
 adicionales. El cambio aparece en el siguiente tick que recibe el nuevo estado
 de UPower. Si el backend omite el bloque de batería, el adaptador lo repone
 con los datos disponibles o con `--%`.
+
+### Battery details
+
+Un clic izquierdo en la batería abre el panel flotante bajo el bloque, incluso
+con las métricas contraídas. Otro clic, Escape o Close cierra solo ese panel.
+Se muestran por separado la carga actual y la salud, junto con capacidad máxima
+y de diseño en Wh, ciclos y temperatura. Durante la descarga se añade la
+potencia de la batería en W y el tiempo restante estimado; al cargar se muestra
+el tiempo estimado hasta llenarse. Si UPower no informa un dato, se muestra
+`Unavailable`. La estimación puede cambiar con la carga de trabajo.
+
+`mbp-battery-details` obtiene una muestra de la batería física que alimenta el
+equipo a través de UPower por D-Bus. La muestra se toma solo al abrir: cerrar y
+volver a abrir para actualizarla. No se modifican umbrales de carga, no se guarda
+un historial y no se añade un sondeo al tick de 10 s ni un proceso residente.
+El panel reutiliza GTK3 y UPower, ya instalados en el perfil.
 
 ## Collapsible metrics
 
@@ -183,9 +199,10 @@ El manifiesto enlaza `scripts/calendar-popup.py` a `~/.local/bin/mbp-calendar`
 y `config/calendar/calendar.css` a `~/.config/calendar/calendar.css`.
 La regla de Sway se limita al identificador `local.mbp.Calendar`; el clic
 solo acepta el bloque `tztime` / instancia `local` y ejecuta una acción fija.
-El calendario, el brillo y btop se ajustan al borde de la pantalla si no
-caben centrados bajo su bloque. El posicionamiento solo se calcula al abrirlos.
-El helper `sway-panel-anchor.py` acepta únicamente esos tres paneles y coordenadas
+El calendario, el brillo, btop y los detalles de batería se ajustan al borde
+de la pantalla si no caben centrados bajo su bloque. El posicionamiento solo
+se calcula al abrirlos. El helper `sway-panel-anchor.py` acepta únicamente
+esos cuatro paneles y coordenadas
 enteras validadas: centro y borde inferior del bloque, en píxeles lógicos locales
 a la salida, sin multiplicar por la escala. Swaybar no identifica la salida en
 el evento: se usa la compatible enfocada, o la única compatible. Sin una salida

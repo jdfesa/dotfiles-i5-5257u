@@ -159,6 +159,7 @@ def adapt_status(blocks, traffic=None, charge=None):
         elif name == "read_file" and block.get("instance", "").endswith("/updates.txt"):
             block["full_text"] = labeled("\U000f03d7", text, "#f5c2e7")
         elif name == "battery":
+            block["instance"] = "upower"
             block["full_text"], block["color"] = format_battery(charge)
         elif name == "tztime":
             block["color"] = LAVENDER
@@ -434,9 +435,11 @@ def handle_click(event, view=None):
         helper = "calendar"
     elif event.get("name") == "cpu_usage" and event.get("instance") == "aggregate":
         helper = "resource-monitor"
+    elif event.get("name") == "battery" and event.get("instance") == "upower":
+        helper = "battery-details"
     if helper:
         # Only fixed helper names and validated integer coordinates, never event strings.
-        panels = ("screen-brightness-panel", "calendar", "resource-monitor")
+        panels = ("screen-brightness-panel", "calendar", "resource-monitor", "battery-details")
         anchor = popup_anchor(event) if helper in panels else None
         suffix = f" {anchor[0]} {anchor[1]}" if anchor is not None else ""
         subprocess.run(["swaymsg", f"exec ~/.local/bin/mbp-sway-tools {helper}{suffix}"],

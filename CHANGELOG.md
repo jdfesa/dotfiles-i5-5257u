@@ -4,6 +4,8 @@
 
 ### Added
 
+- Panel de batería bajo demanda: salud, ciclos, capacidad y estimación de
+  UPower, sin sondeos ni cambios al indicador de carga.
 - Clic en el bloque de CPU de Swaybar: abre y cierra un panel dedicado de
   btop en la terminal, sin afectar otras ventanas ni el ciclo de la barra.
 - Control de brillo de pantalla en Swaybar: deslizador bajo demanda y pasos

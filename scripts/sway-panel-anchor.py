@@ -15,6 +15,7 @@ import time
 
 PANELS = {
     "calendar": ("mbp-calendar", "local.mbp.Calendar"),
+    "battery-details": ("mbp-battery-details", "local.mbp.BatteryDetails"),
     "resource-monitor": ("btop", "mbp-btop"),
     "screen-brightness-panel": ("mbp-screen-brightness", "local.mbp.ScreenBrightness"),
 }

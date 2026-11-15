@@ -18,7 +18,7 @@ read_keyboard_level() {
 }
 
 case ${1:-} in
-    screen-brightness-panel|calendar|resource-monitor)
+    screen-brightness-panel|calendar|resource-monitor|battery-details)
         case "$#" in
             1|3)
                 # This launcher is itself a symlink to the checkout.
@@ -79,5 +79,5 @@ case ${1:-} in
         trap 'rm -f "$shot"' EXIT
         grim -g "$geometry" "$shot"
         wl-copy --type image/png < "$shot" ;;
-    *) printf '%s\n' 'Usage: mbp-sway-tools networks|audio|calendar|resource-monitor|updates|browser|help|screenshot|screen-brightness-up|screen-brightness-down|screen-brightness-panel|keyboard-brightness-up|keyboard-brightness-down' >&2; exit 2 ;;
+    *) printf '%s\n' 'Usage: mbp-sway-tools networks|audio|calendar|resource-monitor|battery-details|updates|browser|help|screenshot|screen-brightness-up|screen-brightness-down|screen-brightness-panel|keyboard-brightness-up|keyboard-brightness-down' >&2; exit 2 ;;
 esac
