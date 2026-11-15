@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import select
+import shutil
 import socket
 import stat
 import struct
@@ -14,6 +15,7 @@ import time
 
 PANELS = {
     "calendar": ("mbp-calendar", "local.mbp.Calendar"),
+    "resource-monitor": ("btop", "mbp-btop"),
     "screen-brightness-panel": ("mbp-screen-brightness", "local.mbp.ScreenBrightness"),
 }
 GAP = 4
@@ -118,6 +120,24 @@ def close_panel(ipc, panel):
             os.close(pidfd)
 
 
+def resource_monitor_command(app_id):
+    """Use a standalone Wayland terminal with a panel-specific app ID."""
+    btop = shutil.which("btop")
+    if btop is None:
+        raise RuntimeError("btop is not installed.")
+
+    # Respect a supported Debian default; otherwise use the Sway profile's Kitty.
+    default = os.path.realpath("/usr/bin/x-terminal-emulator").rsplit("/", 1)[-1]
+    terminals = ("foot", "kitty") if default in ("foot", "footclient") else ("kitty", "foot")
+    for name in terminals:
+        terminal = shutil.which(name)
+        if terminal is not None:
+            if name == "kitty":
+                return [terminal, f"--class={app_id}", "--override=tab_bar_min_tabs=2", btop]
+            return [terminal, f"--app-id={app_id}", btop]
+    raise RuntimeError("No supported terminal found (Kitty or Foot).")
+
+
 def open_panel(name, anchor_x=None, bar_bottom=None):
     executable, app_id = PANELS[name]
     launched = False
@@ -125,7 +145,9 @@ def open_panel(name, anchor_x=None, bar_bottom=None):
 
     def launch():
         nonlocal launched
-        subprocess.Popen([str(Path.home() / ".local/bin" / executable)],
+        command = (resource_monitor_command(app_id) if name == "resource-monitor"
+                   else [str(Path.home() / ".local/bin" / executable)])
+        subprocess.Popen(command,
                          stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
         launched = True
 
@@ -194,7 +216,10 @@ def main():
             args.anchor_x is not None and
             (not 0 <= args.anchor_x <= 32767 or not 1 <= args.bar_bottom <= 256)):
         parser.error("Invalid Swaybar coordinates.")
-    toggle_panel(args.panel, args.anchor_x, args.bar_bottom)
+    try:
+        toggle_panel(args.panel, args.anchor_x, args.bar_bottom)
+    except RuntimeError as error:
+        parser.exit(1, f"{error}\n")
 
 
 if __name__ == "__main__":

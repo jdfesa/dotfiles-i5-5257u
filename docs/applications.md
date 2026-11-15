@@ -12,6 +12,7 @@ bibliotecas transitivas.
 | Fuzzel | Super+Espacio/D; buscar aplicaciones por nombre, Enter abre, Esc cancela | `config/fuzzel/fuzzel.ini` → `~/.config/fuzzel/fuzzel.ini` |
 | Kitty / Zsh | Super+Enter; terminal de login predeterminada y paneles auxiliares | `config/kitty/`, `config/zsh/` → destinos del manifiesto |
 | Foot | Respaldo disponible en Fuzzel | `config/foot/foot.ini` → `~/.config/foot/foot.ini` |
+| btop | Clic izquierdo en CPU: abre o cierra el monitor en su propia terminal | [Status bar](status-bar.md#resource-monitor) |
 | Starship | Prompt de nuevas Zsh, tanto en Kitty como en Foot | `config/starship/starship.toml` → `~/.config/starship.toml`; init en `config/zsh/zshrc` |
 | Helium | Fuzzel; navegador XDG actual de Super+Shift+B | `config/helium/mimeapps.list` → `~/.config/mimeapps.list`; entrada de escritorio del paquete APT |
 | Zed | Fuzzel o `zed`; sin atajo asignado | `config/zed/` → settings y entrada .desktop por manifiesto; binario oficial fuera del repo |

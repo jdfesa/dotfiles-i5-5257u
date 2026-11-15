@@ -14,6 +14,42 @@ spec.loader.exec_module(anchor)
 
 
 class PanelAnchorTests(unittest.TestCase):
+    def test_btop_uses_a_standalone_terminal_with_the_dedicated_app_id(self):
+        for default, available, options in (
+                ("kitty", {"btop", "kitty", "foot"},
+                 ["kitty", "--class=mbp-btop", "--override=tab_bar_min_tabs=2"]),
+                ("foot", {"btop", "kitty", "foot"}, ["foot", "--app-id=mbp-btop"]),
+                ("footclient", {"btop", "kitty", "foot"}, ["foot", "--app-id=mbp-btop"]),
+                ("xterm", {"btop", "foot"}, ["foot", "--app-id=mbp-btop"])):
+            with self.subTest(default=default, available=available), \
+                    patch.object(anchor.os.path, "realpath", return_value=f"/usr/bin/{default}"), \
+                    patch.object(anchor.shutil, "which",
+                                 side_effect=lambda name: name if name in available else None):
+                self.assertEqual(anchor.resource_monitor_command("mbp-btop"), [*options, "btop"])
+
+    def test_btop_requires_the_package_and_a_supported_terminal(self):
+        for available, message in ((set(), "btop is not installed"), ({"btop"}, "No supported terminal")):
+            with self.subTest(available=available), \
+                    patch.object(anchor.shutil, "which",
+                                 side_effect=lambda name: name if name in available else None), \
+                    self.assertRaisesRegex(RuntimeError, message):
+                anchor.resource_monitor_command("mbp-btop")
+
+    def test_resource_toggle_closes_only_its_dedicated_window(self):
+        panel = dict(id=42, app_id="mbp-btop", type="floating_con")
+        tree = dict(floating_nodes=[
+            dict(id=20, app_id="kitty", type="floating_con", name="btop"),
+            dict(id=21, app_id="local.mbp.Calendar", type="floating_con"), panel])
+        with patch.dict(os.environ, SWAYSOCK="fixture"), \
+                patch.object(anchor.socket, "socket"), patch.object(anchor, "IPC") as factory, \
+                patch.object(anchor.subprocess, "Popen") as launch, \
+                patch.object(anchor, "close_panel") as close:
+            ipc = factory.return_value
+            ipc.request.side_effect = [dict(success=True), tree]
+            anchor.open_panel("resource-monitor")
+            launch.assert_not_called()
+            close.assert_called_once_with(ipc, panel)
+
     def test_locks_are_private_per_panel_and_never_follow_symlinks(self):
         with tempfile.TemporaryDirectory() as directory, \
                 patch.dict(os.environ, XDG_RUNTIME_DIR=directory), \
