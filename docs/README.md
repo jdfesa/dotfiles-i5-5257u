@@ -14,6 +14,7 @@
 - [Minimal login screen](minimal-login-screen.md).
 - [Status bar](status-bar.md), [Fonts](fonts.md), [Wi-Fi panel](wifi-setup.md)
   y [Power menu](power-menu.md).
+- [Lid power policy](lid-power-policy.md): apagado opcional por cierre de tapa.
 - [Keyboard backlight](keyboard-backlight.md), [Trackpad gestures](trackpad-gestures.md)
   y [Power and performance](optimizations.md).
 

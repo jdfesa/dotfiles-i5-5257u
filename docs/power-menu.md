@@ -34,6 +34,9 @@ se interpreta como shell. El helper rechaza contextos que no sean Wayland/Sway.
 Apagado, reinicio y suspensión abren una Kitty para autorización/errores. El
 helper exige terminal, systemd >=257 y capacidad logind exactamente `yes`;
 `challenge`, `no`, fallo de consulta o bloqueo no provocan fallback sudo.
+La [Lid power policy](lid-power-policy.md) es un perfil opcional aparte; no
+cambia estas acciones manuales ni sus confirmaciones.
+
 Se mantienen `--check-inhibitors=auto` y `--no-ask-password`, sin force ni
 ignorar inhibidores. Un fallo de bloqueo impide suspender. Los errores quedan
 visibles en la terminal hasta Enter; no se afirma éxito por el exit de Kitty.
