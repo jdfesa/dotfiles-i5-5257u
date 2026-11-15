@@ -2,6 +2,7 @@ accountsservice
 alsa-utils
 brightness-udev
 brightnessctl
+btop
 ca-certificates
 curl
 dbus-user-session

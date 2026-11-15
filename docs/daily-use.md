@@ -17,6 +17,9 @@ paquetes, audio, Wi-Fi, batería y fecha permanecen visibles. El clic en la fech
 abre un calendario mensual: flechas o Page Up/Page Down para navegar,
 Home/Today para volver al día actual y Escape para cerrar.
 
+Con las métricas expandidas, hacer clic en el chip de CPU abre btop en su propia
+terminal. Otro clic cierra ese panel.
+
 La batería muestra porcentaje y estado: rayo al cargar, verificación con carga
 completa, pausa en estados pendientes e interrogación si el estado es desconocido.
 Una lectura ausente muestra `--%`, no un cero inventado. La actualización usa

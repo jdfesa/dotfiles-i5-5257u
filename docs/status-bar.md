@@ -30,7 +30,8 @@ mínima de 28 y su separación posterior de 12; no cambia su acción de clic.
 |---|---|
 | Clima | Icono y temperatura de Orán; sin geolocalización ni nombre de ciudad |
 | ↑ / ↓ | Tráfico Wi-Fi por delta de contadores; K=KiB/s, M=MiB/s |
-| RAM / CPU | MemAvailable y uso agregado |
+| RAM | MemAvailable |
+| CPU | Uso agregado; clic izquierdo abre o cierra btop |
 | Temperatura | Sensor coretemp/x86_pkg_temp detectado al iniciar |
 | Disco | Espacio libre de `/`; G=GiB |
 | Paquetes | Candidatos de metadata local APT; click / Super+U |
@@ -43,6 +44,20 @@ mínima de 28 y su separación posterior de 12; no cambia su acción de clic.
 
 La interfaz inalámbrica se detecta desde sysfs (en este equipo `wlp3s0`), se configura según el hardware detectado. Los clicks ejecutan acciones fijas por
 `swaymsg`; no se interpolan nombres de redes ni eventos como comandos de shell.
+
+## Resource monitor
+
+Expandir las métricas con el chevrón y hacer clic izquierdo en el chip amarillo
+o en su porcentaje para abrir btop debajo del bloque. Muestra CPU, memoria,
+discos, red y procesos. Otro clic cierra solo esa ventana; también se puede
+salir con `q` en btop y volver a abrir desde la barra.
+
+El panel abre una instancia nueva de Kitty, la terminal del perfil Sway. Si la
+alternativa de Debian selecciona Foot, se abre una instancia independiente de
+Foot; también se usa como respaldo si Kitty falta. La ventana se distingue por
+`mbp-btop`, sin control remoto de Kitty y sin afectar otras terminales ni otros
+btop. El monitor se ejecuta solo con la ventana abierta; el tick de la barra
+sigue siendo de 10 s y no se añaden servicios ni sondeos a Sway.
 
 ## Screen brightness
 
@@ -168,9 +183,9 @@ El manifiesto enlaza `scripts/calendar-popup.py` a `~/.local/bin/mbp-calendar`
 y `config/calendar/calendar.css` a `~/.config/calendar/calendar.css`.
 La regla de Sway se limita al identificador `local.mbp.Calendar`; el clic
 solo acepta el bloque `tztime` / instancia `local` y ejecuta una acción fija.
-El calendario y el brillo se ajustan al borde de la pantalla si no caben
-centrados bajo su bloque. El posicionamiento solo se calcula al abrirlos.
-El helper `sway-panel-anchor.py` acepta únicamente esos dos paneles y coordenadas
+El calendario, el brillo y btop se ajustan al borde de la pantalla si no
+caben centrados bajo su bloque. El posicionamiento solo se calcula al abrirlos.
+El helper `sway-panel-anchor.py` acepta únicamente esos tres paneles y coordenadas
 enteras validadas: centro y borde inferior del bloque, en píxeles lógicos locales
 a la salida, sin multiplicar por la escala. Swaybar no identifica la salida en
 el evento: se usa la compatible enfocada, o la única compatible. Sin una salida

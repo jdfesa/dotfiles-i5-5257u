@@ -38,6 +38,22 @@ class AdapterTests(unittest.TestCase):
             adapter.handle_click(dict(name="wireless; arbitrary-command", instance=adapter.WIRELESS, button=1))
             run.assert_not_called()
 
+    def test_cpu_click_is_left_button_only_and_targets_the_aggregate_block(self):
+        block = adapter.adapt_status([dict(name="cpu_usage", full_text="42%")])[0]
+        self.assertEqual(block["instance"], "aggregate")
+        event = dict(name=block["name"], instance=block["instance"], button=1)
+        with patch.object(adapter.subprocess, "run") as run:
+            self.assertFalse(adapter.handle_click(event))
+            run.assert_called_once()
+            self.assertEqual(run.call_args.args[0],
+                             ["swaymsg", "exec ~/.local/bin/mbp-sway-tools resource-monitor"])
+            run.reset_mock()
+            for change in (dict(button=3), dict(button=4), dict(button=True),
+                           dict(instance=None), dict(instance="aggregate; exec unwanted"),
+                           dict(name="cpu_temperature")):
+                self.assertFalse(adapter.handle_click(dict(event, **change)))
+            run.assert_not_called()
+
     def test_screen_brightness_only_dispatches_fixed_actions(self):
         event = dict(name="screen_brightness", instance="intel_backlight")
         with patch.object(adapter.subprocess, "run") as run:
@@ -58,7 +74,8 @@ class AdapterTests(unittest.TestCase):
         with patch.object(adapter.subprocess, "run") as run:
             for name, instance, helper in (
                     ("screen_brightness", "intel_backlight", "screen-brightness-panel"),
-                    ("tztime", "local", "calendar")):
+                    ("tztime", "local", "calendar"),
+                    ("cpu_usage", "aggregate", "resource-monitor")):
                 adapter.handle_click(dict(coordinates, name=name, instance=instance, button=1))
                 self.assertEqual(run.call_args.args[0], [
                     "swaymsg", f"exec ~/.local/bin/mbp-sway-tools {helper} 1034 28"])

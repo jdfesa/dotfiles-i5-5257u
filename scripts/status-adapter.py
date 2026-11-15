@@ -138,6 +138,7 @@ def adapt_status(blocks, traffic=None, charge=None):
             block["min_width"], block["align"] = 28, "center"
             block["color"] = RED if value is None or value <= 25 else YELLOW if value <= 50 else "#f2cdcd"
         elif name == "cpu_usage":
+            block["instance"] = "aggregate"
             block["full_text"] = labeled("\uf2db", text, YELLOW)
         elif name == "cpu_temperature":
             block["full_text"] = labeled("\U000f050f", text, "#fab387")
@@ -431,9 +432,12 @@ def handle_click(event, view=None):
         helper = "updates"
     elif event.get("name") == "tztime" and event.get("instance") == "local":
         helper = "calendar"
+    elif event.get("name") == "cpu_usage" and event.get("instance") == "aggregate":
+        helper = "resource-monitor"
     if helper:
         # Only fixed helper names and validated integer coordinates, never event strings.
-        anchor = popup_anchor(event) if helper in ("screen-brightness-panel", "calendar") else None
+        panels = ("screen-brightness-panel", "calendar", "resource-monitor")
+        anchor = popup_anchor(event) if helper in panels else None
         suffix = f" {anchor[0]} {anchor[1]}" if anchor is not None else ""
         subprocess.run(["swaymsg", f"exec ~/.local/bin/mbp-sway-tools {helper}{suffix}"],
                        stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,

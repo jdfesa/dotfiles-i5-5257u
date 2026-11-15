@@ -24,6 +24,7 @@ Las versiones siguientes son referencia de compatibilidad, no pins de APT.
 | [swaylock](https://packages.debian.org/trixie/swaylock) | `1.8.2-1` | Bloqueo PAM |
 | [kitty](https://packages.debian.org/trixie/kitty) | `0.41.1-2+deb13u2` | Terminal predeterminada / Zsh |
 | [foot](https://packages.debian.org/trixie/foot) | `1.21.0-2` | Terminal Wayland de respaldo |
+| [btop](https://packages.debian.org/trixie/btop) | `1.3.2-0.1` | Monitor bajo demanda desde Swaybar; APT resuelve libc6, libgcc-s1 y libstdc++6 |
 | [wmenu](https://packages.debian.org/trixie/wmenu) | `0.1.9-2` | Menú de ayuda a demanda |
 | [fuzzel](https://packages.debian.org/trixie/fuzzel) | `1.12.0+ds-1` | Lanzador Wayland de aplicaciones .desktop |
 | [mako-notifier](https://packages.debian.org/trixie/mako-notifier) | `1.10.0-1` | Notificaciones |
