@@ -109,13 +109,14 @@
 - Cuando se autoricen commits, hacer uno por cada bloque coherente y validado,
   a medida que se completa. Preparar el índice de forma selectiva; no mezclar
   cambios ajenos ni dejar todos los commits para el final.
-- Redactar íntegramente en inglés el texto de los pull requests: el título,
-  los encabezados y todo el cuerpo, incluidos el resumen y la validación.
-  Los archivos incluidos en el diff conservan sus propias reglas de idioma.
+- Redactar íntegramente en inglés los pull requests: título, encabezados
+  y cuerpo. Usar Conventional Commits también en el título del PR:
+  `type(scope): description`, con el ámbito opcional. Los archivos del diff
+  conservan sus propias reglas de idioma.
 - Nombrar las ramas de trabajo como `tipo/descripcion-en-kebab-case`.
-  Elegir un tipo representativo del cambio principal: `feat/`, `fix/`, `docs/`,
-  `chore/`, etc. Usar una descripción breve en inglés, por ejemplo,
-  `feat/trackpad-gestures`. No usar `codex/` ni otros prefijos de herramientas.
+  Usar el tipo de Conventional Commits que represente el cambio
+  (`feat/`, `fix/`, `docs/`, `chore/`, etc.) y una descripción breve en inglés,
+  por ejemplo, `feat/trackpad-gestures`. No usar `codex/` ni otros prefijos de herramientas.
 
 ## Workflow
 
