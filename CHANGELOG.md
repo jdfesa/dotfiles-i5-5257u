@@ -4,6 +4,8 @@
 
 ### Added
 
+- Perfil opcional de tapa: selección temporal de `s2idle` y apagado normal
+  tras 20 minutos con la tapa cerrada, respetando inhibidores de logind.
 - Panel de batería bajo demanda: salud, ciclos, capacidad y estimación de
   UPower, sin sondeos ni cambios al indicador de carga.
 - Clic en el bloque de CPU de Swaybar: abre y cierra un panel dedicado de

@@ -5,7 +5,9 @@
 Sway utiliza fondo sólido, barra opaca y escala entera 2. Kitty desactiva blur,
 transparencia y animación de cursor. El perfil no instala un gestor de energía
 adicional ni modifica límites de CPU. logind conserva las políticas de tapa e
-inhibidores; swayidle bloquea antes de suspensión y administra inactividad.
+inhibidores en el perfil base; swayidle bloquea antes de suspensión y administra
+inactividad. [Lid power policy](lid-power-policy.md) documenta el apagado opcional
+por tapa y su prueba física; no modifica la medición de autonomía.
 
 CPU de referencia: intel_cpufreq con schedutil, rango observado 500–3100 MHz.
 Cambiar TLP, perfiles de energía o límites exige medir primero batería, suspensión,

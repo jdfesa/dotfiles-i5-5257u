@@ -122,6 +122,10 @@ oficial Nerd Fonts v3.5.1 para los iconos de clima y métricas. Procedencia,
 integridad y avisos en [Fonts](fonts.md) y [Third-party notices](third-party-notices.md).
 No se instala una colección completa ni un daemon de fuentes.
 
+El perfil de [Lid power policy](lid-power-policy.md) reutiliza Python 3.13,
+PyGObject y systemd/logind 257 de Debian 13. Requiere que el RTC y el firmware
+puedan reanudar el equipo con una alarma y la tapa cerrada; no añade paquetes.
+
 ## Installation, validation and updates
 
 - [Sway](sway-setup.md): comandos, dependencias previas, rutas, permisos y reversión.

@@ -1,0 +1,18 @@
+[Unit]
+Description=Watch a closed lid after starting suspend
+Documentation=man:org.freedesktop.login1(5) man:timerfd_create(2)
+ConditionPathExists=/etc/default/mbp-lid-poweroff
+
+[Service]
+Type=notify
+NotifyAccess=all
+EnvironmentFile=/etc/default/mbp-lid-poweroff
+ExecStart=/usr/bin/python3 -I /usr/local/libexec/mbp-lid-poweroff.py
+TimeoutStartSec=8s
+TimeoutStopSec=3s
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+RestrictAddressFamilies=AF_UNIX
+CapabilityBoundingSet=CAP_WAKE_ALARM
