@@ -14,6 +14,11 @@ DBUS = "org.freedesktop.DBus"
 PROPERTIES = DBUS + ".Properties"
 DBUS_PATH = "/org/freedesktop/DBus"
 ACPI_LID = Path("/proc/acpi/button/lid/LID0/state")
+MEM_SLEEP = Path("/sys/power/mem_sleep")
+SAVED_SLEEP_MODE = Path("/run/mbp-lid-poweroff/previous-mode")
+PROFILE = Path("/etc/default/mbp-lid-poweroff")
+GUARD = "mbp-lid-poweroff.service"
+SLEEP_MODES = {"s2idle", "shallow", "deep"}
 # Linux UAPI clock 9 (include/uapi/linux/time.h); Python does not always export it.
 CLOCK_BOOTTIME_ALARM = getattr(time, "CLOCK_BOOTTIME_ALARM", 9)
 SD_LOGIND_ROOT_CHECK_INHIBITORS = 1
@@ -53,6 +58,87 @@ def lid_allows_action(props, hardware_closed, inhibitors, preparing):
                               or props.get("HandleLidSwitchExternalPower") not in ("", "suspend")):
         return False
     return not any("handle-lid-switch" in what.split(":") for what, *_ in inhibitors)
+
+
+def sleep_modes(path):
+    fields = path.read_text(encoding="ascii").split()
+    modes = {field.strip("[]") for field in fields}
+    active = [field[1:-1] for field in fields if field.startswith("[") and field.endswith("]")]
+    if not modes <= SLEEP_MODES or len(active) != 1 or active[0] not in modes:
+        raise ValueError("Could not identify the current Linux suspend mode.")
+    return modes, active[0]
+
+
+def select_s2idle(path=MEM_SLEEP, record=SAVED_SLEEP_MODE):
+    modes, active = sleep_modes(path)
+    if "s2idle" not in modes:
+        raise ValueError("s2idle is unavailable; automatic poweroff was not armed.")
+    if active == "s2idle":
+        return
+    # Save the old mode in systemd-suspend's private runtime directory first.
+    with record.open("x", encoding="ascii") as token:
+        token.write(active + "\n")
+    path.write_text("s2idle\n", encoding="ascii")
+    if sleep_modes(path)[1] != "s2idle":
+        raise RuntimeError("The kernel did not select s2idle.")
+
+
+def restore_sleep_mode(path=MEM_SLEEP, record=SAVED_SLEEP_MODE):
+    try:
+        previous = record.read_text(encoding="ascii").strip()
+    except FileNotFoundError:
+        return
+    modes, active = sleep_modes(path)
+    if previous not in modes or previous == "s2idle":
+        raise ValueError("Invalid saved suspend mode.")
+    if active == "s2idle":
+        path.write_text(previous + "\n", encoding="ascii")
+        if sleep_modes(path)[1] != previous:
+            raise RuntimeError("The kernel did not restore the previous suspend mode.")
+    record.unlink()
+
+
+def guard_unit(action):
+    subprocess.run(["/usr/bin/systemctl", "--quiet", action, GUARD],
+                   check=True, timeout=10)
+
+
+def eligible_suspend():
+    if not PROFILE.is_file() or not physical_lid_closed():
+        return False
+    from gi.repository import Gio, GLib
+    try:
+        return Logind(Gio, GLib).lid_allows(preparing=True)
+    except GLib.Error as error:
+        raise RuntimeError(str(error)) from error
+
+
+def prepare_suspend():
+    try:
+        if not eligible_suspend():
+            guard_unit("stop")
+            return
+        # Run for every qualifying suspend, including an early wake followed
+        # by a second suspend with the same (already armed) lid closure.
+        select_s2idle()
+        guard_unit("start")
+        log("Using s2idle for this closed-lid suspend.")
+    except Exception:
+        try:
+            guard_unit("stop")
+        finally:
+            restore_sleep_mode()
+        raise
+
+
+def finish_suspend(service_result):
+    try:
+        restore_sleep_mode()
+    except (OSError, ValueError, RuntimeError):
+        guard_unit("stop")
+        raise
+    if service_result != "success":
+        guard_unit("stop")
 
 
 def lid_signal_cancels(interface, changed, invalidated):
@@ -190,18 +276,27 @@ def run_guard(mode, seconds, Gio, GLib):
 
 
 def main():
-    if os.geteuid() != 0 or not os.environ.get("NOTIFY_SOCKET"):
+    args = sys.argv[1:]
+    hook = args in (["--prepare-suspend"], ["--finish-suspend"])
+    if (os.geteuid() != 0
+            or (hook and os.environ.get("RUNTIME_DIRECTORY") != str(SAVED_SLEEP_MODE.parent))
+            or (not hook and (args or not os.environ.get("NOTIFY_SOCKET")))):
         print("Run only as the installed system service.", file=sys.stderr)
         return 1
     try:
-        from gi.repository import Gio, GLib
-        mode, seconds = settings(os.environ)
-        try:
-            run_guard(mode, seconds, Gio, GLib)
-        except GLib.Error as error:
-            raise RuntimeError(str(error)) from error
+        if args == ["--prepare-suspend"]:
+            prepare_suspend()
+        elif args == ["--finish-suspend"]:
+            finish_suspend(os.environ.get("SERVICE_RESULT"))
+        else:
+            from gi.repository import Gio, GLib
+            mode, seconds = settings(os.environ)
+            try:
+                run_guard(mode, seconds, Gio, GLib)
+            except GLib.Error as error:
+                raise RuntimeError(str(error)) from error
     except (OSError, RuntimeError, ValueError, ImportError, subprocess.SubprocessError) as error:
-        print(f"Lid guard unavailable; no automatic shutdown: {error}", file=sys.stderr)
+        print(f"Lid guard unavailable; check the suspend hook: {error}", file=sys.stderr)
         return 1
     return 0
 

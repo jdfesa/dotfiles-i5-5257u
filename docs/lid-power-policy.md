@@ -23,11 +23,25 @@ El perfil configura también la suspensión por tapa para respetar inhibidores.
 El menú manual conserva su confirmación; el bloqueo previo de Sway sigue a
 cargo de swayidle.
 
-No se cambia el modo de suspensión del kernel, el swap ni la hibernación. La
-hibernación guarda y restaura la sesión; no sustituye el apagado solicitado.
-En este hardware se comprobó que `deep` está seleccionado y que el RTC
-expone despertador, pero eso no prueba que el firmware despierte a tiempo
-con la tapa cerrada ni permite estimar un ahorro de batería.
+El perfil selecciona `s2idle` solo para la suspensión elegible con tapa
+cerrada y restaura el modo anterior tras reanudar. Con tapa abierta, sin
+el perfil armado o con un dock, conserva el modo original. Si no puede
+seleccionar `s2idle`, no arma el apagado. No combinarlo con overrides
+`MemorySleepMode=` ni `SuspendState=` que reemplacen el modo de esta suspensión.
+No se modifica el swap ni la hibernación, que guarda y restaura la sesión.
+
+### Hardware validation
+
+En el MacBookPro12,1, el ensayo con alarma interna de 60 s y la tapa cerrada
+durante aproximadamente 90 s confirmó que `s2idle` reanudó al cabo de 61 s;
+el auxiliar registró la solicitud simulada antes de abrir la tapa. Con
+`deep`/S3, el equipo no despertó al cumplirse el plazo en el ensayo equivalente;
+sí se comprobó la cancelación al abrir antes de tiempo y el bloqueo de sesión.
+
+El plazo operativo de **1200 s** usa el mismo mecanismo de alarma. Se infiere
+que funcionará con ese intervalo, pero no se validó físicamente a 20 minutos
+ni se ejecutó un apagado real durante las pruebas. No se midió el consumo
+comparativo de los modos.
 
 ## Install in trial mode
 
@@ -73,9 +87,12 @@ repositorio.
 ```
 
 Revisar `systemd-analyze cat-config systemd/logind.conf` para detectar
-overrides posteriores. La configuración de logind se aplica en el próximo
-reinicio local planificado; no reiniciar el servicio desde una sesión gráfica
-o SSH para aplicar el cambio. No usar `systemctl enable` para el auxiliar.
+overrides posteriores. En Debian 13, comprobar
+`systemctl show -P CanReload systemd-logind.service` y, si devuelve `yes`,
+aplicar el cambio con `sudo systemctl reload systemd-logind.service`, con la
+tapa abierta. Si no admite recarga, aplicar en el próximo reinicio local
+planificado; no reiniciar logind desde una sesión gráfica o SSH.
+No usar `systemctl enable` para el auxiliar.
 
 ## Verify and enable poweroff
 
@@ -90,6 +107,9 @@ o SSH para aplicar el cambio. No usar `systemctl enable` para el auxiliar.
    equipo en la misma red, comprobar si volvió a estar accesible y revisar
    el journal. En modo de prueba debe aparecer
    `Dry run: lid stayed closed; would request a normal poweroff.`.
+   El journal de `systemd-suspend.service` debe registrar la selección de
+   `s2idle`; al reabrir, `cat /sys/power/mem_sleep` debe volver a mostrar el
+   modo habitual entre corchetes.
    Si no se observó reanudación hasta abrir la tapa, no habilitar el apagado:
    no está confirmado el despertar con la tapa cerrada. Probar tanto con
    batería como con alimentación si se usará en ambas condiciones.
@@ -114,8 +134,9 @@ configuración, la unidad no se inicia en nuevas suspensiones. No se puede
 cancelar un apagado que logind ya aceptó.
 
 Para retirar por completo el perfil, respaldar y apartar únicamente estos
-archivos, ejecutar `sudo systemctl daemon-reload` y planificar un reinicio
-local para volver a la política previa de logind:
+archivos, ejecutar `sudo systemctl daemon-reload` y recargar logind si lo
+admite, como en la instalación. En caso contrario, la política previa vuelve
+con el próximo reinicio local:
 
 - `/usr/local/libexec/mbp-lid-poweroff.py`
 - `/etc/systemd/system/mbp-lid-poweroff.service`

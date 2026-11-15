@@ -25,8 +25,10 @@
       la degradación de la batería de los cambios de consumo.
 - [ ] Verificar la tapa, la suspensión y reanudación, el comportamiento con batería
       baja y el ahorro de energía de la pantalla.
-- [ ] Validar físicamente el despertar RTC con tapa cerrada y la cancelación
-      al abrir antes de habilitar el apagado de [Lid power policy](docs/lid-power-policy.md).
+- [ ] Corroborar en uso el plazo completo de 20 minutos de
+      [Lid power policy](docs/lid-power-policy.md). Ya se verificaron despertar
+      en `s2idle` con alarma de 60 segundos y cancelación al abrir con `deep`;
+      no se midió el consumo comparativo.
 - [ ] Validar el aviso previo al bloqueo y repetir F5/F6 de retroiluminación tras
       iniciar una nueva sesión autenticada de Sway.
 - [ ] Validar las acciones pendientes de audio y paquetes de la barra, y las teclas

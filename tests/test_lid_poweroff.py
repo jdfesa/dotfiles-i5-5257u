@@ -95,6 +95,80 @@ class LidPolicyTests(unittest.TestCase):
                                            "PowerOffWithFlags", "checked flags", "()")
 
 
+class SleepModeTests(unittest.TestCase):
+    def test_switches_and_restores_only_the_previous_mode(self):
+        sysfs = Mock()
+        sysfs.read_text.side_effect = [
+            "s2idle [deep]", "[s2idle] deep", "[s2idle] deep", "s2idle [deep]",
+        ]
+        with tempfile.TemporaryDirectory() as directory:
+            record = Path(directory) / "previous-mode"
+            lid.select_s2idle(sysfs, record)
+            self.assertEqual(record.read_text(), "deep\n")
+            lid.restore_sleep_mode(sysfs, record)
+            self.assertFalse(record.exists())
+        self.assertEqual(sysfs.write_text.call_args_list,
+                         [call("s2idle\n", encoding="ascii"), call("deep\n", encoding="ascii")])
+
+    def test_missing_s2idle_or_invalid_kernel_state_is_not_overwritten(self):
+        for value in ("[deep]", "s2idle deep", "[s2idle] [deep]", "unrecognized [deep]"):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as directory:
+                sysfs = Mock()
+                sysfs.read_text.return_value = value
+                record = Path(directory) / "previous-mode"
+                with self.assertRaises(ValueError):
+                    lid.select_s2idle(sysfs, record)
+                self.assertFalse(record.exists())
+                sysfs.write_text.assert_not_called()
+
+    def test_already_s2idle_is_not_changed_or_recorded(self):
+        sysfs = Mock()
+        sysfs.read_text.return_value = "[s2idle] deep"
+        with tempfile.TemporaryDirectory() as directory:
+            record = Path(directory) / "previous-mode"
+            lid.select_s2idle(sysfs, record)
+            lid.restore_sleep_mode(sysfs, record)
+            self.assertFalse(record.exists())
+        sysfs.write_text.assert_not_called()
+
+    def test_manual_change_after_suspend_is_not_overwritten(self):
+        sysfs = Mock()
+        sysfs.read_text.return_value = "s2idle [shallow] deep"
+        with tempfile.TemporaryDirectory() as directory:
+            record = Path(directory) / "previous-mode"
+            record.write_text("deep\n")
+            lid.restore_sleep_mode(sysfs, record)
+            self.assertFalse(record.exists())
+        sysfs.write_text.assert_not_called()
+
+    def test_prepare_selects_mode_before_arming_and_skips_ineligible_suspend(self):
+        actions = Mock()
+        with patch.object(lid, "eligible_suspend", side_effect=[True, False]), \
+                patch.object(lid, "select_s2idle", actions.select), \
+                patch.object(lid, "guard_unit", actions.guard), patch.object(lid, "log"):
+            lid.prepare_suspend()
+            lid.prepare_suspend()
+        self.assertEqual(actions.mock_calls, [call.select(), call.guard("start"), call.guard("stop")])
+
+    def test_prepare_failure_stops_guard_and_restores_mode(self):
+        actions = Mock()
+        actions.select.side_effect = OSError("kernel write failed")
+        with patch.object(lid, "eligible_suspend", return_value=True), \
+                patch.object(lid, "select_s2idle", actions.select), \
+                patch.object(lid, "restore_sleep_mode", actions.restore), \
+                patch.object(lid, "guard_unit", actions.guard), self.assertRaises(OSError):
+            lid.prepare_suspend()
+        self.assertEqual(actions.mock_calls, [call.select(), call.guard("stop"), call.restore()])
+
+    def test_finish_restores_mode_even_when_suspend_did_not_succeed(self):
+        with patch.object(lid, "restore_sleep_mode") as restore, patch.object(lid, "guard_unit") as unit:
+            lid.finish_suspend("success")
+            unit.assert_not_called()
+            lid.finish_suspend("exit-code")
+            unit.assert_called_once_with("stop")
+        self.assertEqual(restore.call_count, 2)
+
+
 class GuardFlowTests(unittest.TestCase):
     def exercise(self, *, mode="poweroff", eligible=True, closed_at_expiry=True,
                  slept=True, reopen=False, change_owner=False, inhibitor_error=False):
