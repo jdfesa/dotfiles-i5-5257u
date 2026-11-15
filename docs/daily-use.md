@@ -23,7 +23,8 @@ terminal. Otro clic cierra ese panel.
 La batería muestra porcentaje y estado: rayo al cargar, verificación con carga
 completa, pausa en estados pendientes e interrogación si el estado es desconocido.
 Una lectura ausente muestra `--%`, no un cero inventado. La actualización usa
-el tick compartido de 10 s. [Status bar](status-bar.md) detalla colores y controles.
+el tick compartido de 10 s. Un clic en la batería abre [Battery details](status-bar.md#battery-details)
+con salud, ciclos y otras métricas; otro clic lo cierra.
 
 ## Lock and display
 

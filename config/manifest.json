@@ -20,6 +20,7 @@
   {"source": "config/status/i3status.conf", "destination": ".config/status/i3status.conf", "mode": 420, "deployment": "symlink"},
   {"source": "config/status/weather.json", "destination": ".config/status/weather.json", "mode": 420, "deployment": "symlink"},
   {"source": "scripts/status-adapter.py", "destination": ".local/bin/mbp-status-adapter", "mode": 493, "deployment": "symlink"},
+  {"source": "scripts/battery-details-popup.py", "destination": ".local/bin/mbp-battery-details", "mode": 493, "deployment": "symlink"},
   {"source": "scripts/calendar-popup.py", "destination": ".local/bin/mbp-calendar", "mode": 493, "deployment": "symlink"},
   {"source": "config/calendar/calendar.css", "destination": ".config/calendar/calendar.css", "mode": 420, "deployment": "symlink"},
   {"source": "scripts/screen-brightness-popup.py", "destination": ".local/bin/mbp-screen-brightness", "mode": 493, "deployment": "symlink"},

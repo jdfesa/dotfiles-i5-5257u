@@ -75,7 +75,8 @@ class AdapterTests(unittest.TestCase):
             for name, instance, helper in (
                     ("screen_brightness", "intel_backlight", "screen-brightness-panel"),
                     ("tztime", "local", "calendar"),
-                    ("cpu_usage", "aggregate", "resource-monitor")):
+                    ("cpu_usage", "aggregate", "resource-monitor"),
+                    ("battery", "upower", "battery-details")):
                 adapter.handle_click(dict(coordinates, name=name, instance=instance, button=1))
                 self.assertEqual(run.call_args.args[0], [
                     "swaymsg", f"exec ~/.local/bin/mbp-sway-tools {helper} 1034 28"])
@@ -93,6 +94,24 @@ class AdapterTests(unittest.TestCase):
                 adapter.handle_click(dict(event, **invalid))
                 self.assertEqual(run.call_args.args[0],
                                  ["swaymsg", "exec ~/.local/bin/mbp-sway-tools calendar"])
+
+    def test_battery_details_are_available_in_compact_mode_on_left_click_only(self):
+        frame = adapter.StatusView().update([dict(name="battery", instance="native")],
+                                            charge=(84, "discharging"))
+        block = next(b for b in frame if b["name"] == "battery")
+        self.assertTrue(block["full_text"].endswith(" 84%"))
+        self.assertEqual(block["instance"], "upower")
+        event = dict(name=block["name"], instance=block["instance"], button=1)
+        with patch.object(adapter.subprocess, "run") as run:
+            adapter.handle_click(event)
+            run.assert_called_once()
+            self.assertEqual(run.call_args.args[0],
+                             ["swaymsg", "exec ~/.local/bin/mbp-sway-tools battery-details"])
+            run.reset_mock()
+            for change in (dict(button=4), dict(button=True), dict(button=3),
+                           dict(instance="upower; exec unwanted"), dict(name="volume")):
+                adapter.handle_click(dict(event, **change))
+            run.assert_not_called()
 
     def test_calendar_click_is_allowlisted_and_left_button_only(self):
         with patch.object(adapter.subprocess, "run") as run:

@@ -29,6 +29,7 @@ exec ~/.local/bin/mbp-sway-session
 for_window [app_id="^mbp-(networks|mixer|updates)$"] floating enable, resize set 760 520, move position center
 for_window [app_id="^mbp-btop$"] floating enable, resize set 900 560, move position center
 for_window [app_id="^mbp-power$"] floating enable, resize set 760 360, move position center
+for_window [app_id="^local[.]mbp[.]BatteryDetails$"] floating enable, move position center
 for_window [app_id="^local[.]mbp[.]Calendar$"] floating enable, move position center
 for_window [app_id="^local[.]mbp[.]ScreenBrightness$"] floating enable, move position center
 

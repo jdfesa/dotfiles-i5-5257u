@@ -51,6 +51,13 @@ class RestorationTests(unittest.TestCase):
         links.rollback(journal)
         self.assertTrue(all(e["action"] == "create" for e in links.plan(self.repo, self.home)))
 
+    def test_sway_installs_the_battery_details_launcher(self):
+        plan = links.plan(self.repo, self.home)
+        links.apply(plan, self.repo, self.home, self.base / "main-backup")
+        target = self.home / ".local/bin/mbp-battery-details"
+        self.assertTrue(target.is_symlink())
+        self.assertEqual(target.resolve(), self.repo / "scripts/battery-details-popup.py")
+
     def test_sway_installs_brightness_panel_and_theme(self):
         plan = links.plan(self.repo, self.home)
         links.apply(plan, self.repo, self.home, self.base / "main-backup")

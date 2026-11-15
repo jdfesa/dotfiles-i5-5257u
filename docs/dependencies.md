@@ -31,7 +31,7 @@ Las versiones siguientes son referencia de compatibilidad, no pins de APT.
 | [brightnessctl](https://packages.debian.org/trixie/brightnessctl) | `0.5.1-3.1` | Brillo de pantalla; teclado mediante UPower |
 | [brightness-udev](https://packages.debian.org/trixie/brightness-udev) | `0.5.1-3.1` | Permisos estándar de backlight |
 | [systemd](https://packages.debian.org/trixie/systemd) | `257.13-1~deb13u1` | busctl para llamadas D-Bus acotadas |
-| [upower](https://packages.debian.org/trixie/upower) | `1.90.9-1` | Batería y control nativo del brillo de teclado |
+| [upower](https://packages.debian.org/trixie/upower) | `1.90.9-1` | Carga, salud y ciclos de batería; control nativo del brillo de teclado |
 | [xwayland](https://packages.debian.org/trixie/xwayland) | `2:24.1.6-1` | Compatibilidad X11 bajo Wayland |
 | [wl-clipboard](https://packages.debian.org/trixie/wl-clipboard) | `2.2.1-2` | Portapapeles |
 | [grim](https://packages.debian.org/trixie/grim) | `1.4.0+ds-2+b1` | Capturas |
@@ -43,8 +43,8 @@ Las versiones siguientes son referencia de compatibilidad, no pins de APT.
 | [zsh](https://packages.debian.org/trixie/zsh) | `5.9-8+b24` | Shell predeterminada |
 | [starship](https://packages.debian.org/trixie/starship) | `1.22.1-5` | Prompt de Zsh adaptado de mydotfiles |
 | [i3status](https://packages.debian.org/trixie/i3status) | `2.15-2` | Backend de Swaybar |
-| [python3-gi](https://packages.debian.org/trixie/python3-gi) | `3.50.0-4+b1` | Calendario y control de brillo GTK bajo demanda |
-| [gir1.2-gtk-3.0](https://packages.debian.org/trixie/gir1.2-gtk-3.0) | `3.24.49-3` | Calendario y deslizador nativos Wayland |
+| [python3-gi](https://packages.debian.org/trixie/python3-gi) | `3.50.0-4+b1` | Calendario, brillo y detalles de batería GTK bajo demanda |
+| [gir1.2-gtk-3.0](https://packages.debian.org/trixie/gir1.2-gtk-3.0) | `3.24.49-3` | Paneles nativos Wayland: calendario, brillo y batería |
 | [file](https://packages.debian.org/trixie/file) | `1:5.46-5` | Detección de tipos de archivo en Yazi |
 | [poppler-utils](https://packages.debian.org/trixie/poppler-utils) | `25.03.0-5+deb13u4` | Vista previa PDF en Yazi |
 | [zathura](https://packages.debian.org/trixie/zathura) | `0.5.11-1` | Lector con recoloreado de páginas |
